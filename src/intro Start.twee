@@ -1,0 +1,42 @@
+/* 
+===============================================================================
+  40_passage_start.twee — Passage Name: Start
+===============================================================================
+
+This is where the project will start from when running.
+
+===============================================================================
+*/
+
+::Start
+<<set $step = 0>>
+<<ShowInfo>>
+<<set _scene = [
+  { 
+    "speaker": "Narrator",
+    "side": "left",
+    "text": "You're an undocumented Guatemalan man in your early 20s.<br>You have a wife and one-year-old child with another on the way.<br>The baby will be born in only a few months",
+  },
+
+  {
+    "speaker": "Narrator",
+    "side": "right",
+    "text": "Today, you wake up with $900 in your bank account and 3 months to find housing accommodations.<br>Painting and other odd jobs are your source of income to provide for you and your family.",
+  },
+  {
+    "speaker": ":Narrator",
+    "side": "right",
+    "text": "You can take public transit to the job site by buying a weekly pass for $25.00. <br>You could also walk for free, but you won't get as much work done that week. <br>This would reduce your daily income.",
+  }
+]>>
+  
+<section id="dialogue-area"><<RenderScene _scene $step>></section>
+<section id="controls"><<NavControls _scene $step>></section>
+
+:: Choice Hub
+<<set $step = 0>>
+
+* [[Let's see what you do today! | Hub]]
+* [[Replay Intro|Start]]
+
+

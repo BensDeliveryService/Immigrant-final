@@ -23,6 +23,20 @@ Important for collaborators:
 */
 
 :: StoryInit
+
+<<set $jobs = [
+    {name: "House Painter", pay: 120, days: 7},
+    {name: "House Painter", pay: 400, days: 17},
+    {name: "Dishwasher", pay: 85, days: 5},
+    
+    {name: "Construction Helper", pay: 160, days: 4},
+    {name: "Janitor", pay: 100, days: 5},
+    {name: "Dog Walker", pay: 75, days: 2}
+]>>
+
+
+
+
 /* --- Player setup --- */
 <<set $player_Name      = "Ben">>
 <<set $imageA = "C:\Users\benja\OneDrive\Desktop\TweeGo_projects\Student_Reference\assets\images\archivist.png">>
@@ -35,6 +49,7 @@ Important for collaborators:
 <<set $jobPay =500>>
 <<set $transit = false>>
 <<set $job= true>>
+<<set $transitDays=0>>
 
 /* --- Character names --- */
 <<set $mentor_Name       = "Morgan">>
@@ -46,7 +61,6 @@ Important for collaborators:
 
 /* --- General state flags --- */
 <<set $progress = 0>> 
-<<set $transitDays=0>>
 
 /* --- Accessibility / UX flags --- */
 <<set $a11y_highContrast = false>>

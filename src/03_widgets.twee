@@ -50,6 +50,35 @@ Conventions:
 		</div>
 <</widget>>`
 
+/* Job listing widget (name, pay, days, next passage) */
+<<widget "JobListing">>
+	<<set _name = _args[0]>>
+	<<set _pay = _args[1]>>
+	<<set _days = _args[2]>>
+	<<set _goto = _args.length > 3 ? _args[3] : "Hub">>
+
+	<div class="job-card">
+		<strong><<= _name >></strong><br>
+		Pay: <<= _pay >> per day<br>
+		Days per week: <<= _days >><br><br>
+		<<link "Take this job">>
+			<<set $job = true>> <<set $jobName = _name>><<set $jobPay = _pay>>
+			<<set $workdays = _days>>
+			<<goto _goto>>
+		<</link>>
+	</div>
+<</widget>>
+
+/* Small helper to display current job info */
+<<widget "JobSummary">>
+	<<if $job>>
+		Current job: <strong><<= $jobName >></strong><br>
+		Pay: <<= $jobPay >> per day<br>
+		Workdays: <<= $workdays >>
+	<<else>>
+		You don’t have a job yet.
+	<</if>>
+<</widget>>
 
 <<widget "ShowInfo">>
 	<div id="money-display" class="hud-money">

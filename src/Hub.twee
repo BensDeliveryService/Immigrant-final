@@ -1,0 +1,26 @@
+/* 
+===============================================================================
+  41_passage_reading_room.twee — Passage Name: Reading Room
+===============================================================================
+
+
+===============================================================================
+*/
+
+:: Hub
+<<set $step = 0>>
+
+/*This is where the hub is where the person will decide where to go for the following day*/ 
+<<ShowInfo>>
+<<set _scene = [
+  { 
+    "side": "left",
+    "text": "Welcome to the next day"
+  },
+
+]>>
+<section id="dialogue-area"><<RenderScene _scene $step>></section>
+<section id="controls"><<NavControls _scene $step>></section>
+
+* [[Go to Work| WorkStart]]
+* [[Do something different |Hub]]/*Access housing here*/ 
