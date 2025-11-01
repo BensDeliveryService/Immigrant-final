@@ -1,7 +1,0 @@
-:: WorkStart
-/*This is where the hub is where the person will decide where to go for the following day*/ 
-<<<if $job>>
-    <<goto Commute>>
-<<else>>
-    <<goto JobBoard>>
-<</if>>
