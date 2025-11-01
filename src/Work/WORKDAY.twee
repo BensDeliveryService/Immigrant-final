@@ -1,0 +1,16 @@
+:: Workday
+<<set $step = 0>>
+<
+<br>
+You work hard doing your job as a(n) <<= $jobName>>.<br>
+You've finished all your scheduled work for the day.
+<<if $workdays<=0>>
+	Congrats! You have completed all for this job!
+	You will now recieve $<<= $jobPay>> for this job!
+	<<link "Recieve your money!">><<set $day+=1>><<set $money+=$jobPay>><<goto "Hub">><</link>>  
+	<<set $job=false>>
+<hr>
+<<else>>
+	You have <<= $workdays>> days left of your job
+	<<link "Head back to the Home">><<set $day+=1>> <<goto "Hub">><</link>>
+<</if>>

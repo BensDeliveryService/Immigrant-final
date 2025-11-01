@@ -1,0 +1,23 @@
+:: JobBoard
+<<set $step = 0>>
+<<ShowInfo>>
+
+<<set _availableJobs = ($jobs)>>
+<<set _availableJobs.shuffle()>>
+
+<<set _count = Math.min(3, _availableJobs.length)>>
+Choose a job:
+<<for _i = 0; _i < _count; _i++>>
+	<<set _j = _availableJobs[_i]>>
+
+	<<capture _j>>
+		<<link "<<=_j.name>> — $<<=_j.pay>> / week · <<= _j.days>> days">>
+			<<set $job = true>>
+			<<set $jobName = _j.name>>
+			<<set $jobPay = _j.pay>>
+			<<set $workdays = _j.days>>
+			<<goto "Kiosk">>
+		<</link>>
+	<</capture>>
+	<br>
+<</for>>

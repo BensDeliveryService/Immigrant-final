@@ -1,0 +1,10 @@
+:: WorkStart
+/*This is where the hub is where the person will decide where to go for the following day*/ 
+<<if!$job>>
+    You do not have a job right now.
+    <<link "Look for a new job">> 
+    <<goto "JobBoard">> <</link>>
+       
+<<else>>
+    <<goto "Kiosk">>
+<</if>>

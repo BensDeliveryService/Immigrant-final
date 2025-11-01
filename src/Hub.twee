@@ -1,0 +1,20 @@
+/* 
+===============================================================================
+  41_passage_reading_room.twee — Passage Name: Reading Room
+===============================================================================
+
+
+===============================================================================
+*/
+
+:: Hub
+
+<<set $step = 0>>
+<<ShowInfo>>
+
+Welcome Home!
+Here are your options for the day
+
+<<link "See summary of your job">> <<goto "Summary">><</link>>
+<<link "Go to Work">> <<goto "WorkStart">> <</link>>
+
