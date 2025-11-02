@@ -7,10 +7,23 @@ You've finished all your scheduled work for the day.
 <<if $workdays<=0>>
 	Congrats! You have completed all for this job!
 	You will now recieve $<<= $jobPay>> for this job!
-	<<link "Recieve your money!">><<set $day+=1>><<set $money+=$jobPay>><<goto "Hub">><</link>>  
-	<<set $job=false>>
+	<<link "Recieve your money!">>
+		<<set $day+=1>>
+		<<set $money+=$jobPay>>
+		<<set $job=false>>
+		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
+			<<set $housingApplicationDaysRemaining -= 1>>
+		<</if>>
+		<<goto "Hub">>
+	<</link>>
 <hr>
 <<else>>
 	You have <<= $workdays>> days left of your job
-	<<link "Head back to the Home">><<set $day+=1>> <<goto "Hub">><</link>>
+	<<link "Head back to the Home">>
+		<<set $day+=1>>
+		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
+			<<set $housingApplicationDaysRemaining -= 1>>
+		<</if>>
+		<<goto "Hub">>
+	<</link>>
 <</if>>

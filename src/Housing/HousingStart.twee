@@ -1,0 +1,42 @@
+:: HousingStart
+/*This is the entry point for housing search*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<<if $hasHousing>>
+    You already have housing!
+    Your current housing: <<= $housingType>> apartment
+    Monthly cost: $<<= $housingCost>>
+
+    <<link "Return to day choice">> <<goto "DayChoice">> <</link>>
+<<elseif $housingApplicationPending>>
+    <h3>Housing Application Status</h3>
+
+    You have a pending application for the <strong><<= $pendingHousingType>> Apartment</strong>.
+
+    <p>Days until decision: <strong><<= $housingApplicationDaysRemaining>></strong></p>
+
+    <<if $housingApplicationDaysRemaining <= 0>>
+        <p style="color: green;"><strong>Your application has been processed!</strong></p>
+        <<link "Check application result">> <<goto "HousingApplicationResult">> <</link>>
+    <<else>>
+        <p><em>Please check back tomorrow. Your application is still being reviewed.</em></p>
+        <<link "Return to day choice">> <<goto "DayChoice">> <</link>>
+    <</if>>
+<<else>>
+    <h3>Housing Search</h3>
+
+    You don't have housing yet. Let's look for a place to live.
+
+    <<if $housingRejectionCount > 0>>
+        <hr>
+        <p style="color: orange;"><em>Previous rejections: <<= $housingRejectionCount>></em></p>
+        <<if $lastRejectionReason !== "">>
+            <p><small>Last rejection reason: <<= $lastRejectionReason>></small></p>
+        <</if>>
+        <p><em>Don't give up! Many migrants face multiple rejections before finding housing.</em></p>
+        <hr>
+    <</if>>
+
+    <<link "View available housing options">> <<goto "HousingOptions">> <</link>>
+<</if>>

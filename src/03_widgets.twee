@@ -48,14 +48,14 @@ Conventions:
 				<div class="small">Line <<= _i + 1 >> / <<= _scene.length >></div>
 			</div>
 		</div>
-<</widget>>`
+<</widget>>
 
 /* Job listing widget (name, pay, days, next passage) */
 <<widget "JobListing">>
-	<<set _name = _args[0]>>
-	<<set _pay = _args[1]>>
-	<<set _days = _args[2]>>
-	<<set _goto = _args.length > 3 ? _args[3] : "Hub">>
+	<<set _name = $args[0]>>
+	<<set _pay = $args[1]>>
+	<<set _days = $args[2]>>
+	<<set _goto = $args.length > 3 ? $args[3] : "Hub">>
 
 	<div class="job-card">
 		<strong><<= _name >></strong><br>

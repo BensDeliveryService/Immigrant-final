@@ -1,0 +1,52 @@
+:: HousingOptions
+/*Housing options - cheap and expensive apartments*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Available Housing Options</h3>
+
+Select an apartment to apply:
+
+<hr>
+
+<div class="housing-option">
+<h4>Cheap Apartment</h4>
+<p>A basic apartment in a quiet neighborhood</p>
+<p><strong>Application Fee:</strong> $150</p>
+<p><strong>Monthly Rent:</strong> $600</p>
+
+<<if $money >= 150>>
+    <<link "Apply for Cheap Apartment">>
+        <<set $selectedHousingType = "Cheap">>
+        <<set $selectedApplicationFee = 150>>
+        <<set $selectedMonthlyCost = 600>>
+        <<goto "HousingApply">>
+    <</link>>
+<<else>>
+    <p style="color: red;">You don't have enough money for this application fee.</p>
+<</if>>
+</div>
+
+<hr>
+
+<div class="housing-option">
+<h4>Expensive Apartment</h4>
+<p>A modern apartment in a nice area with amenities</p>
+<p><strong>Application Fee:</strong> $300</p>
+<p><strong>Monthly Rent:</strong> $1200</p>
+
+<<if $money >= 300>>
+    <<link "Apply for Expensive Apartment">>
+        <<set $selectedHousingType = "Expensive">>
+        <<set $selectedApplicationFee = 300>>
+        <<set $selectedMonthlyCost = 1200>>
+        <<goto "HousingApply">>
+    <</link>>
+<<else>>
+    <p style="color: red;">You don't have enough money for this application fee.</p>
+<</if>>
+</div>
+
+<hr>
+
+<<link "Go back">> <<goto "HousingStart">> <</link>>

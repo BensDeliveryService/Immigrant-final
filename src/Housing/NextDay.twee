@@ -1,0 +1,28 @@
+:: ApplicationSubmitted
+/*Application submitted - now waiting for approval*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Application Submitted!</h3>
+
+You have successfully submitted your application for the <strong><<= $pendingHousingType>> Apartment</strong>!
+
+<p>Application fee paid: $<<= $selectedApplicationFee>></p>
+
+<hr>
+
+<p>Your application is now being processed. You will hear back in approximately <strong><<= $housingApplicationDaysRemaining>> days</strong>.</p>
+
+<p><em>Note: As a migrant, housing applications can take time to process. Check back each day to see if you've received a response.</em></p>
+
+<hr>
+
+The day is over. Let's continue to tomorrow.
+
+<<link "Continue to next day">>
+    <<set $day += 1>>
+    <<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
+        <<set $housingApplicationDaysRemaining -= 1>>
+    <</if>>
+    <<goto "Hub">>
+<</link>>

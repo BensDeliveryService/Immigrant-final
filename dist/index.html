@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<!-- UUID://E5BD1880-C477-4001-8A76-B1E6527ED23B// --><tw-storydata name="Wompo" startnode="11" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="E5BD1880-C477-4001-8A76-B1E6527ED23B" zoom="1" format="SugarCube" format-version="2.37.3" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">:root{
+	<!-- UUID://E5BD1880-C477-4001-8A76-B1E6527ED23B// --><tw-storydata name="Wompo" startnode="18" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="E5BD1880-C477-4001-8A76-B1E6527ED23B" zoom="1" format="SugarCube" format-version="2.37.3" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">:root{
   --ui:#0e1016; --panel:#141826; --ink:#e9e9f1; --muted:#9aa1aa; --line:#22283a;
   --accent:#79a2ff; --accent-2:#9ad8ff; --danger:#ff6b6b;
 }
@@ -226,6 +226,29 @@ Config.passages.start = "Start";</script><tw-tag name="definition" color="orange
 &lt;&lt;set $jobName = &quot;&quot;&gt;&gt;
 &lt;&lt;set $jobPay = 0&gt;&gt;
 
+/* --- Housing Vars ---*/
+&lt;&lt;set $hasHousing = false&gt;&gt;
+&lt;&lt;set $housingType = &quot;&quot;&gt;&gt;
+&lt;&lt;set $housingCost = 0&gt;&gt;
+&lt;&lt;set $housingApplicationPending = false&gt;&gt;
+&lt;&lt;set $housingApplicationDaysRemaining = 0&gt;&gt;
+&lt;&lt;set $pendingHousingType = &quot;&quot;&gt;&gt;
+&lt;&lt;set $pendingHousingCost = 0&gt;&gt;
+&lt;&lt;set $housingRejectionCount = 0&gt;&gt;
+&lt;&lt;set $lastRejectionReason = &quot;&quot;&gt;&gt;
+
+/* --- Housing Rejection Reasons (realistic challenges migrants face) ---*/
+&lt;&lt;set $housingRejectionReasons = [
+    &quot;Insufficient proof of income. The landlord requires 3 months of pay stubs, which you cannot provide as a recent immigrant.&quot;,
+    &quot;No local credit history. Without an established credit score in this country, the landlord considers you too high-risk.&quot;,
+    &quot;Lack of references. The landlord requires references from previous landlords in this country, which you don&#39;t have.&quot;,
+    &quot;Employment instability. Your temporary work history doesn&#39;t meet the landlord&#39;s requirement for permanent employment.&quot;,
+    &quot;The landlord requires a co-signer who is a citizen or permanent resident, which you cannot provide.&quot;,
+    &quot;Additional documentation required. The landlord is requesting documentation that is difficult for you to obtain as a recent immigrant.&quot;,
+    &quot;Income-to-rent ratio too low. Your current income doesn&#39;t meet the landlord&#39;s requirement of 3x the monthly rent.&quot;,
+    &quot;The landlord has decided to rent to another applicant who had more established local ties.&quot;
+]&gt;&gt;
+
 
 /* --- Character names --- */
 &lt;&lt;set $mentor_Name       = &quot;Morgan&quot;&gt;&gt;
@@ -258,14 +281,14 @@ Config.passages.start = "Start";</script><tw-tag name="definition" color="orange
 				&lt;div class=&quot;small&quot;&gt;Line &lt;&lt;= _i + 1 &gt;&gt; / &lt;&lt;= _scene.length &gt;&gt;&lt;/div&gt;
 			&lt;/div&gt;
 		&lt;/div&gt;
-&lt;&lt;/widget&gt;&gt;`
+&lt;&lt;/widget&gt;&gt;
 
 /* Job listing widget (name, pay, days, next passage) */
 &lt;&lt;widget &quot;JobListing&quot;&gt;&gt;
-	&lt;&lt;set _name = _args[0]&gt;&gt;
-	&lt;&lt;set _pay = _args[1]&gt;&gt;
-	&lt;&lt;set _days = _args[2]&gt;&gt;
-	&lt;&lt;set _goto = _args.length &gt; 3 ? _args[3] : &quot;Hub&quot;&gt;&gt;
+	&lt;&lt;set _name = $args[0]&gt;&gt;
+	&lt;&lt;set _pay = $args[1]&gt;&gt;
+	&lt;&lt;set _days = $args[2]&gt;&gt;
+	&lt;&lt;set _goto = $args.length &gt; 3 ? $args[3] : &quot;Hub&quot;&gt;&gt;
 
 	&lt;div class=&quot;job-card&quot;&gt;
 		&lt;strong&gt;&lt;&lt;= _name &gt;&gt;&lt;/strong&gt;&lt;br&gt;
@@ -330,14 +353,244 @@ Config.passages.start = "Start";</script><tw-tag name="definition" color="orange
 			&lt;&lt;/link&gt;&gt;
 		&lt;&lt;/if&gt;&gt;
 	&lt;/div&gt;
-&lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="5" name="Hub" tags="" position="600,100" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="5" name="HousingApplicationRejected" tags="" position="600,100" size="100,100">/*Application has been rejected - show reason and allow retry*/
+&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;ShowInfo&gt;&gt;
+
+&lt;h3&gt;Housing Application Denied&lt;/h3&gt;
+
+&lt;p style=&quot;color: red;&quot;&gt;&lt;strong&gt;Unfortunately, your application has been rejected.&lt;/strong&gt;&lt;/p&gt;
+
+You applied for the &lt;strong&gt;&lt;&lt;= $pendingHousingType&gt;&gt; Apartment&lt;/strong&gt;, but the landlord has declined your application.
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;strong&gt;Reason for Rejection:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;&lt;= $lastRejectionReason&gt;&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;&lt;if $housingRejectionCount === 1&gt;&gt;
+    &lt;p&gt;This is your first rejection. As a migrant, finding housing can be challenging. Don&#39;t give up!&lt;/p&gt;
+&lt;&lt;elseif $housingRejectionCount === 2&gt;&gt;
+    &lt;p&gt;This is your second rejection. The housing search is difficult, but persistence is key.&lt;/p&gt;
+&lt;&lt;else&gt;&gt;
+    &lt;p&gt;You&#39;ve been rejected &lt;&lt;= $housingRejectionCount&gt;&gt; times. Finding housing as a migrant requires patience and determination.&lt;/p&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;strong&gt;What would you like to do?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;&lt;link &quot;Try applying again (return to housing options)&quot;&gt;&gt;
+    &lt;&lt;set $housingApplicationPending = false&gt;&gt;
+    &lt;&lt;set $housingApplicationDaysRemaining = 0&gt;&gt;
+    &lt;&lt;set $pendingHousingType = &quot;&quot;&gt;&gt;
+    &lt;&lt;set $pendingHousingCost = 0&gt;&gt;
+    &lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
+
+&lt;&lt;link &quot;Give up for now (return to day choice)&quot;&gt;&gt;
+    &lt;&lt;set $housingApplicationPending = false&gt;&gt;
+    &lt;&lt;set $housingApplicationDaysRemaining = 0&gt;&gt;
+    &lt;&lt;set $pendingHousingType = &quot;&quot;&gt;&gt;
+    &lt;&lt;set $pendingHousingCost = 0&gt;&gt;
+    &lt;&lt;goto &quot;DayChoice&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="6" name="HousingApplicationResult" tags="" position="725,100" size="100,100">/*Application has been processed - determine approval or rejection*/
+&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;ShowInfo&gt;&gt;
+
+/* Determine if application is approved (70% chance) or rejected (30% chance) */
+&lt;&lt;set _approvalChance = random(1, 100)&gt;&gt;
+
+&lt;&lt;if _approvalChance &lt;= 70&gt;&gt;
+    /* APPROVED */
+    &lt;h3&gt;Housing Application Approved!&lt;/h3&gt;
+
+    &lt;p style=&quot;color: green;&quot;&gt;&lt;strong&gt;Congratulations!&lt;/strong&gt;&lt;/p&gt;
+
+    Your application for the &lt;strong&gt;&lt;&lt;= $pendingHousingType&gt;&gt; Apartment&lt;/strong&gt; has been &lt;strong&gt;APPROVED&lt;/strong&gt;!
+
+    &lt;hr&gt;
+
+    &lt;p&gt;&lt;strong&gt;Your New Housing Details:&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Apartment Type: &lt;&lt;= $pendingHousingType&gt;&gt;&lt;/li&gt;
+      &lt;li&gt;Monthly Rent: $&lt;&lt;= $pendingHousingCost&gt;&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;em&gt;Welcome to your new home! As a migrant, finding housing is a significant milestone in building your new life.&lt;/em&gt;&lt;/p&gt;
+
+    &lt;hr&gt;
+
+    &lt;&lt;link &quot;Move into your new apartment&quot;&gt;&gt;
+        &lt;&lt;set $hasHousing = true&gt;&gt;
+        &lt;&lt;set $housingType = $pendingHousingType&gt;&gt;
+        &lt;&lt;set $housingCost = $pendingHousingCost&gt;&gt;
+        &lt;&lt;set $housingApplicationPending = false&gt;&gt;
+        &lt;&lt;set $housingApplicationDaysRemaining = 0&gt;&gt;
+        &lt;&lt;set $pendingHousingType = &quot;&quot;&gt;&gt;
+        &lt;&lt;set $pendingHousingCost = 0&gt;&gt;
+        &lt;&lt;goto &quot;DayChoice&quot;&gt;&gt;
+    &lt;&lt;/link&gt;&gt;
+&lt;&lt;else&gt;&gt;
+    /* REJECTED */
+    &lt;&lt;set _rejectionIndex = random(0, $housingRejectionReasons.length - 1)&gt;&gt;
+    &lt;&lt;set $lastRejectionReason = $housingRejectionReasons[_rejectionIndex]&gt;&gt;
+    &lt;&lt;set $housingRejectionCount += 1&gt;&gt;
+    &lt;&lt;goto &quot;HousingApplicationRejected&quot;&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="HousingApply" tags="" position="850,100" size="100,100">/*Apply for housing and pay the application fee*/
+&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;ShowInfo&gt;&gt;
+
+&lt;h3&gt;Housing Application&lt;/h3&gt;
+
+You are applying for the &lt;strong&gt;&lt;&lt;= $selectedHousingType&gt;&gt; Apartment&lt;/strong&gt;
+
+&lt;p&gt;Application Fee: $&lt;&lt;= $selectedApplicationFee&gt;&gt;&lt;/p&gt;
+&lt;p&gt;Monthly Rent: $&lt;&lt;= $selectedMonthlyCost&gt;&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;&lt;link &quot;Confirm Application&quot;&gt;&gt;
+    &lt;&lt;set $money -= $selectedApplicationFee&gt;&gt;
+    &lt;&lt;set $housingApplicationPending = true&gt;&gt;
+    &lt;&lt;set $housingApplicationDaysRemaining = random(3, 7)&gt;&gt;
+    &lt;&lt;set $pendingHousingType = $selectedHousingType&gt;&gt;
+    &lt;&lt;set $pendingHousingCost = $selectedMonthlyCost&gt;&gt;
+    &lt;&lt;goto &quot;ApplicationSubmitted&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
+
+&lt;&lt;link &quot;Cancel and go back&quot;&gt;&gt; &lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="HousingOptions" tags="" position="975,100" size="100,100">/*Housing options - cheap and expensive apartments*/
+&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;ShowInfo&gt;&gt;
+
+&lt;h3&gt;Available Housing Options&lt;/h3&gt;
+
+Select an apartment to apply:
+
+&lt;hr&gt;
+
+&lt;div class=&quot;housing-option&quot;&gt;
+&lt;h4&gt;Cheap Apartment&lt;/h4&gt;
+&lt;p&gt;A basic apartment in a quiet neighborhood&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $150&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $600&lt;/p&gt;
+
+&lt;&lt;if $money &gt;= 150&gt;&gt;
+    &lt;&lt;link &quot;Apply for Cheap Apartment&quot;&gt;&gt;
+        &lt;&lt;set $selectedHousingType = &quot;Cheap&quot;&gt;&gt;
+        &lt;&lt;set $selectedApplicationFee = 150&gt;&gt;
+        &lt;&lt;set $selectedMonthlyCost = 600&gt;&gt;
+        &lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
+    &lt;&lt;/link&gt;&gt;
+&lt;&lt;else&gt;&gt;
+    &lt;p style=&quot;color: red;&quot;&gt;You don&#39;t have enough money for this application fee.&lt;/p&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+
+&lt;div class=&quot;housing-option&quot;&gt;
+&lt;h4&gt;Expensive Apartment&lt;/h4&gt;
+&lt;p&gt;A modern apartment in a nice area with amenities&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $300&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $1200&lt;/p&gt;
+
+&lt;&lt;if $money &gt;= 300&gt;&gt;
+    &lt;&lt;link &quot;Apply for Expensive Apartment&quot;&gt;&gt;
+        &lt;&lt;set $selectedHousingType = &quot;Expensive&quot;&gt;&gt;
+        &lt;&lt;set $selectedApplicationFee = 300&gt;&gt;
+        &lt;&lt;set $selectedMonthlyCost = 1200&gt;&gt;
+        &lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
+    &lt;&lt;/link&gt;&gt;
+&lt;&lt;else&gt;&gt;
+    &lt;p style=&quot;color: red;&quot;&gt;You don&#39;t have enough money for this application fee.&lt;/p&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+
+&lt;&lt;link &quot;Go back&quot;&gt;&gt; &lt;&lt;goto &quot;HousingStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="HousingStart" tags="" position="1100,100" size="100,100">/*This is the entry point for housing search*/
+&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;ShowInfo&gt;&gt;
+
+&lt;&lt;if $hasHousing&gt;&gt;
+    You already have housing!
+    Your current housing: &lt;&lt;= $housingType&gt;&gt; apartment
+    Monthly cost: $&lt;&lt;= $housingCost&gt;&gt;
+
+    &lt;&lt;link &quot;Return to day choice&quot;&gt;&gt; &lt;&lt;goto &quot;DayChoice&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
+&lt;&lt;elseif $housingApplicationPending&gt;&gt;
+    &lt;h3&gt;Housing Application Status&lt;/h3&gt;
+
+    You have a pending application for the &lt;strong&gt;&lt;&lt;= $pendingHousingType&gt;&gt; Apartment&lt;/strong&gt;.
+
+    &lt;p&gt;Days until decision: &lt;strong&gt;&lt;&lt;= $housingApplicationDaysRemaining&gt;&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;&lt;if $housingApplicationDaysRemaining &lt;= 0&gt;&gt;
+        &lt;p style=&quot;color: green;&quot;&gt;&lt;strong&gt;Your application has been processed!&lt;/strong&gt;&lt;/p&gt;
+        &lt;&lt;link &quot;Check application result&quot;&gt;&gt; &lt;&lt;goto &quot;HousingApplicationResult&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
+    &lt;&lt;else&gt;&gt;
+        &lt;p&gt;&lt;em&gt;Please check back tomorrow. Your application is still being reviewed.&lt;/em&gt;&lt;/p&gt;
+        &lt;&lt;link &quot;Return to day choice&quot;&gt;&gt; &lt;&lt;goto &quot;DayChoice&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
+    &lt;&lt;/if&gt;&gt;
+&lt;&lt;else&gt;&gt;
+    &lt;h3&gt;Housing Search&lt;/h3&gt;
+
+    You don&#39;t have housing yet. Let&#39;s look for a place to live.
+
+    &lt;&lt;if $housingRejectionCount &gt; 0&gt;&gt;
+        &lt;hr&gt;
+        &lt;p style=&quot;color: orange;&quot;&gt;&lt;em&gt;Previous rejections: &lt;&lt;= $housingRejectionCount&gt;&gt;&lt;/em&gt;&lt;/p&gt;
+        &lt;&lt;if $lastRejectionReason !== &quot;&quot;&gt;&gt;
+            &lt;p&gt;&lt;small&gt;Last rejection reason: &lt;&lt;= $lastRejectionReason&gt;&gt;&lt;/small&gt;&lt;/p&gt;
+        &lt;&lt;/if&gt;&gt;
+        &lt;p&gt;&lt;em&gt;Don&#39;t give up! Many migrants face multiple rejections before finding housing.&lt;/em&gt;&lt;/p&gt;
+        &lt;hr&gt;
+    &lt;&lt;/if&gt;&gt;
+
+    &lt;&lt;link &quot;View available housing options&quot;&gt;&gt; &lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="10" name="ApplicationSubmitted" tags="" position="1225,100" size="100,100">/*Application submitted - now waiting for approval*/
+&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;ShowInfo&gt;&gt;
+
+&lt;h3&gt;Application Submitted!&lt;/h3&gt;
+
+You have successfully submitted your application for the &lt;strong&gt;&lt;&lt;= $pendingHousingType&gt;&gt; Apartment&lt;/strong&gt;!
+
+&lt;p&gt;Application fee paid: $&lt;&lt;= $selectedApplicationFee&gt;&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;Your application is now being processed. You will hear back in approximately &lt;strong&gt;&lt;&lt;= $housingApplicationDaysRemaining&gt;&gt; days&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note: As a migrant, housing applications can take time to process. Check back each day to see if you&#39;ve received a response.&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+The day is over. Let&#39;s continue to tomorrow.
+
+&lt;&lt;link &quot;Continue to next day&quot;&gt;&gt;
+    &lt;&lt;set $day += 1&gt;&gt;
+    &lt;&lt;if $housingApplicationPending and $housingApplicationDaysRemaining &gt; 0&gt;&gt;
+        &lt;&lt;set $housingApplicationDaysRemaining -= 1&gt;&gt;
+    &lt;&lt;/if&gt;&gt;
+    &lt;&lt;goto &quot;Hub&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="11" name="Hub" tags="" position="100,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
 Welcome Home!
 Here are your options for the day
 
 &lt;&lt;link &quot;See summary of your job&quot;&gt;&gt; &lt;&lt;goto &quot;Summary&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;&lt;link &quot;Go to Work&quot;&gt;&gt; &lt;&lt;goto &quot;WorkStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="6" name="JobBoard" tags="" position="725,100" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;link &quot;Start your day&quot;&gt;&gt; &lt;&lt;goto &quot;DayChoice&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="12" name="DayChoice" tags="" position="225,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;ShowInfo&gt;&gt;
+
+What would you like to do today?
+
+&lt;&lt;link &quot;Look for Housing&quot;&gt;&gt; &lt;&lt;goto &quot;HousingStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
+&lt;&lt;link &quot;Go to Work&quot;&gt;&gt; &lt;&lt;goto &quot;WorkStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="JobBoard" tags="" position="350,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
 &lt;&lt;set _availableJobs = ($jobs)&gt;&gt;
@@ -358,7 +611,7 @@ Choose a job:
 		&lt;&lt;/link&gt;&gt;
 	&lt;&lt;/capture&gt;&gt;
 	&lt;br&gt;
-&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="Kiosk" tags="" position="850,100" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="14" name="Kiosk" tags="" position="475,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
 &lt;&lt;if $transitDays &gt; 0&gt;&gt; /* Code for if you have a transit pass */
@@ -404,14 +657,14 @@ Choose a job:
 			&lt;&lt;/link&gt;&gt;&lt;br&gt;
 		
 		&lt;&lt;/if&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="Summary" tags="" position="975,100" size="100,100">&lt;&lt;if $workDays&lt;=0 &gt;&gt; 
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="15" name="Summary" tags="" position="600,225" size="100,100">&lt;&lt;if $workDays&lt;=0 &gt;&gt; 
 	Here are the current details of your job...
 	&lt;&lt;JobSummary&gt;&gt;
 &lt;&lt;else&gt;&gt;
 You do not have a job right now.
 &lt;&lt;/if&gt;&gt;
 &lt;br&gt;
-&lt;&lt;link &quot;Go back to Hub&quot;&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="Workday" tags="" position="1100,100" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;link &quot;Go back to Hub&quot;&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="Workday" tags="" position="725,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;
 &lt;br&gt;
 You work hard doing your job as a(n) &lt;&lt;= $jobName&gt;&gt;.&lt;br&gt;
@@ -419,13 +672,26 @@ You&#39;ve finished all your scheduled work for the day.
 &lt;&lt;if $workdays&lt;=0&gt;&gt;
 	Congrats! You have completed all for this job!
 	You will now recieve $&lt;&lt;= $jobPay&gt;&gt; for this job!
-	&lt;&lt;link &quot;Recieve your money!&quot;&gt;&gt;&lt;&lt;set $day+=1&gt;&gt;&lt;&lt;set $money+=$jobPay&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;  
-	&lt;&lt;set $job=false&gt;&gt;
+	&lt;&lt;link &quot;Recieve your money!&quot;&gt;&gt;
+		&lt;&lt;set $day+=1&gt;&gt;
+		&lt;&lt;set $money+=$jobPay&gt;&gt;
+		&lt;&lt;set $job=false&gt;&gt;
+		&lt;&lt;if $housingApplicationPending and $housingApplicationDaysRemaining &gt; 0&gt;&gt;
+			&lt;&lt;set $housingApplicationDaysRemaining -= 1&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+		&lt;&lt;goto &quot;Hub&quot;&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
 &lt;hr&gt;
 &lt;&lt;else&gt;&gt;
 	You have &lt;&lt;= $workdays&gt;&gt; days left of your job
-	&lt;&lt;link &quot;Head back to the Home&quot;&gt;&gt;&lt;&lt;set $day+=1&gt;&gt; &lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="10" name="WorkStart" tags="" position="1225,100" size="100,100">/*This is where the hub is where the person will decide where to go for the following day*/ 
+	&lt;&lt;link &quot;Head back to the Home&quot;&gt;&gt;
+		&lt;&lt;set $day+=1&gt;&gt;
+		&lt;&lt;if $housingApplicationPending and $housingApplicationDaysRemaining &gt; 0&gt;&gt;
+			&lt;&lt;set $housingApplicationDaysRemaining -= 1&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+		&lt;&lt;goto &quot;Hub&quot;&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="17" name="WorkStart" tags="" position="850,225" size="100,100">/*This is where the hub is where the person will decide where to go for the following day*/ 
 &lt;&lt;if!$job&gt;&gt;
     You do not have a job right now.
     &lt;&lt;link &quot;Look for a new job&quot;&gt;&gt; 
@@ -433,7 +699,7 @@ You&#39;ve finished all your scheduled work for the day.
        
 &lt;&lt;else&gt;&gt;
     &lt;&lt;goto &quot;Kiosk&quot;&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="11" name="Start" tags="" position="100,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="18" name="Start" tags="" position="975,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 &lt;&lt;set _scene = [
   { 
@@ -455,7 +721,7 @@ You&#39;ve finished all your scheduled work for the day.
 ]&gt;&gt;
   
 &lt;section id=&quot;dialogue-area&quot;&gt;&lt;&lt;RenderScene _scene $step&gt;&gt;&lt;/section&gt;
-&lt;section id=&quot;controls&quot;&gt;&lt;&lt;NavControls _scene $step&gt;&gt;&lt;/section&gt;</tw-passagedata><tw-passagedata pid="12" name="Choice Hub" tags="" position="225,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;section id=&quot;controls&quot;&gt;&lt;&lt;NavControls _scene $step&gt;&gt;&lt;/section&gt;</tw-passagedata><tw-passagedata pid="19" name="Choice Hub" tags="" position="1100,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 
 * [[Let&#39;s see what you do today! | Hub]]
 * [[Replay Intro|WorkStart]]</tw-passagedata></tw-storydata>

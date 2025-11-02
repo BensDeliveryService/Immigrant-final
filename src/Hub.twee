@@ -16,5 +16,15 @@ Welcome Home!
 Here are your options for the day
 
 <<link "See summary of your job">> <<goto "Summary">><</link>>
+<<link "Start your day">> <<goto "DayChoice">> <</link>>
+
+:: DayChoice
+
+<<set $step = 0>>
+<<ShowInfo>>
+
+What would you like to do today?
+
+<<link "Look for Housing">> <<goto "HousingStart">> <</link>>
 <<link "Go to Work">> <<goto "WorkStart">> <</link>>
 

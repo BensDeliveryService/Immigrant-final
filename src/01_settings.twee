@@ -49,6 +49,29 @@ Important for collaborators:
 <<set $jobName = "">>
 <<set $jobPay = 0>>
 
+/* --- Housing Vars ---*/
+<<set $hasHousing = false>>
+<<set $housingType = "">>
+<<set $housingCost = 0>>
+<<set $housingApplicationPending = false>>
+<<set $housingApplicationDaysRemaining = 0>>
+<<set $pendingHousingType = "">>
+<<set $pendingHousingCost = 0>>
+<<set $housingRejectionCount = 0>>
+<<set $lastRejectionReason = "">>
+
+/* --- Housing Rejection Reasons (realistic challenges migrants face) ---*/
+<<set $housingRejectionReasons = [
+    "Insufficient proof of income. The landlord requires 3 months of pay stubs, which you cannot provide as a recent immigrant.",
+    "No local credit history. Without an established credit score in this country, the landlord considers you too high-risk.",
+    "Lack of references. The landlord requires references from previous landlords in this country, which you don't have.",
+    "Employment instability. Your temporary work history doesn't meet the landlord's requirement for permanent employment.",
+    "The landlord requires a co-signer who is a citizen or permanent resident, which you cannot provide.",
+    "Additional documentation required. The landlord is requesting documentation that is difficult for you to obtain as a recent immigrant.",
+    "Income-to-rent ratio too low. Your current income doesn't meet the landlord's requirement of 3x the monthly rent.",
+    "The landlord has decided to rent to another applicant who had more established local ties."
+]>>
+
 
 /* --- Character names --- */
 <<set $mentor_Name       = "Morgan">>

@@ -1,0 +1,24 @@
+:: HousingApply
+/*Apply for housing and pay the application fee*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Housing Application</h3>
+
+You are applying for the <strong><<= $selectedHousingType>> Apartment</strong>
+
+<p>Application Fee: $<<= $selectedApplicationFee>></p>
+<p>Monthly Rent: $<<= $selectedMonthlyCost>></p>
+
+<hr>
+
+<<link "Confirm Application">>
+    <<set $money -= $selectedApplicationFee>>
+    <<set $housingApplicationPending = true>>
+    <<set $housingApplicationDaysRemaining = random(3, 7)>>
+    <<set $pendingHousingType = $selectedHousingType>>
+    <<set $pendingHousingCost = $selectedMonthlyCost>>
+    <<goto "ApplicationSubmitted">>
+<</link>>
+
+<<link "Cancel and go back">> <<goto "HousingOptions">> <</link>>

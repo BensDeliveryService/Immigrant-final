@@ -1,0 +1,45 @@
+:: HousingApplicationResult
+/*Application has been processed - determine approval or rejection*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+/* Determine if application is approved (70% chance) or rejected (30% chance) */
+<<set _approvalChance = random(1, 100)>>
+
+<<if _approvalChance <= 70>>
+    /* APPROVED */
+    <h3>Housing Application Approved!</h3>
+
+    <p style="color: green;"><strong>Congratulations!</strong></p>
+
+    Your application for the <strong><<= $pendingHousingType>> Apartment</strong> has been <strong>APPROVED</strong>!
+
+    <hr>
+
+    <p><strong>Your New Housing Details:</strong></p>
+    <ul>
+      <li>Apartment Type: <<= $pendingHousingType>></li>
+      <li>Monthly Rent: $<<= $pendingHousingCost>></li>
+    </ul>
+
+    <p><em>Welcome to your new home! As a migrant, finding housing is a significant milestone in building your new life.</em></p>
+
+    <hr>
+
+    <<link "Move into your new apartment">>
+        <<set $hasHousing = true>>
+        <<set $housingType = $pendingHousingType>>
+        <<set $housingCost = $pendingHousingCost>>
+        <<set $housingApplicationPending = false>>
+        <<set $housingApplicationDaysRemaining = 0>>
+        <<set $pendingHousingType = "">>
+        <<set $pendingHousingCost = 0>>
+        <<goto "DayChoice">>
+    <</link>>
+<<else>>
+    /* REJECTED */
+    <<set _rejectionIndex = random(0, $housingRejectionReasons.length - 1)>>
+    <<set $lastRejectionReason = $housingRejectionReasons[_rejectionIndex]>>
+    <<set $housingRejectionCount += 1>>
+    <<goto "HousingApplicationRejected">>
+<</if>>
