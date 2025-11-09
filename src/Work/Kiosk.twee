@@ -9,13 +9,14 @@
 	<<set _chance = random(1,100)>>
 
 	<<link "Use your pass and go to work">> 
-		<<if _chance <= 25>>
+		<<if _chance <25>>
 			UH OH! There is a delay and you cannot make it to work today!
 			<<set $workdays+=2>>
 			<<link "You have to go home">> <<goto "Hub">> <</link>>		
-		<<else>>
+				<</if>>
+
 			<<goto "Workday">>
-		<</if>>
+
 	<</link>><br>
 
 
@@ -31,18 +32,12 @@
 				<<set $workDays-=2>>
 				<<goto "Workday">>
 			<</link>><br>
-
-
-
-			<<link "Walk Instead">> <<goto "Workday">><<set $workdays-=1>>
-
-			<</link>>
+			<<link "Walk Instead">> <<goto "Workday">><<set $workdays-=1>> <</link>>
 
 		<<else>>
 			You don't have enough money to buy a pass right now.<br>
 			You can only walk to work today. <br>
 			<<link "Walk to work.">><<set $workdays-=1>> >><<goto "Workday">>
 			<</link>><br>
-		
 		<</if>>
 <</if>>

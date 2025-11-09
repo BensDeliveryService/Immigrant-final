@@ -2,7 +2,7 @@
 <<set $step = 0>>
 <
 <br>
-You work hard doing your job as a(n) <<= $jobName>>.<br>
+You work hard doing your job as a(n) <<= $jobName>>er.<br>
 You've finished all your scheduled work for the day.
 <<if $workdays<=0>>
 	Congrats! You have completed all for this job!
