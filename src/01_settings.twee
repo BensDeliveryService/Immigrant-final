@@ -23,16 +23,26 @@ Important for collaborators:
 */
 
 :: StoryInit
-
+<<set $jobtype = "Paint" >>
 <<set $jobs = [
-    
-    {name: "House Painter", pay: 400, days: 17},
-    {name: "Dishwasher", pay: 85, days: 5},  
-    {name: "Construction Helper", pay: 160, days: 4},
-    {name: "Janitor", pay: 100, days: 5},
-    {name: "Dog Walker", pay: 75, days: 2}
+    {   name: "Painter",
+        pay: 700,
+        days: 14,
+        desc: "You take on a long interior painting contract, working in apartments and stairwells."},
+    {   name: "Painter",
+        pay: 220,
+        days: 7,
+        desc: "You do small paint touch-ups and hallway walls in a single building."},
+    {   name: "Construction",
+        pay: 1000,
+        days: 7,
+        desc: "You help a construction crew with lifting, debris removal, and basic site cleanup."}
 ]>>
 
+
+
+
+/* --- job descriptions ---*/
 
 
 
@@ -41,13 +51,21 @@ Important for collaborators:
 <<set $imageA = "C:\Users\benja\OneDrive\Desktop\TweeGo_projects\Student_Reference\assets\images\archivist.png">>
 /* --- Vars ---*/
 <<set $day = 1>>
-<<set $money=900 >>
-<<set $tools = 15>>
+<<set $money=900>>
+
 <<set $workDays=14>>
 <<set $transitDays=0>>
 <<set $job = false>>
 <<set $jobName = "">>
 <<set $jobPay = 0>>
+<<$set $jobRef= false>>
+
+<<set $tools = 15>>
+<<set $conTools = 20>>
+<<set $paintTools= true>>
+<<set $conTools =false>>
+
+
 
 /* --- Housing Vars ---*/
 <<set $hasHousing = false>>

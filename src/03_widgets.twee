@@ -52,40 +52,44 @@ Conventions:
 
 /* Job listing widget (name, pay, days, next passage) */
 <<widget "JobListing">>
-	<<set _name = $args[0]>>
-	<<set _pay = $args[1]>>
-	<<set _days = $args[2]>>
-	<<set _goto = $args.length > 3 ? $args[3] : "Hub">>
-
-	<div class="job-card">
-		<strong><<= _name >></strong><br>
-		Pay: <<= _pay >> per day<br>
-		Days per week: <<= _days >><br><br>
-		<<link "Take this job">>
-			<<set $job = true>> <<set $jobName = _name>><<set $jobPay = _pay>>
-			<<set $workdays = _days>>
-			<<goto _goto>>
-		<</link>>
-	</div>
+	<<set _job = $args[0]>>
+	<<set _goto = $args.length > 1 ? $args[1] : "Kiosk">>
+	<<capture _job _goto>>
+		<div class="job-card"><<nobr>>
+			<strong><<= _job.name >></strong><br>
+			Pay: $<<= _job.pay >> / week<br>
+			Days: <<= _job.days >><br>
+			<em><<= _job.desc >></em><br><</nobr>>
+			<<link "Take this job">>
+				<<set $job = true>><<nobr>>
+				<<set $jobName = _job.name>><<set $jobPay = _job.pay>><<set $workdays = _job.days>>
+				<<set $jobDesc = _job.desc>><</nobr>>
+				<<if _job.name == "Construction">>
+					<<goto "ConstructionCheck">>
+				<<else>>
+					<<goto _goto>>
+				<</if>>
+			<</link>>
+		</div>
+	<</capture>>
 <</widget>>
 
+
+
+/* Small helper to display current job info */
 /* Small helper to display current job info */
 <<widget "JobSummary">>
 	<<if $job>>
-		Current job: <strong><<= $jobName >></strong><br>
-		Pay: <<= $jobPay >> per day<br>
+		Current job: <strong><<= $jobName >></strong>
+		Pay: $<<= $jobPay >> per week 
 		Workdays: <<= $workdays >>
-	<<else>>
-		You don’t have a job yet.
-	<</if>>
+		 <<if $jobDesc>>Description: <em><<= $jobDesc >></em><</if>>
+	<<else>>You don't have a job yet.<</if>>
 <</widget>>
 
-<<widget "ShowInfo">>
-	<div id="money-display" class="hud-money">
+<<widget "ShowInfo">><div id="money-display" class="hud-money">
 		Remaining Funds: $<<print $money>> 
-		Day Number: <<print $day>> 
-	</div>
-<</widget>>
+		Day Number: <<print $day>> </div><</widget>>
 
 
 <<widget "NavControls">>

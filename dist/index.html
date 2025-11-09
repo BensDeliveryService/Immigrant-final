@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<!-- UUID://E5BD1880-C477-4001-8A76-B1E6527ED23B// --><tw-storydata name="Wompo" startnode="18" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="E5BD1880-C477-4001-8A76-B1E6527ED23B" zoom="1" format="SugarCube" format-version="2.37.3" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">:root{
+	<!-- UUID://E5BD1880-C477-4001-8A76-B1E6527ED23B// --><tw-storydata name="Wompo" startnode="19" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="E5BD1880-C477-4001-8A76-B1E6527ED23B" zoom="1" format="SugarCube" format-version="2.37.3" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">:root{
   --ui:#0e1016; --panel:#141826; --ink:#e9e9f1; --muted:#9aa1aa; --line:#22283a;
   --accent:#79a2ff; --accent-2:#9ad8ff; --danger:#ff6b6b;
 }
@@ -201,15 +201,26 @@ body{background:var(--ui); color:var(--ink); font-family:Inter,Segoe UI,system-u
 
 /* If you ever want to see the full image uncropped: add class 'contain' */
 .avatar.contain img{ object-fit: contain; background:#0f1322; }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.saves.slots = 6;
-Config.passages.start = "Start";</script><tw-tag name="definition" color="orange"></tw-tag><tw-tag name="setup" color="purple"></tw-tag><tw-passagedata pid="1" name="StoryAuthor" tags="" position="100,100" size="100,100">Course Template</tw-passagedata><tw-passagedata pid="2" name="StorySettings" tags="" position="225,100" size="100,100">StoryFormat: SugarCube 2.37.3</tw-passagedata><tw-passagedata pid="3" name="StoryInit" tags="" position="350,100" size="100,100">&lt;&lt;set $jobs = [
-    
-    {name: &quot;House Painter&quot;, pay: 400, days: 17},
-    {name: &quot;Dishwasher&quot;, pay: 85, days: 5},  
-    {name: &quot;Construction Helper&quot;, pay: 160, days: 4},
-    {name: &quot;Janitor&quot;, pay: 100, days: 5},
-    {name: &quot;Dog Walker&quot;, pay: 75, days: 2}
+Config.passages.start = "Start";</script><tw-tag name="definition" color="orange"></tw-tag><tw-tag name="setup" color="purple"></tw-tag><tw-passagedata pid="1" name="StoryAuthor" tags="" position="100,100" size="100,100">Course Template</tw-passagedata><tw-passagedata pid="2" name="StorySettings" tags="" position="225,100" size="100,100">StoryFormat: SugarCube 2.37.3</tw-passagedata><tw-passagedata pid="3" name="StoryInit" tags="" position="350,100" size="100,100">&lt;&lt;set $jobtype = &quot;Paint&quot; &gt;&gt;
+&lt;&lt;set $jobs = [
+    {   name: &quot;Painter&quot;,
+        pay: 700,
+        days: 14,
+        desc: &quot;You take on a long interior painting contract, working in apartments and stairwells.&quot;},
+    {   name: &quot;Painter&quot;,
+        pay: 220,
+        days: 7,
+        desc: &quot;You do small paint touch-ups and hallway walls in a single building.&quot;},
+    {   name: &quot;Construction&quot;,
+        pay: 1000,
+        days: 7,
+        desc: &quot;You help a construction crew with lifting, debris removal, and basic site cleanup.&quot;}
 ]&gt;&gt;
 
+
+
+
+/* --- job descriptions ---*/
 
 
 
@@ -218,13 +229,21 @@ Config.passages.start = "Start";</script><tw-tag name="definition" color="orange
 &lt;&lt;set $imageA = &quot;C:\Users\benja\OneDrive\Desktop\TweeGo_projects\Student_Reference\assets\images\archivist.png&quot;&gt;&gt;
 /* --- Vars ---*/
 &lt;&lt;set $day = 1&gt;&gt;
-&lt;&lt;set $money=900 &gt;&gt;
-&lt;&lt;set $tools = 15&gt;&gt;
+&lt;&lt;set $money=900&gt;&gt;
+
 &lt;&lt;set $workDays=14&gt;&gt;
 &lt;&lt;set $transitDays=0&gt;&gt;
 &lt;&lt;set $job = false&gt;&gt;
 &lt;&lt;set $jobName = &quot;&quot;&gt;&gt;
 &lt;&lt;set $jobPay = 0&gt;&gt;
+&lt;&lt;$set $jobRef= false&gt;&gt;
+
+&lt;&lt;set $tools = 15&gt;&gt;
+&lt;&lt;set $conTools = 20&gt;&gt;
+&lt;&lt;set $paintTools= true&gt;&gt;
+&lt;&lt;set $conTools =false&gt;&gt;
+
+
 
 /* --- Housing Vars ---*/
 &lt;&lt;set $hasHousing = false&gt;&gt;
@@ -285,40 +304,44 @@ Config.passages.start = "Start";</script><tw-tag name="definition" color="orange
 
 /* Job listing widget (name, pay, days, next passage) */
 &lt;&lt;widget &quot;JobListing&quot;&gt;&gt;
-	&lt;&lt;set _name = $args[0]&gt;&gt;
-	&lt;&lt;set _pay = $args[1]&gt;&gt;
-	&lt;&lt;set _days = $args[2]&gt;&gt;
-	&lt;&lt;set _goto = $args.length &gt; 3 ? $args[3] : &quot;Hub&quot;&gt;&gt;
-
-	&lt;div class=&quot;job-card&quot;&gt;
-		&lt;strong&gt;&lt;&lt;= _name &gt;&gt;&lt;/strong&gt;&lt;br&gt;
-		Pay: &lt;&lt;= _pay &gt;&gt; per day&lt;br&gt;
-		Days per week: &lt;&lt;= _days &gt;&gt;&lt;br&gt;&lt;br&gt;
-		&lt;&lt;link &quot;Take this job&quot;&gt;&gt;
-			&lt;&lt;set $job = true&gt;&gt; &lt;&lt;set $jobName = _name&gt;&gt;&lt;&lt;set $jobPay = _pay&gt;&gt;
-			&lt;&lt;set $workdays = _days&gt;&gt;
-			&lt;&lt;goto _goto&gt;&gt;
-		&lt;&lt;/link&gt;&gt;
-	&lt;/div&gt;
+	&lt;&lt;set _job = $args[0]&gt;&gt;
+	&lt;&lt;set _goto = $args.length &gt; 1 ? $args[1] : &quot;Kiosk&quot;&gt;&gt;
+	&lt;&lt;capture _job _goto&gt;&gt;
+		&lt;div class=&quot;job-card&quot;&gt;&lt;&lt;nobr&gt;&gt;
+			&lt;strong&gt;&lt;&lt;= _job.name &gt;&gt;&lt;/strong&gt;&lt;br&gt;
+			Pay: $&lt;&lt;= _job.pay &gt;&gt; / week&lt;br&gt;
+			Days: &lt;&lt;= _job.days &gt;&gt;&lt;br&gt;
+			&lt;em&gt;&lt;&lt;= _job.desc &gt;&gt;&lt;/em&gt;&lt;br&gt;&lt;&lt;/nobr&gt;&gt;
+			&lt;&lt;link &quot;Take this job&quot;&gt;&gt;
+				&lt;&lt;set $job = true&gt;&gt;&lt;&lt;nobr&gt;&gt;
+				&lt;&lt;set $jobName = _job.name&gt;&gt;&lt;&lt;set $jobPay = _job.pay&gt;&gt;&lt;&lt;set $workdays = _job.days&gt;&gt;
+				&lt;&lt;set $jobDesc = _job.desc&gt;&gt;&lt;&lt;/nobr&gt;&gt;
+				&lt;&lt;if _job.name == &quot;Construction&quot;&gt;&gt;
+					&lt;&lt;goto &quot;ConstructionCheck&quot;&gt;&gt;
+				&lt;&lt;else&gt;&gt;
+					&lt;&lt;goto _goto&gt;&gt;
+				&lt;&lt;/if&gt;&gt;
+			&lt;&lt;/link&gt;&gt;
+		&lt;/div&gt;
+	&lt;&lt;/capture&gt;&gt;
 &lt;&lt;/widget&gt;&gt;
 
+
+
+/* Small helper to display current job info */
 /* Small helper to display current job info */
 &lt;&lt;widget &quot;JobSummary&quot;&gt;&gt;
 	&lt;&lt;if $job&gt;&gt;
-		Current job: &lt;strong&gt;&lt;&lt;= $jobName &gt;&gt;&lt;/strong&gt;&lt;br&gt;
-		Pay: &lt;&lt;= $jobPay &gt;&gt; per day&lt;br&gt;
+		Current job: &lt;strong&gt;&lt;&lt;= $jobName &gt;&gt;&lt;/strong&gt;
+		Pay: $&lt;&lt;= $jobPay &gt;&gt; per week 
 		Workdays: &lt;&lt;= $workdays &gt;&gt;
-	&lt;&lt;else&gt;&gt;
-		You don’t have a job yet.
-	&lt;&lt;/if&gt;&gt;
+		 &lt;&lt;if $jobDesc&gt;&gt;Description: &lt;em&gt;&lt;&lt;= $jobDesc &gt;&gt;&lt;/em&gt;&lt;&lt;/if&gt;&gt;
+	&lt;&lt;else&gt;&gt;You don&#39;t have a job yet.&lt;&lt;/if&gt;&gt;
 &lt;&lt;/widget&gt;&gt;
 
-&lt;&lt;widget &quot;ShowInfo&quot;&gt;&gt;
-	&lt;div id=&quot;money-display&quot; class=&quot;hud-money&quot;&gt;
+&lt;&lt;widget &quot;ShowInfo&quot;&gt;&gt;&lt;div id=&quot;money-display&quot; class=&quot;hud-money&quot;&gt;
 		Remaining Funds: $&lt;&lt;print $money&gt;&gt; 
-		Day Number: &lt;&lt;print $day&gt;&gt; 
-	&lt;/div&gt;
-&lt;&lt;/widget&gt;&gt;
+		Day Number: &lt;&lt;print $day&gt;&gt; &lt;/div&gt;&lt;&lt;/widget&gt;&gt;
 
 
 &lt;&lt;widget &quot;NavControls&quot;&gt;&gt;
@@ -590,28 +613,55 @@ Here are your options for the day
 What would you like to do today?
 
 &lt;&lt;link &quot;Look for Housing&quot;&gt;&gt; &lt;&lt;goto &quot;HousingStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
-&lt;&lt;link &quot;Go to Work&quot;&gt;&gt; &lt;&lt;goto &quot;WorkStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="JobBoard" tags="" position="350,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;link &quot;Go to Work&quot;&gt;&gt; &lt;&lt;goto &quot;WorkStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="ConstructionCheck" tags="" position="350,225" size="100,100">&lt;&lt;if !$jobRef&gt;&gt;
+You need a job reference before a construction crew will hire you.
+
+&lt;&lt;link &quot;Go back to the job board&quot;&gt;&gt;
+	/* Undo taking the job, since you can&#39;t keep it */
+	&lt;&lt;set $job = false&gt;&gt;
+	&lt;&lt;unset $jobName&gt;&gt;&lt;&lt;unset $jobPay&gt;&gt;&lt;&lt;unset $workdays&gt;&gt;&lt;&lt;unset $jobDesc&gt;&gt;
+	&lt;&lt;goto &quot;JobBoard&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
+
+&lt;&lt;elseif $jobRef &amp;&amp; !$conTools&gt;&gt;
+You have a reference, but you don&#39;t own construction tools yet. A basic starter set costs $800.
+
+&lt;&lt;if $money &gt;= 800&gt;&gt;
+	&lt;&lt;link &quot;Buy tools for $800 and start the job&quot;&gt;&gt;
+		&lt;&lt;set $money -= 800&gt;&gt;
+		&lt;&lt;set $conTools = true&gt;&gt;
+		&lt;&lt;goto &quot;Kiosk&quot;&gt;&gt;
+	&lt;&lt;/link&gt;&gt;&lt;br&gt;
+
+	&lt;&lt;link &quot;Don&#39;t buy tools right now&quot;&gt;&gt;
+		&lt;&lt;set $job = false&gt;&gt;
+		&lt;&lt;unset $jobName&gt;&gt;&lt;&lt;unset $jobPay&gt;&gt;&lt;&lt;unset $workdays&gt;&gt;&lt;&lt;unset $jobDesc&gt;&gt;
+		&lt;&lt;goto &quot;JobBoard&quot;&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
+&lt;&lt;else&gt;&gt;
+	You don&#39;t have enough money to buy tools right now.
+	&lt;&lt;link &quot;Go back to the job board&quot;&gt;&gt;
+		&lt;&lt;set $job = false&gt;&gt;
+		&lt;&lt;unset $jobName&gt;&gt;&lt;&lt;unset $jobPay&gt;&gt;&lt;&lt;unset $workdays&gt;&gt;&lt;&lt;unset $jobDesc&gt;&gt;
+		&lt;&lt;goto &quot;JobBoard&quot;&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;&lt;else&gt;&gt;
+You have a reference and your own tools. You&#39;re ready to start construction work.
+
+&lt;&lt;link &quot;Head to the job kiosk&quot;&gt;&gt;
+	&lt;&lt;goto &quot;Kiosk&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="14" name="JobBoard" tags="" position="475,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
-
-&lt;&lt;set _availableJobs = ($jobs)&gt;&gt;
+&lt;&lt;set _availableJobs = clone($jobs)&gt;&gt;
 &lt;&lt;set _availableJobs.shuffle()&gt;&gt;
-
 &lt;&lt;set _count = Math.min(3, _availableJobs.length)&gt;&gt;
-Choose a job:
+Choose a job: 
 &lt;&lt;for _i = 0; _i &lt; _count; _i++&gt;&gt;
-	&lt;&lt;set _j = _availableJobs[_i]&gt;&gt;
-
-	&lt;&lt;capture _j&gt;&gt;
-		&lt;&lt;link &quot;&lt;&lt;=_j.name&gt;&gt; — $&lt;&lt;=_j.pay&gt;&gt; / week · &lt;&lt;= _j.days&gt;&gt; days&quot;&gt;&gt;
-			&lt;&lt;set $job = true&gt;&gt;
-			&lt;&lt;set $jobName = _j.name&gt;&gt;
-			&lt;&lt;set $jobPay = _j.pay&gt;&gt;
-			&lt;&lt;set $workdays = _j.days&gt;&gt;
-			&lt;&lt;goto &quot;Kiosk&quot;&gt;&gt;
-		&lt;&lt;/link&gt;&gt;
-	&lt;&lt;/capture&gt;&gt;
-	&lt;br&gt;
-&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="14" name="Kiosk" tags="" position="475,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;JobListing _availableJobs[_i] &quot;Kiosk&quot;&gt;&gt;
+&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="15" name="Kiosk" tags="" position="600,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
 &lt;&lt;if $transitDays &gt; 0&gt;&gt; /* Code for if you have a transit pass */
@@ -621,13 +671,14 @@ Choose a job:
 	&lt;&lt;set _chance = random(1,100)&gt;&gt;
 
 	&lt;&lt;link &quot;Use your pass and go to work&quot;&gt;&gt; 
-		&lt;&lt;if _chance &lt;= 25&gt;&gt;
+		&lt;&lt;if _chance &lt;25&gt;&gt;
 			UH OH! There is a delay and you cannot make it to work today!
 			&lt;&lt;set $workdays+=2&gt;&gt;
 			&lt;&lt;link &quot;You have to go home&quot;&gt;&gt; &lt;&lt;goto &quot;Hub&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;		
-		&lt;&lt;else&gt;&gt;
+				&lt;&lt;/if&gt;&gt;
+
 			&lt;&lt;goto &quot;Workday&quot;&gt;&gt;
-		&lt;&lt;/if&gt;&gt;
+
 	&lt;&lt;/link&gt;&gt;&lt;br&gt;
 
 
@@ -643,31 +694,25 @@ Choose a job:
 				&lt;&lt;set $workDays-=2&gt;&gt;
 				&lt;&lt;goto &quot;Workday&quot;&gt;&gt;
 			&lt;&lt;/link&gt;&gt;&lt;br&gt;
-
-
-
-			&lt;&lt;link &quot;Walk Instead&quot;&gt;&gt; &lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;set $workdays-=1&gt;&gt;
-
-			&lt;&lt;/link&gt;&gt;
+			&lt;&lt;link &quot;Walk Instead&quot;&gt;&gt; &lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;set $workdays-=1&gt;&gt; &lt;&lt;/link&gt;&gt;
 
 		&lt;&lt;else&gt;&gt;
 			You don&#39;t have enough money to buy a pass right now.&lt;br&gt;
 			You can only walk to work today. &lt;br&gt;
 			&lt;&lt;link &quot;Walk to work.&quot;&gt;&gt;&lt;&lt;set $workdays-=1&gt;&gt; &gt;&gt;&lt;&lt;goto &quot;Workday&quot;&gt;&gt;
 			&lt;&lt;/link&gt;&gt;&lt;br&gt;
-		
 		&lt;&lt;/if&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="15" name="Summary" tags="" position="600,225" size="100,100">&lt;&lt;if $workDays&lt;=0 &gt;&gt; 
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="Summary" tags="" position="725,225" size="100,100">&lt;&lt;if $workDays&gt;0&gt;&gt; 
 	Here are the current details of your job...
 	&lt;&lt;JobSummary&gt;&gt;
 &lt;&lt;else&gt;&gt;
 You do not have a job right now.
 &lt;&lt;/if&gt;&gt;
 &lt;br&gt;
-&lt;&lt;link &quot;Go back to Hub&quot;&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="Workday" tags="" position="725,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;link &quot;Go back to Hub&quot;&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="17" name="Workday" tags="" position="850,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;
 &lt;br&gt;
-You work hard doing your job as a(n) &lt;&lt;= $jobName&gt;&gt;.&lt;br&gt;
+You work hard doing your job as a(n) &lt;&lt;= $jobName&gt;&gt;er.&lt;br&gt;
 You&#39;ve finished all your scheduled work for the day.
 &lt;&lt;if $workdays&lt;=0&gt;&gt;
 	Congrats! You have completed all for this job!
@@ -691,7 +736,7 @@ You&#39;ve finished all your scheduled work for the day.
 		&lt;&lt;/if&gt;&gt;
 		&lt;&lt;goto &quot;Hub&quot;&gt;&gt;
 	&lt;&lt;/link&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="17" name="WorkStart" tags="" position="850,225" size="100,100">/*This is where the hub is where the person will decide where to go for the following day*/ 
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="18" name="WorkStart" tags="" position="975,225" size="100,100">/*This is where the hub is where the person will decide where to go for the following day*/ 
 &lt;&lt;if!$job&gt;&gt;
     You do not have a job right now.
     &lt;&lt;link &quot;Look for a new job&quot;&gt;&gt; 
@@ -699,7 +744,7 @@ You&#39;ve finished all your scheduled work for the day.
        
 &lt;&lt;else&gt;&gt;
     &lt;&lt;goto &quot;Kiosk&quot;&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="18" name="Start" tags="" position="975,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="19" name="Start" tags="" position="1100,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 &lt;&lt;set _scene = [
   { 
@@ -721,7 +766,7 @@ You&#39;ve finished all your scheduled work for the day.
 ]&gt;&gt;
   
 &lt;section id=&quot;dialogue-area&quot;&gt;&lt;&lt;RenderScene _scene $step&gt;&gt;&lt;/section&gt;
-&lt;section id=&quot;controls&quot;&gt;&lt;&lt;NavControls _scene $step&gt;&gt;&lt;/section&gt;</tw-passagedata><tw-passagedata pid="19" name="Choice Hub" tags="" position="1100,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;section id=&quot;controls&quot;&gt;&lt;&lt;NavControls _scene $step&gt;&gt;&lt;/section&gt;</tw-passagedata><tw-passagedata pid="20" name="Choice Hub" tags="" position="1225,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 
 * [[Let&#39;s see what you do today! | Hub]]
 * [[Replay Intro|WorkStart]]</tw-passagedata></tw-storydata>

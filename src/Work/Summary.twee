@@ -1,5 +1,5 @@
 :: Summary
-<<if $workDays<=0 >> 
+<<if $workDays>0>> 
 	Here are the current details of your job...
 	<<JobSummary>>
 <<else>>

@@ -1,0 +1,42 @@
+:: ConstructionCheck
+<<if !$jobRef>>
+You need a job reference before a construction crew will hire you.
+
+<<link "Go back to the job board">>
+	/* Undo taking the job, since you can't keep it */
+	<<set $job = false>>
+	<<unset $jobName>><<unset $jobPay>><<unset $workdays>><<unset $jobDesc>>
+	<<goto "JobBoard">>
+<</link>>
+
+<<elseif $jobRef && !$conTools>>
+You have a reference, but you don't own construction tools yet. A basic starter set costs $800.
+
+<<if $money >= 800>>
+	<<link "Buy tools for $800 and start the job">>
+		<<set $money -= 800>>
+		<<set $conTools = true>>
+		<<goto "Kiosk">>
+	<</link>><br>
+
+	<<link "Don't buy tools right now">>
+		<<set $job = false>>
+		<<unset $jobName>><<unset $jobPay>><<unset $workdays>><<unset $jobDesc>>
+		<<goto "JobBoard">>
+	<</link>>
+<<else>>
+	You don't have enough money to buy tools right now.
+	<<link "Go back to the job board">>
+		<<set $job = false>>
+		<<unset $jobName>><<unset $jobPay>><<unset $workdays>><<unset $jobDesc>>
+		<<goto "JobBoard">>
+	<</link>>
+<</if>>
+
+<<else>>
+You have a reference and your own tools. You're ready to start construction work.
+
+<<link "Head to the job kiosk">>
+	<<goto "Kiosk">>
+<</link>>
+<</if>>
