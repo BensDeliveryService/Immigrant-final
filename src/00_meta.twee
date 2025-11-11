@@ -34,14 +34,14 @@ StoryFormat: SugarCube 2.37.3
 
 :: StoryConfig[script]
 Config.saves.slots = 6;
-Config.passages.start = "Start"; 
+Config.passages.start = "Landing";
 
 :: StoryData
 {
   "ifid": "E5BD1880-C477-4001-8A76-B1E6527ED23B",
   "format": "SugarCube",
   "format-version": "2.37.3",
-  "start": "Start",
+  "start": "Landing",
   "tag-colors": 
     {
       "definition": "orange",

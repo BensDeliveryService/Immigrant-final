@@ -1,0 +1,173 @@
+:: PremiumHousingConsequences
+/*Premium housing consequences and choices*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Premium Apartment - Situation</h3>
+
+<div class="housing-situation">
+<p>You have an apartment in a better area, but your landlord is suspicious of your family's status. You know that if you don't keep up with rent, she may report you to authorities.</p>
+
+<p>Despite a deep cultural upbringing of honor and duty, you don't know if you'll be able to make it month by month, and know you may need help.</p>
+</div>
+
+<hr>
+
+<h4>What will you do?</h4>
+
+<div class="housing-choice">
+<<link "Work 80-hour weeks to try to make ends meet">>
+    <<goto "Work80HourWeeks">>
+<</link>>
+<p><em>This will impact you and your family's health and spending time working over looking for new work opportunities.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Search for rental assistance programs">>
+    <<goto "RentalAssistancePrograms">>
+<</link>>
+<p><em>You may receive rental assistance that can help for some amount of time (though not the full duration of your lease). Your other needs will not get covered by rental assistance, and basic needs like food, hygiene products, and medical care will be limited in access if you're choosing to look for rental assistance instead of working excessively.</em></p>
+</div>
+
+<hr>
+
+<div class="info-buttons">
+<h4>Resources & Information:</h4>
+<<link "Know your housing rights!">>
+    <<goto "HousingRightsInfo">>
+<</link>>
+<br><br>
+<<link "How you can help as an ally">>
+    <<goto "AllyDonationInfo">>
+<</link>>
+</div>
+
+<hr>
+
+<<link "Go back to housing options">> <<goto "HousingOptions">> <</link>>
+
+
+:: Work80HourWeeks
+/*Working excessive hours to make rent*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $money -= $selectedApplicationFee>>
+<<set $hasHousing = true>>
+<<set $housingType = "Premium">>
+<<set $housingCost = 1800>>
+<<set $workingExcessiveHours = true>>
+
+<h3>Working 80-Hour Weeks</h3>
+
+<div class="consequence-text">
+<p>You've decided to work 80-hour weeks to try to make ends meet. The toll on your body and mind is significant, and you have little time to spend with your family or search for better opportunities.</p>
+
+<p>Your health is suffering, your family's health is suffering, and you're constantly exhausted. But for now, you can afford the rent.</p>
+
+<p><strong>Application Fee Paid:</strong> $<<= $selectedApplicationFee>></p>
+<p><strong>Monthly Rent:</strong> $<<= $housingCost>></p>
+<p><strong>Current Balance:</strong> $<<= $money>></p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="color: orange;"><strong>Warning:</strong> This schedule is unsustainable and may lead to serious health consequences and burnout. Consider exploring rental assistance or other resources.</p>
+</div>
+
+<hr>
+
+<<link "Return to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: RentalAssistancePrograms
+/*Searching for rental assistance*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $money -= $selectedApplicationFee>>
+<<set $hasHousing = true>>
+<<set $housingType = "Premium">>
+<<set $housingCost = 1800>>
+<<set $seekingRentalAssistance = true>>
+
+<h3>Rental Assistance Programs</h3>
+
+<div class="assistance-info">
+<p>You've decided to search for rental assistance programs. This may help with rent for some period of time, though not for the full duration of your lease.</p>
+
+<p>While you search for and apply to these programs, your ability to work excessive hours is limited. This means your other basic needs like food, hygiene products, and medical care will have limited access.</p>
+
+<p><strong>Application Fee Paid:</strong> $<<= $selectedApplicationFee>></p>
+<p><strong>Monthly Rent:</strong> $<<= $housingCost>></p>
+<p><strong>Current Balance:</strong> $<<= $money>></p>
+</div>
+
+<hr>
+
+<div class="info-box">
+<p><strong>Note:</strong> Rental assistance programs often have waiting lists and specific eligibility requirements. The process can take weeks or months, and assistance is typically temporary.</p>
+</div>
+
+<hr>
+
+<<link "Return to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: HousingRightsInfo
+/*Information about housing rights*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Know Your Housing Rights!</h3>
+
+<div class="rights-info">
+<p>As a tenant, you have rights regardless of your immigration status. Here are some important resources:</p>
+
+<ul>
+<li>Landlords cannot discriminate based on national origin or immigration status</li>
+<li>You have the right to safe and habitable housing</li>
+<li>Landlords must follow proper eviction procedures</li>
+<li>You have privacy rights in your rental unit</li>
+</ul>
+
+<p><strong>For more information and legal assistance:</strong></p>
+<p><a href="https://www.tenantresourcecenter.org/" target="_blank">National Tenant Resource Center</a></p>
+<p><em>(Link opens in new window)</em></p>
+</div>
+
+<hr>
+
+<<link "Go back">> <<goto "PremiumHousingConsequences">> <</link>>
+
+
+:: AllyDonationInfo
+/*Information for allies on how to help*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>How You Can Help as an Ally</h3>
+
+<div class="ally-info">
+<p>If you want to support immigrant families facing housing insecurity, here are some ways you can help:</p>
+
+<ul>
+<li>Donate to immigrant support organizations</li>
+<li>Volunteer with tenant rights organizations</li>
+<li>Advocate for fair housing policies in your community</li>
+<li>Support rental assistance programs</li>
+<li>Educate yourself and others about the challenges immigrants face</li>
+</ul>
+
+<p><strong>Organizations that help:</strong></p>
+<p><a href="https://www.immigrantjustice.org/" target="_blank">National Immigrant Justice Center</a></p>
+<p><a href="https://www.nilc.org/" target="_blank">National Immigration Law Center</a></p>
+<p><em>(Links open in new windows)</em></p>
+
+<p><strong>Your support makes a real difference in families' lives.</strong></p>
+</div>
+
+<hr>
+
+<<link "Go back">> <<goto "PremiumHousingConsequences">> <</link>>

@@ -1,0 +1,136 @@
+:: EndOfDayHub
+/*End of Day Hub - Status updates, payments, worries, and apartment news*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h2>End of Day - Day <<= $day>></h2>
+
+<p><em>You return home after a long day. Here's what happened today:</em></p>
+
+<hr>
+
+/* ========== JOB PAYMENT SECTION ========== */
+<<if $pendingPayment > 0>>
+<div class="status-box status-box-success">
+    <h3 class="text-success">💰 Payment Received!</h3>
+    <p><strong>You completed your job and received $<<= $pendingPayment>>!</strong></p>
+    <<set $money += $pendingPayment>>
+    <<set $totalIncomeEarned += $pendingPayment>>
+    <<set $incomeHistory.push({amount: $pendingPayment, day: $day})>>
+    <<set $jobsCompleted += 1>>
+    <p>New Balance: <strong>$<<= $money>></strong></p>
+    <p>Total Earned: $<<= $totalIncomeEarned>> | Jobs Completed: <<= $jobsCompleted>></p>
+    <<set $pendingPayment = 0>>
+</div>
+<hr>
+<</if>>
+
+/* ========== HOUSING UPDATE SECTION ========== */
+<<if $housingApplicationPending>>
+<div class="status-box status-box-warning">
+    <h3>🏠 Housing Application Status</h3>
+    <p>Your application for the <strong><<= $pendingHousingType>> Apartment</strong> is still pending.</p>
+    <<if $housingApplicationDaysRemaining <= 0>>
+        <p class="text-success"><strong>✓ Decision Ready!</strong> You can check your application result.</p>
+        <<link "Check Application Result Now" "HousingApplicationResult">><</link>>
+    <<else>>
+        <p>Estimated business days until decision: <strong>~<<= $housingApplicationDaysRemaining>></strong></p>
+        <<set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)>>
+        <<if _isWeekend>>
+            <p style="padding: 8px; border-radius: 4px; background: rgba(245,167,66,.08); border-left: 3px solid rgba(245,167,66,.3);">
+                <em>📅 It's the weekend. Applications are only processed on business days (Monday-Friday).</em>
+            </p>
+        <<else>>
+            <p><em>Applications are processed on business days. You'll be notified when the landlord makes a decision.</em></p>
+        <</if>>
+    <</if>>
+</div>
+<hr>
+<<elseif $hasHousing>>
+<div class="status-box status-box-success">
+    <h3>🏠 Your Housing</h3>
+    <p><strong><<= $housingType>> Apartment</strong> - Monthly Rent: $<<= $housingCost>></p>
+    <p><em>You have secured stable housing for your family.</em></p>
+</div>
+<hr>
+<<else>>
+<div class="status-box status-box-error">
+    <h3>🏠 Housing Status</h3>
+    <p class="text-error"><strong>⚠️ No Housing Secured</strong></p>
+    <p>Days Remaining: <<= $gameTimelineMax - $day>> | You need to find housing soon!</p>
+</div>
+<hr>
+<</if>>
+
+/* ========== WORRIES SECTION ========== */
+<div class="status-box status-box-info">
+    <h3>👨‍👩‍👧 Family & Worries</h3>
+
+    /* Family Status */
+    <p><strong>Family Health:</strong> <<= $familyHealth>>%</p>
+
+    /* Pregnancy tracking */
+    <<if $pregnancyProgress < $gameTimelineMax>>
+        <<set _daysUntilBirth = $gameTimelineMax - $pregnancyProgress>>
+        <p><strong>Pregnancy:</strong> Your wife is pregnant. The baby will arrive in approximately <<= _daysUntilBirth>> days.</p>
+    <</if>>
+
+    /* Active Worries Display */
+    <<if $worries.length > 0>>
+        <hr style="margin: 10px 0;">
+        <h4 class="text-warning">⚠️ Active Worries (<<= $worries.length>>):</h4>
+
+        <<for _i = 0; _i < $worries.length; _i++>>
+            <<set _worry = $worries[_i]>>
+            <div style="margin: 10px 0; padding: 10px; background: rgba(245,167,66,.08); border-radius: 4px; border-left: 3px solid rgba(245,167,66,.3);">
+                <p><strong>Severity <<= _worry.severity>>/5:</strong> <<= _worry.description>></p>
+                <p style="font-size: 0.9em; color: var(--muted);"><em>Active for <<= _worry.daysActive>> days</em></p>
+
+                /* Future: Add buttons to address specific worries */
+                <span style="color: var(--muted); font-style: italic;">[Worry resolution system - Coming soon]</span>
+            </div>
+        <</for>>
+
+        <p style="margin-top: 10px; padding: 8px; background: rgba(245,167,66,.08); border-left: 3px solid rgba(245,167,66,.3); border-radius: 4px;">
+            <strong>Note:</strong> Unaddressed worries can compound over time and affect your family's wellbeing.
+        </p>
+    <<else>>
+        <p class="text-success"><strong>✓ No current worries.</strong> Your family is managing well today.</p>
+    <</if>>
+</div>
+
+<hr>
+
+/* ========== DAY SUMMARY ========== */
+<div style="background: rgba(208,213,224,.08); padding: 15px; margin: 10px 0; border-radius: .5rem; border-left: 4px solid var(--line);">
+    <h3>📊 Day Summary</h3>
+    <ul>
+        <li><strong>Current Day:</strong> <<= $day>> / <<= $gameTimelineMax>></li>
+        <li><strong>Days Remaining:</strong> <<= $gameTimelineMax - $day>></li>
+        <li><strong>Current Funds:</strong> $<<= $money>></li>
+        <<if $job>>
+            <li><strong>Current Job:</strong> <<= $jobName>> (<<= $workdays>> days left)</li>
+        <<else>>
+            <li><strong>Employment Status:</strong> No active job</li>
+        <</if>>
+    </ul>
+</div>
+
+<hr>
+
+/* ========== NAVIGATION ========== */
+<h3>What would you like to do?</h3>
+
+<div style="margin: 20px 0;">
+<<if $worries.length > 0>>
+    <<link "Address Family Concerns (Worries System - Coming Soon)">>
+        /* Future: Go to worry management screen */
+        <<goto "Hub">>
+    <</link>>
+    <br><br>
+<</if>>
+
+<<link "Continue to Next Day" "Hub">><</link>>
+<br><br>
+<<link "View Game Options" "GameOptions">><</link>>
+</div>

@@ -87,9 +87,31 @@ Conventions:
 	<<else>>You don't have a job yet.<</if>>
 <</widget>>
 
-<<widget "ShowInfo">><div id="money-display" class="hud-money">
-		Remaining Funds: $<<print $money>> 
-		Day Number: <<print $day>> </div><</widget>>
+/*
+ShowInfo widget is now deprecated - all information is shown in the persistent StoryCaption header.
+Keeping this widget as a no-op so existing passages that call it don't error.
+*/
+<<widget "ShowInfo">><</widget>>
+
+/* Helper widget to advance the day and update day of week */
+<<widget "AdvanceDay">>
+	<<set $day += 1>>
+	<<set $currentDayOfWeek = ($currentDayOfWeek + 1) % 7>>
+<</widget>>
+
+/* Helper to check if current day is a business day (Monday-Friday) */
+<<widget "IsBusinessDay">>
+	<<if $currentDayOfWeek >= 0 and $currentDayOfWeek <= 4>>
+		<<= true>>
+	<<else>>
+		<<= false>>
+	<</if>>
+<</widget>>
+
+/* Get current day name */
+<<widget "GetDayName">>
+	<<= $dayNames[$currentDayOfWeek]>>
+<</widget>>
 
 
 <<widget "NavControls">>

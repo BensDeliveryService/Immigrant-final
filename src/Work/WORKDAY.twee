@@ -1,29 +1,44 @@
 :: Workday
 <<set $step = 0>>
-<
+
+/* Check if timeline expired */
+<<if $day >= $gameTimelineMax>>
+	<<goto "GameEnd">>
+<</if>>
+
 <br>
 You work hard doing your job as a(n) <<= $jobName>>er.<br>
 You've finished all your scheduled work for the day.
 <<if $workdays<=0>>
 	Congrats! You have completed all for this job!
-	You will now recieve $<<= $jobPay>> for this job!
-	<<link "Recieve your money!">>
-		<<set $day+=1>>
-		<<set $money+=$jobPay>>
+	You will receive $<<= $jobPay>> for this job!
+	<<link "Head home to collect payment">>
+		<<AdvanceDay>>
+		<<set $pendingPayment = $jobPay>>
 		<<set $job=false>>
+		<<set $daysWorked += 1>>
+		/* Only process housing applications on business days (Mon-Fri) */
 		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
-			<<set $housingApplicationDaysRemaining -= 1>>
+			<<set _isBusinessDay = ($currentDayOfWeek >= 0 and $currentDayOfWeek <= 4)>>
+			<<if _isBusinessDay>>
+				<<set $housingApplicationDaysRemaining -= 1>>
+			<</if>>
 		<</if>>
-		<<goto "Hub">>
+		<<goto "EndOfDayHub">>
 	<</link>>
 <hr>
 <<else>>
 	You have <<= $workdays>> days left of your job
-	<<link "Head back to the Home">>
-		<<set $day+=1>>
+	<<link "Head home for the day">>
+		<<AdvanceDay>>
+		<<set $daysWorked += 1>>
+		/* Only process housing applications on business days (Mon-Fri) */
 		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
-			<<set $housingApplicationDaysRemaining -= 1>>
+			<<set _isBusinessDay = ($currentDayOfWeek >= 0 and $currentDayOfWeek <= 4)>>
+			<<if _isBusinessDay>>
+				<<set $housingApplicationDaysRemaining -= 1>>
+			<</if>>
 		<</if>>
-		<<goto "Hub">>
+		<<goto "EndOfDayHub">>
 	<</link>>
 <</if>>

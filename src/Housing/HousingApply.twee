@@ -10,6 +10,13 @@ You are applying for the <strong><<= $selectedHousingType>> Apartment</strong>
 <p>Application Fee: $<<= $selectedApplicationFee>></p>
 <p>Monthly Rent: $<<= $selectedMonthlyCost>></p>
 
+<<if $hasRentSupport>>
+<div style="background-color: #e8f5e9; padding: 10px; border-left: 4px solid #4caf50;">
+<p style="color: green;"><strong>✓ Rent Support Available:</strong> $1,500</p>
+<p><em>Your application will be reviewed more favorably due to rent assistance backing.</em></p>
+</div>
+<</if>>
+
 <hr>
 
 <<link "Confirm Application">>

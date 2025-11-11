@@ -14,13 +14,17 @@
 
     You have a pending application for the <strong><<= $pendingHousingType>> Apartment</strong>.
 
-    <p>Days until decision: <strong><<= $housingApplicationDaysRemaining>></strong></p>
+    <p>Estimated business days until decision: <strong>~<<= $housingApplicationDaysRemaining>></strong></p>
 
     <<if $housingApplicationDaysRemaining <= 0>>
-        <p style="color: green;"><strong>Your application has been processed!</strong></p>
+        <p class="text-success"><strong>Your application has been processed!</strong></p>
         <<link "Check application result">> <<goto "HousingApplicationResult">> <</link>>
     <<else>>
-        <p><em>Please check back tomorrow. Your application is still being reviewed.</em></p>
+        <<set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)>>
+        <<if _isWeekend>>
+            <p style="padding: 8px; border-radius: 4px; background: rgba(245,167,66,.08); border-left: 3px solid rgba(245,167,66,.3);"><em>📅 It's the weekend. Applications are only processed on business days.</em></p>
+        <</if>>
+        <p><em>Please check back each day. Your application is still being reviewed.</em></p>
         <<link "Return to day choice">> <<goto "DayChoice">> <</link>>
     <</if>>
 <<else>>
@@ -30,7 +34,7 @@
 
     <<if $housingRejectionCount > 0>>
         <hr>
-        <p style="color: orange;"><em>Previous rejections: <<= $housingRejectionCount>></em></p>
+        <p class="text-warning"><em>Previous rejections: <<= $housingRejectionCount>></em></p>
         <<if $lastRejectionReason !== "">>
             <p><small>Last rejection reason: <<= $lastRejectionReason>></small></p>
         <</if>>

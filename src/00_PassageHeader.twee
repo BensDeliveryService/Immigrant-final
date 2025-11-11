@@ -1,0 +1,112 @@
+/*
+===============================================================================
+  00_PassageHeader.twee — Constant Header Display
+===============================================================================
+
+PassageHeader is a special passage in SugarCube that is automatically prepended
+to EVERY passage. This creates a persistent header/HUD that appears at the top
+of each passage, even when the sidebar is hidden.
+
+This is perfect for critical "need to know" information that should be
+constantly visible.
+
+===============================================================================
+*/
+
+:: PassageHeader
+/* Only show header if game has actually started AND debug toggle is on */
+<<if $gameStarted and $debugShowHeader>>
+<div id="persistent-header" class="hud-header">
+	/* ===== DAY & TIMELINE ===== */
+	<div class="hud-section">
+		<strong><<print $dayNames[$currentDayOfWeek]>>, Day <<print $day>> / <<print $gameTimelineMax>></strong>
+		<<set _daysRemaining = $gameTimelineMax - $day>>
+		<<set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)>>
+		<<if _isWeekend>>
+			<span class="hud-info"> | 📅 Weekend</span>
+		<</if>>
+		<<if _daysRemaining <= 10>>
+			<span class="hud-urgent"> | ⏰ <strong><<print _daysRemaining>> Days Left!</strong></span>
+		<<else>>
+			<span> | <<print _daysRemaining>> days left</span>
+		<</if>>
+	</div>
+
+	/* ===== FINANCES ===== */
+	<div class="hud-section">
+		💰 <strong>$<<print $money>></strong>
+		<<if $hasRentSupport>>
+			<span class="hud-success"> | ✓ Rent Support: $1,500</span>
+		<</if>>
+	</div>
+
+	/* ===== HOUSING STATUS ===== */
+	<div class="hud-section">
+		<<if $hasHousing>>
+			<span class="hud-success">🏠 <strong>Housed</strong> (<<print $housingType>>, $<<print $housingCost>>/mo)</span>
+		<<elseif $housingApplicationPending>>
+			<span class="hud-warning">🏠 Application Pending (~<<print $housingApplicationDaysRemaining>> business days)</span>
+		<<else>>
+			<span class="hud-error">🏠 <strong>No Housing</strong></span>
+		<</if>>
+	</div>
+
+	/* ===== EMPLOYMENT STATUS ===== */
+	<div class="hud-section">
+		<<if $job>>
+			💼 <strong><<print $jobName>></strong> (<<print $workdays>> days left, $<<print $jobPay>>)
+		<<else>>
+			<span class="hud-disabled">💼 No active job</span>
+		<</if>>
+	</div>
+
+	/* ===== CTA PASS ===== */
+	<<if $transitDays > 0>>
+	<div class="hud-section">
+		<<if $transitDays <= 2>>
+			<span class="hud-warning">🚇 Pass expires in <strong><<print $transitDays>> days</strong></span>
+		<<else>>
+			<span class="hud-success">🚇 Pass active (<<print $transitDays>> days)</span>
+		<</if>>
+	</div>
+	<<else>>
+	<div class="hud-section">
+		<span class="hud-disabled">🚇 No transit pass</span>
+	</div>
+	<</if>>
+
+	/* ===== FAMILY & WORRIES ===== */
+	<div class="hud-section">
+		<<if $worries.length > 0>>
+			<span class="hud-alert">⚠️ <strong><<print $worries.length>> Active Worries</strong></span>
+		<<else>>
+			<span class="hud-success">👨‍👩‍👧 Family: <<print $familyHealth>>%</span>
+		<</if>>
+	</div>
+
+	/* ===== QUICK STATS (optional, shows on hover or expanded view) ===== */
+	<div class="hud-section-mini">
+		Jobs Done: <<print $jobsCompleted>> |
+		Total Earned: $<<print $totalIncomeEarned>> |
+		Housing Rejections: <<print $housingRejectionCount>>
+	</div>
+</div>
+
+<hr class="hud-divider">
+
+/* Debug toggle - small link to show/hide header */
+<div style="text-align: right; margin: -10px 0 10px 0;">
+<<link "[Hide Status Header]" `passage()`>>
+	<<set $debugShowHeader = false>>
+<</link>>
+</div>
+<<elseif $gameStarted and !$debugShowHeader>>
+/* Game started but header is hidden - show toggle to bring it back */
+<div style="text-align: right; margin: 5px 0;">
+<<link "[Show Status Header]" `passage()`>>
+	<<set $debugShowHeader = true>>
+<</link>>
+</div>
+<<else>>
+/* Game not started yet - show minimal or no header on Landing/Options pages */
+<</if>>

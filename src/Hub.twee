@@ -17,6 +17,7 @@ Here are your options for the day
 
 <<link "See summary of your job">> <<goto "Summary">><</link>>
 <<link "Start your day">> <<goto "DayChoice">> <</link>>
+<<link "Game Options">> <<goto "GameOptions">> <</link>>
 
 :: DayChoice
 

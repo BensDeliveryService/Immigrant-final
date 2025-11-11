@@ -53,6 +53,12 @@ Important for collaborators:
 <<set $day = 1>>
 <<set $money=900>>
 
+/* --- Date/Calendar System ---*/
+<<set $currentDayOfWeek = 0>> /* 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday */
+<<set $dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]>>
+<<set $startMonth = "January">> /* Flavor text */
+<<set $startDay = 15>> /* Starting calendar day for narrative purposes */
+
 <<set $workDays=14>>
 <<set $transitDays=0>>
 <<set $job = false>>
@@ -77,6 +83,24 @@ Important for collaborators:
 <<set $pendingHousingCost = 0>>
 <<set $housingRejectionCount = 0>>
 <<set $lastRejectionReason = "">>
+
+/* --- Income Tracking for Housing Applications ---*/
+<<set $totalIncomeEarned = 0>>
+<<set $incomeHistory = []>> /* Array of income payments: {amount: X, day: Y} */
+<<set $jobsCompleted = 0>>
+<<set $daysWorked = 0>>
+
+/* --- Game Options ---*/
+<<set $hasRentSupport = false>> /* $1500 rent support option */
+<<set $gameTimelineMax = 90>> /* Days to complete game: 30, 60, or 90 */
+<<set $optionsLocked = false>> /* Once true, options cannot be changed */
+
+/* --- Worries System (Family concerns and stressors) ---*/
+<<set $worries = []>> /* Array of current worries: {type: "pregnancy", severity: 1-5, description: "", daysActive: 0} */
+<<set $worriesIgnored = 0>> /* Count of worries left unaddressed */
+<<set $familyHealth = 100>> /* Overall family wellbeing (0-100) */
+<<set $pregnancyProgress = 0>> /* Days until baby is born (starts at ~90 days) */
+<<set $pendingPayment = 0>> /* Payment waiting at end of day hub */
 
 /* --- Housing Rejection Reasons (realistic challenges migrants face) ---*/
 <<set $housingRejectionReasons = [
@@ -107,6 +131,10 @@ Important for collaborators:
 <<set $a11y_largeText    = false>>
 <<set $reduceMotion      = false>>
 <<set $timedChoices      = false>>
+
+/* --- Debug / Display Options --- */
+<<set $debugShowHeader   = true>> /* Toggle to show/hide the persistent header during gameplay */
+<<set $gameStarted       = false>> /* Tracks whether player has begun the experience (hides header on Landing/Options pages) */
 
 
 
