@@ -1,74 +1,58 @@
 :: GameEnd
-/*Game End - Timeline expired*/
 <<set $step = 0>>
 
-<h2>Time's Up</h2>
-
-<div class="game-end-summary">
+<h2 style="margin:0;">Time’s Up</h2>
 <<if $hasHousing>>
-    <h3 class="text-success">Success - You Secured Housing!</h3>
-
-    <p>Congratulations! Despite the challenges, you managed to secure housing for your family.</p>
-
-    <p><strong>Your Results:</strong></p>
-    <ul>
-        <li><strong>Housing Type:</strong> <<= $housingType>> Apartment</li>
-        <li><strong>Monthly Rent:</strong> $<<= $housingCost>></li>
-        <li><strong>Days Taken:</strong> <<= $day>> / <<= $gameTimelineMax>></li>
-        <li><strong>Total Income Earned:</strong> $<<= $totalIncomeEarned>></li>
-        <li><strong>Jobs Completed:</strong> <<= $jobsCompleted>></li>
-        <li><strong>Current Balance:</strong> $<<= $money>></li>
-        <li><strong>Applications Rejected:</strong> <<= $housingRejectionCount>></li>
-        <<if $hasRentSupport>><li><strong>Rent Support Used:</strong> Yes ($1,500)</li><</if>>
-    </ul>
-
-    <p>Your family now has a stable place to live. The journey was difficult, reflecting the real challenges many immigrants face when trying to establish themselves in a new country.</p>
-
+	<div style="margin:2px 0;padding:6px 8px;border-radius:6px;background:rgba(56,178,75,.08);border-left:3px solid rgba(56,178,75,.3);">
+		<strong class="text-success">✅ Success – You Secured Housing!</strong><br>
+		Despite the challenges, you found housing for your family.<br>
+		<strong>Your Results:</strong><br>
+		<ul style="margin:2px 0;padding-left:16px;font-size:0.9em;">
+			<li>🏠 <strong>Type:</strong> <<= $housingType>> ($<<= $housingCost>>/mo)</li>
+			<li>📅 <strong>Days:</strong> <<= $day>> / <<= $gameTimelineMax>></li>
+			<li>💰 <strong>Earned:</strong> $<<= $totalIncomeEarned>> · Jobs: <<= $jobsCompleted>></li>
+			<li>💼 <strong>Balance:</strong> $<<= $money>> · Rejections: <<= $housingRejectionCount>></li>
+			<<if $hasRentSupport>><li>🏛 Rent Support Used ($1,500)</li><</if>>
+		</ul>
+		Your family now has a stable home—reflecting how difficult this journey is for many immigrants.
+	</div>
 <<else>>
-    <h3 class="text-warning">Time Expired - No Housing Secured</h3>
-
-    <p>Unfortunately, you were unable to secure permanent housing within the <<= $gameTimelineMax>>-day timeline.</p>
-
-    <p><strong>Your Results:</strong></p>
-    <ul>
-        <li><strong>Days Used:</strong> <<= $day>> / <<= $gameTimelineMax>></li>
-        <li><strong>Total Income Earned:</strong> $<<= $totalIncomeEarned>></li>
-        <li><strong>Jobs Completed:</strong> <<= $jobsCompleted>></li>
-        <li><strong>Final Balance:</strong> $<<= $money>></li>
-        <li><strong>Applications Rejected:</strong> <<= $housingRejectionCount>></li>
-        <<if $housingApplicationPending>><li><strong>Pending Application:</strong> <<= $pendingHousingType>> Apartment (never received decision)</li><</if>>
-        <<if $hasRentSupport>><li><strong>Rent Support Available:</strong> Yes ($1,500)</li><</if>>
-    </ul>
-
-    <p>This reflects the harsh reality many immigrants face - even with hard work and determination, systemic barriers can make it extremely difficult to secure stable housing.</p>
-
-    <div class="status-box status-box-warning" style="margin-top: 20px;">
-    <p><strong>What could have helped?</strong></p>
-    <ul>
-        <li>More time (try 60 or 90 day timeline)</li>
-        <li>Rent support program (enable in Game Options)</li>
-        <li>Completing more jobs before applying</li>
-        <li>Applying to more affordable apartments first</li>
-        <li>Saving more money before applying</li>
-    </ul>
-    </div>
+	<div style="margin:2px 0;padding:6px 8px;border-radius:6px;background:rgba(236,201,75,.08);border-left:3px solid rgba(236,201,75,.3);">
+		<strong class="text-warning">⚠️ Time Expired – No Housing Secured</strong><br>
+		You couldn’t secure housing within <<= $gameTimelineMax>> days.<br>
+		<strong>Your Results:</strong><br>
+		<ul style="margin:2px 0;padding-left:16px;font-size:0.9em;">
+			<li>📅 <strong>Days Used:</strong> <<= $day>> / <<= $gameTimelineMax>></li>
+			<li>💰 <strong>Earned:</strong> $<<= $totalIncomeEarned>> · Jobs: <<= $jobsCompleted>></li>
+			<li>💼 <strong>Final Balance:</strong> $<<= $money>> · Rejections: <<= $housingRejectionCount>></li>
+			<<if $housingApplicationPending>><li>🏠 Pending: <<= $pendingHousingType>> (no decision)</li><</if>>
+			<<if $hasRentSupport>><li>🏛 Rent Support: Available ($1,500)</li><</if>>
+		</ul>
+		This reflects the barriers immigrants face—hard work isn’t always enough under systemic limits.
+		<div style="margin-top:4px;padding:6px 8px;border-radius:6px;background:rgba(245,167,66,.08);border-left:3px solid rgba(245,167,66,.3);font-size:0.9em;">
+			<strong>What could have helped?</strong><br>
+			· More time (60–90 days)<br>
+			· Rent support enabled<br>
+			· Completing more jobs first<br>
+			· Applying to cheaper units<br>
+			· Saving more before applying
+		</div>
+	</div>
 <</if>>
+
+<div style="margin-top:4px;padding:6px 8px;border-radius:6px;background:rgba(208,213,224,.08);border-left:3px solid rgba(208,213,224,.3);">
+	<strong>Real World Context:</strong><br>
+	This game reflects real challenges faced by undocumented immigrants:<br>
+	<ul style="margin:2px 0;padding-left:16px;font-size:0.9em;">
+		<li>Discrimination and fear of deportation</li>
+		<li>No credit history or documentation</li>
+		<li>Unstable jobs and limited income</li>
+		<li>Language and system barriers</li>
+		<li>High rent relative to wages</li>
+	</ul>
 </div>
 
-<hr>
-
-<h3>Real World Context</h3>
-<p>This game simulates just a fraction of the challenges undocumented immigrants face when seeking housing:</p>
-<ul>
-    <li>Discrimination and fear of deportation</li>
-    <li>Lack of credit history and documentation</li>
-    <li>Limited job opportunities and inconsistent income</li>
-    <li>Language barriers and unfamiliarity with local systems</li>
-    <li>High housing costs relative to available work</li>
-</ul>
-
-<hr>
-
-<<link "Play Again" "Start">><</link>>
-<br><br>
-<<link "Change Game Options" "GameOptions">><</link>>
+<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;">
+	<span><<link "Play Again" "Start">><</link>></span>
+	<span><<link "Change Options" "GameOptions">><</link>></span>
+</div>

@@ -1,63 +1,26 @@
 :: Landing
-/*Landing page - game introduction and start*/
+/* Compact landing page */
 
-<div style="text-align: center; padding: 40px 20px;">
-<h1 style="font-size: 2.5em; margin-bottom: 20px;">The Immigrant Experience</h1>
-<h2 style="font-size: 1.3em; color: var(--muted); margin-bottom: 40px;">A Simulation of Housing Insecurity in Chicago</h2>
+<div style="text-align:center;padding:20px;">
+	<h1 style="font-size:1.8em;margin:0;">The Immigrant Experience</h1>
+	<p style="font-size:0.95em;color:var(--muted);margin:2px 0 10px 0;">
+		A Simulation of Housing Insecurity in Chicago
+	</p>
 
-<hr style="margin: 30px 0;">
+	<p style="font-size:0.9em;margin:4px 0 6px 0;">
+		You are a young undocumented Guatemalan father in Chicago with a wife, a one-year-old child, and another baby on the way. 
+		Starting with $900 and no housing, you must balance <strong>work, rent, and family wellbeing</strong> while navigating 
+		bureaucratic delays and discrimination.
+	</p>
 
-<div style="max-width: 700px; margin: 0 auto; text-align: left; font-size: 1.1em; line-height: 1.6;">
-<h3>Your Story</h3>
-<p>You are an undocumented Guatemalan man in your early 20s living in Chicago. You have a wife and a one-year-old child, with another baby on the way.</p>
+	<p style="font-size:0.9em;margin:4px 0 6px 0;">
+		This short simulation captures real barriers faced by immigrants seeking stability—limited jobs, documentation hurdles, 
+		and the constant pressure of time.
+	</p>
 
-<p>You start with <strong>$900 in your bank account</strong> and <strong>no permanent housing</strong>. Through painting and odd jobs, you must:</p>
+	<p style="font-size:0.85em;color:var(--muted);margin:6px 0 8px 0;">
+		Content notice: themes of housing insecurity and financial stress.
+	</p>
 
-<ul style="margin: 20px 0;">
-<li>Find and secure permanent housing for your family</li>
-<li>Navigate bureaucratic delays and application denials</li>
-<li>Balance work, income, and family needs</li>
-<li>Make difficult choices under time pressure</li>
-</ul>
-
-<h3 style="margin-top: 30px;">About This Experience</h3>
-<p>This simulation is based on real challenges faced by undocumented immigrants in Chicago:</p>
-
-<ul style="margin: 20px 0;">
-<li>Housing discrimination and documentation requirements</li>
-<li>Income verification barriers and credit history gaps</li>
-<li>Limited job opportunities and unstable employment</li>
-<li>Time pressure and bureaucratic waiting periods</li>
-<li>The constant weighing of risk versus necessity</li>
-</ul>
-
-<div class="status-box status-box-warning" style="margin: 20px 0;">
-<strong>Content Notice:</strong> This game addresses themes of housing insecurity, financial stress, family pressure, and the difficulties faced by undocumented immigrants. The experience is designed to be educational and empathy-building.
-</div>
-
-<h3 style="margin-top: 30px;">Game Structure</h3>
-<p>You will play day-by-day, making decisions about:</p>
-<ul>
-<li><strong>Work:</strong> Take jobs to earn money (but jobs take time)</li>
-<li><strong>Transit:</strong> Buy CTA/Pace passes to reduce work time</li>
-<li><strong>Housing:</strong> Apply to apartments (with varying approval chances)</li>
-<li><strong>Family:</strong> Manage worries and maintain wellbeing</li>
-</ul>
-
-<p>Every decision has trade-offs. Applications take business days to process. Weekends feel like wasted time. The clock is always ticking.</p>
-</div>
-
-<hr style="margin: 40px 0;">
-
-<div style="margin-top: 40px;">
-<h3>Ready to Begin?</h3>
-<p>First, you'll configure your experience level to match the realism you want to experience.</p>
-
-<<link "Configure Experience Level →" "GameOptions">><</link>>
-</div>
-
-<div style="margin-top: 30px; font-size: 0.9em; color: var(--muted);">
-<p><em>This is an educational simulation. For resources to support immigrants facing housing insecurity, links are provided throughout the experience.</em></p>
-</div>
-
+	<<link "Begin →" "GameOptions">><</link>>
 </div>

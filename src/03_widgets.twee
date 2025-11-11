@@ -79,9 +79,7 @@ Conventions:
 /* Small helper to display current job info */
 /* Small helper to display current job info */
 <<widget "JobSummary">>
-	<<if $job>>
-		Current job: <strong><<= $jobName >></strong>
-		Pay: $<<= $jobPay >> per week 
+	<<if $job>>Current job: <strong><<= $jobName >></strong> Pay: $<<= $jobPay >> per week 
 		Workdays: <<= $workdays >>
 		 <<if $jobDesc>>Description: <em><<= $jobDesc >></em><</if>>
 	<<else>>You don't have a job yet.<</if>>

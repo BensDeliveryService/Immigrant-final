@@ -1,81 +1,79 @@
 :: HousingOptions
-/*Housing options - various affordability levels*/
-<<set $step = 0>>
-<<ShowInfo>>
+<<set $step = 0>><<ShowInfo>>
+<<if $housingPage is undefined>><<set $housingPage = 1>><</if>><<set _maxHousingPage = 3>>
 
-<h3>Available Housing Options</h3>
+<h3 style="margin:0;">Available Housing Options</h3>
+<p style="margin:0 0 4px 0;font-size:0.9em;color:var(--muted);">Page <<= $housingPage>> of <<= _maxHousingPage>></p>
+<p style="margin:4px 0;font-size:0.9em;">You have $<<= $money>> in your bank account. The minimum livable rent is around $1100, but higher rent (≈$1600) brings better work opportunities.</p>
 
-<div class="housing-intro">
-<p>You have $<<= $money>> in your bank account, but the minimum you should be spending for a livable apartment is $1100. You know that there is access to significantly more non-legal employment opportunities in other areas if you are willing to spend more on rent, closer to $1600.</p>
+<<switch $housingPage>>
+
+	<<case 1>>
+		<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.3);">
+			<h4 style="margin:0;">Affordable Apartment</h4>
+			<p style="margin:2px 0;">A basic studio or 1-bedroom in a working-class neighborhood. Older building, but livable. Public transit accessible.</p>
+			<p style="margin:2px 0;"><strong>Application Fee:</strong> $30<br><strong>Monthly Rent:</strong> $900<br><em>Landlords require 3x rent ($2,700/mo).</em></p>
+			<<if $money >= 30>>
+				<<link "Apply for Affordable Apartment">>
+					<<set $selectedHousingType = "Affordable">>
+					<<set $selectedApplicationFee = 30>>
+					<<set $selectedMonthlyCost = 900>>
+					<<goto "HousingApply">>
+				<</link>>
+			<<else>>
+				<p style="color:red;margin:2px 0;">Not enough for application fee.</p>
+			<</if>>
+		</div>
+
+	<<case 2>>
+		<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);">
+			<h4 style="margin:0;">Standard Apartment</h4>
+			<p style="margin:2px 0;">A decent 1-bedroom in a mixed neighborhood with some amenities. Area has more employment opportunities.</p>
+			<p style="margin:2px 0;"><strong>Application Fee:</strong> $50<br><strong>Monthly Rent:</strong> $1,400<br><em>Requires income of 3x rent ($4,200/mo) and stricter documentation.</em></p>
+			<<if $money >= 50>>
+				<<link "Apply for Standard Apartment">>
+					<<set $selectedHousingType = "Standard">>
+					<<set $selectedApplicationFee = 50>>
+					<<set $selectedMonthlyCost = 1400>>
+					<<goto "HousingApply">>
+				<</link>>
+			<<else>>
+				<p style="color:red;margin:2px 0;">Not enough for application fee.</p>
+			<</if>>
+		</div>
+
+	<<case 3>>
+		<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(245,167,66,.08);border-left:3px solid rgba(245,167,66,.3);">
+			<h4 style="margin:0;">Premium Apartment in Better Area</h4>
+			<p style="margin:2px 0;">Modern 1–2 bedroom in a nicer area with more job options, both legal and under-the-table. Expect documentation requests and long searches balanced against long workdays.</p>
+			<p style="margin:2px 0;"><strong>Application Fee:</strong> $75<br><strong>Monthly Rent:</strong> $1,800<br><em>Landlords require income of 3x rent ($5,400/mo), credit check, employment verification, and often a co-signer.</em></p>
+			<<if $money >= 75>>
+				<<link "Apply for Premium Apartment">>
+					<<set $selectedHousingType = "Premium">>
+					<<set $selectedApplicationFee = 75>>
+					<<set $selectedMonthlyCost = 1800>>
+					<<goto "PremiumHousingConsequences">>
+				<</link>>
+			<<else>>
+				<p style="color:red;margin:2px 0;">Not enough for application fee.</p>
+			<</if>>
+		</div>
+
+<</switch>>
+
+<div style="display:flex;justify-content:space-between;font-size:0.85em;margin-top:4px;">
+	<span>
+		<<if $housingPage > 1>>
+			<<link "◀ Back">><<set $housingPage -= 1>><<goto "HousingOptions">><</link>>
+		<</if>>
+	</span>
+	<span>
+		<<if $housingPage < _maxHousingPage>>
+			<<link "Next ▶">><<set $housingPage += 1>><<goto "HousingOptions">><</link>>
+		<</if>>
+	</span>
 </div>
 
-<hr>
-
-Select an apartment to apply:
-
-<hr>
-
-<div class="housing-option">
-<h4>Affordable Apartment</h4>
-<p>A basic studio or 1-bedroom in a working-class neighborhood. Older building, but livable. Public transit accessible.</p>
-<p><strong>Application Fee:</strong> $30</p>
-<p><strong>Monthly Rent:</strong> $900</p>
-<p><em>Landlords typically require income of 3x rent ($2,700/month)</em></p>
-
-<<if $money >= 30>>
-    <<link "Apply for Affordable Apartment">>
-        <<set $selectedHousingType = "Affordable">>
-        <<set $selectedApplicationFee = 30>>
-        <<set $selectedMonthlyCost = 900>>
-        <<goto "HousingApply">>
-    <</link>>
-<<else>>
-    <p style="color: red;">You don't have enough money for this application fee.</p>
-<</if>>
+<div style="margin-top:6px;font-size:0.85em;text-align:center;">
+	<<link "⬅ Go Back to Housing Start">><<goto "HousingStart">><</link>>
 </div>
-
-<hr>
-
-<div class="housing-option">
-<h4>Standard Apartment</h4>
-<p>A decent 1-bedroom in a mixed neighborhood. Better maintained building with some amenities. You know this area has more employment opportunities.</p>
-<p><strong>Application Fee:</strong> $50</p>
-<p><strong>Monthly Rent:</strong> $1,400</p>
-<p><em>Landlords typically require income of 3x rent ($4,200/month) and will scrutinize your documentation more carefully.</em></p>
-
-<<if $money >= 50>>
-    <<link "Apply for Standard Apartment">>
-        <<set $selectedHousingType = "Standard">>
-        <<set $selectedApplicationFee = 50>>
-        <<set $selectedMonthlyCost = 1400>>
-        <<goto "HousingApply">>
-    <</link>>
-<<else>>
-    <p style="color: red;">You don't have enough money for this application fee.</p>
-<</if>>
-</div>
-
-<hr>
-
-<div class="housing-option">
-<h4>Premium Apartment in Better Area</h4>
-<p>A modern 1-2 bedroom in a nicer neighborhood with significantly more employment opportunities—both legal and under-the-table work. However, the property owner may ask for and expect certain legal documents. The apartment search will be longer and you will have to balance it with the 10-12 hour days you've been working just to keep up with your family's needs.</p>
-<p><strong>Application Fee:</strong> $75</p>
-<p><strong>Monthly Rent:</strong> $1,800</p>
-<p><em>Landlords require income of 3x rent ($5,400/month), full credit check, employment verification, and often a co-signer.</em></p>
-
-<<if $money >= 75>>
-    <<link "Apply for Premium Apartment">>
-        <<set $selectedHousingType = "Premium">>
-        <<set $selectedApplicationFee = 75>>
-        <<set $selectedMonthlyCost = 1800>>
-        <<goto "PremiumHousingConsequences">>
-    <</link>>
-<<else>>
-    <p style="color: red;">You don't have enough money for this application fee.</p>
-<</if>>
-</div>
-
-<hr>
-
-<<link "Go back">> <<goto "HousingStart">> <</link>>

@@ -139,8 +139,55 @@ body{background:var(--ui); color:var(--ink); font-family:Inter,Segoe UI,system-u
   display:flex; flex-direction:column; gap:.2rem;
   padding-right:1rem; border-right:1px solid var(--line);
   line-height:1.4;
+}#persistent-header {
+  font-size: 0.8em;
+  padding: 2px 6px;
+  margin: 0 0 4px 0;
+  display: flex;
+  flex-wrap: wrap;        /* will wrap to 2 lines if needed */
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid #ccc;
 }
+
+/* each "column" */
+.hud-item {
+  min-width: 7rem;        /* makes them line up vertically */
+  white-space: nowrap;
+}
+
+/* lets the whole bar stay slim if screen is wide */
+.hud-day   { flex: 1 1 auto; }
+.hud-money,
+.hud-housing,
+.hud-job,
+.hud-transit,
+.hud-family { flex: 0 0 auto; }
+
+.hud-toggle-bar {
+  text-align: right;
+  font-size: 0.8em;
+  margin: 0 0 4px 0;
+}
+
+.hud-toggle a {
+  text-decoration: none;
+}
+
 .hud-section:last-of-type{border-right:none; padding-right:0;}
+.status-box {
+  margin: 2px 0;
+  padding: 6px 8px;
+  font-size: 0.85em;
+}
+#persistent-header, .hud-toggle-bar {
+	margin: 0;
+	padding: 2px 6px;
+	line-height: 1.2;
+}
+#story {
+	margin-top: 0 !important;
+}
 
 .hud-section-mini{
   flex-basis:100%; padding-top:.5rem; margin-top:.25rem;
@@ -328,162 +375,60 @@ body{background:var(--ui); color:var(--ink); font-family:Inter,Segoe UI,system-u
 
 /* If you ever want to see the full image uncropped: add class 'contain' */
 .avatar.contain img{ object-fit: contain; background:var(--ui); }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.saves.slots = 6;
-Config.passages.start = "Landing";</script><tw-tag name="definition" color="orange"></tw-tag><tw-tag name="setup" color="purple"></tw-tag><tw-passagedata pid="1" name="Landing" tags="" position="100,100" size="100,100">/*Landing page - game introduction and start*/
+Config.passages.start = "Landing";</script><tw-tag name="setup" color="purple"></tw-tag><tw-tag name="definition" color="orange"></tw-tag><tw-passagedata pid="1" name="Landing" tags="" position="100,100" size="100,100">/* Compact landing page */
 
-&lt;div style=&quot;text-align: center; padding: 40px 20px;&quot;&gt;
-&lt;h1 style=&quot;font-size: 2.5em; margin-bottom: 20px;&quot;&gt;The Immigrant Experience&lt;/h1&gt;
-&lt;h2 style=&quot;font-size: 1.3em; color: var(--muted); margin-bottom: 40px;&quot;&gt;A Simulation of Housing Insecurity in Chicago&lt;/h2&gt;
+&lt;div style=&quot;text-align:center;padding:20px;&quot;&gt;
+	&lt;h1 style=&quot;font-size:1.8em;margin:0;&quot;&gt;The Immigrant Experience&lt;/h1&gt;
+	&lt;p style=&quot;font-size:0.95em;color:var(--muted);margin:2px 0 10px 0;&quot;&gt;
+		A Simulation of Housing Insecurity in Chicago
+	&lt;/p&gt;
 
-&lt;hr style=&quot;margin: 30px 0;&quot;&gt;
+	&lt;p style=&quot;font-size:0.9em;margin:4px 0 6px 0;&quot;&gt;
+		You are a young undocumented Guatemalan father in Chicago with a wife, a one-year-old child, and another baby on the way. 
+		Starting with $900 and no housing, you must balance &lt;strong&gt;work, rent, and family wellbeing&lt;/strong&gt; while navigating 
+		bureaucratic delays and discrimination.
+	&lt;/p&gt;
 
-&lt;div style=&quot;max-width: 700px; margin: 0 auto; text-align: left; font-size: 1.1em; line-height: 1.6;&quot;&gt;
-&lt;h3&gt;Your Story&lt;/h3&gt;
-&lt;p&gt;You are an undocumented Guatemalan man in your early 20s living in Chicago. You have a wife and a one-year-old child, with another baby on the way.&lt;/p&gt;
+	&lt;p style=&quot;font-size:0.9em;margin:4px 0 6px 0;&quot;&gt;
+		This short simulation captures real barriers faced by immigrants seeking stability—limited jobs, documentation hurdles, 
+		and the constant pressure of time.
+	&lt;/p&gt;
 
-&lt;p&gt;You start with &lt;strong&gt;$900 in your bank account&lt;/strong&gt; and &lt;strong&gt;no permanent housing&lt;/strong&gt;. Through painting and odd jobs, you must:&lt;/p&gt;
+	&lt;p style=&quot;font-size:0.85em;color:var(--muted);margin:6px 0 8px 0;&quot;&gt;
+		Content notice: themes of housing insecurity and financial stress.
+	&lt;/p&gt;
 
-&lt;ul style=&quot;margin: 20px 0;&quot;&gt;
-&lt;li&gt;Find and secure permanent housing for your family&lt;/li&gt;
-&lt;li&gt;Navigate bureaucratic delays and application denials&lt;/li&gt;
-&lt;li&gt;Balance work, income, and family needs&lt;/li&gt;
-&lt;li&gt;Make difficult choices under time pressure&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 style=&quot;margin-top: 30px;&quot;&gt;About This Experience&lt;/h3&gt;
-&lt;p&gt;This simulation is based on real challenges faced by undocumented immigrants in Chicago:&lt;/p&gt;
-
-&lt;ul style=&quot;margin: 20px 0;&quot;&gt;
-&lt;li&gt;Housing discrimination and documentation requirements&lt;/li&gt;
-&lt;li&gt;Income verification barriers and credit history gaps&lt;/li&gt;
-&lt;li&gt;Limited job opportunities and unstable employment&lt;/li&gt;
-&lt;li&gt;Time pressure and bureaucratic waiting periods&lt;/li&gt;
-&lt;li&gt;The constant weighing of risk versus necessity&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;status-box status-box-warning&quot; style=&quot;margin: 20px 0;&quot;&gt;
-&lt;strong&gt;Content Notice:&lt;/strong&gt; This game addresses themes of housing insecurity, financial stress, family pressure, and the difficulties faced by undocumented immigrants. The experience is designed to be educational and empathy-building.
-&lt;/div&gt;
-
-&lt;h3 style=&quot;margin-top: 30px;&quot;&gt;Game Structure&lt;/h3&gt;
-&lt;p&gt;You will play day-by-day, making decisions about:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Work:&lt;/strong&gt; Take jobs to earn money (but jobs take time)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Transit:&lt;/strong&gt; Buy CTA/Pace passes to reduce work time&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Housing:&lt;/strong&gt; Apply to apartments (with varying approval chances)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Family:&lt;/strong&gt; Manage worries and maintain wellbeing&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Every decision has trade-offs. Applications take business days to process. Weekends feel like wasted time. The clock is always ticking.&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;hr style=&quot;margin: 40px 0;&quot;&gt;
-
-&lt;div style=&quot;margin-top: 40px;&quot;&gt;
-&lt;h3&gt;Ready to Begin?&lt;/h3&gt;
-&lt;p&gt;First, you&#39;ll configure your experience level to match the realism you want to experience.&lt;/p&gt;
-
-&lt;&lt;link &quot;Configure Experience Level →&quot; &quot;GameOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;/div&gt;
-
-&lt;div style=&quot;margin-top: 30px; font-size: 0.9em; color: var(--muted);&quot;&gt;
-&lt;p&gt;&lt;em&gt;This is an educational simulation. For resources to support immigrants facing housing insecurity, links are provided throughout the experience.&lt;/em&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="PassageHeader" tags="" position="225,100" size="100,100">/* Only show header if game has actually started AND debug toggle is on */
-&lt;&lt;if $gameStarted and $debugShowHeader&gt;&gt;
-&lt;div id=&quot;persistent-header&quot; class=&quot;hud-header&quot;&gt;
-	/* ===== DAY &amp; TIMELINE ===== */
-	&lt;div class=&quot;hud-section&quot;&gt;
-		&lt;strong&gt;&lt;&lt;print $dayNames[$currentDayOfWeek]&gt;&gt;, Day &lt;&lt;print $day&gt;&gt; / &lt;&lt;print $gameTimelineMax&gt;&gt;&lt;/strong&gt;
+	&lt;&lt;link &quot;Begin →&quot; &quot;GameOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="PassageHeader" tags="" position="225,100" size="100,100">&lt;&lt;if $gameStarted&gt;&gt;
+&lt;&lt;if $debugShowHeader is undefined&gt;&gt;&lt;&lt;set $debugShowHeader = true&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $debugShowHeader&gt;&gt;
+&lt;div id=&quot;persistent-header&quot; class=&quot;hud-bar&quot; style=&quot;margin:0;padding:0;&quot;&gt;
+	&lt;span class=&quot;hud-item&quot; title=&quot;Current day and days left&quot;&gt;
 		&lt;&lt;set _daysRemaining = $gameTimelineMax - $day&gt;&gt;
-		&lt;&lt;set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)&gt;&gt;
-		&lt;&lt;if _isWeekend&gt;&gt;
-			&lt;span class=&quot;hud-info&quot;&gt; | 📅 Weekend&lt;/span&gt;
-		&lt;&lt;/if&gt;&gt;
-		&lt;&lt;if _daysRemaining &lt;= 10&gt;&gt;
-			&lt;span class=&quot;hud-urgent&quot;&gt; | ⏰ &lt;strong&gt;&lt;&lt;print _daysRemaining&gt;&gt; Days Left!&lt;/strong&gt;&lt;/span&gt;
-		&lt;&lt;else&gt;&gt;
-			&lt;span&gt; | &lt;&lt;print _daysRemaining&gt;&gt; days left&lt;/span&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-
-	/* ===== FINANCES ===== */
-	&lt;div class=&quot;hud-section&quot;&gt;
-		💰 &lt;strong&gt;$&lt;&lt;print $money&gt;&gt;&lt;/strong&gt;
-		&lt;&lt;if $hasRentSupport&gt;&gt;
-			&lt;span class=&quot;hud-success&quot;&gt; | ✓ Rent Support: $1,500&lt;/span&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-
-	/* ===== HOUSING STATUS ===== */
-	&lt;div class=&quot;hud-section&quot;&gt;
-		&lt;&lt;if $hasHousing&gt;&gt;
-			&lt;span class=&quot;hud-success&quot;&gt;🏠 &lt;strong&gt;Housed&lt;/strong&gt; (&lt;&lt;print $housingType&gt;&gt;, $&lt;&lt;print $housingCost&gt;&gt;/mo)&lt;/span&gt;
-		&lt;&lt;elseif $housingApplicationPending&gt;&gt;
-			&lt;span class=&quot;hud-warning&quot;&gt;🏠 Application Pending (~&lt;&lt;print $housingApplicationDaysRemaining&gt;&gt; business days)&lt;/span&gt;
-		&lt;&lt;else&gt;&gt;
-			&lt;span class=&quot;hud-error&quot;&gt;🏠 &lt;strong&gt;No Housing&lt;/strong&gt;&lt;/span&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-
-	/* ===== EMPLOYMENT STATUS ===== */
-	&lt;div class=&quot;hud-section&quot;&gt;
-		&lt;&lt;if $job&gt;&gt;
-			💼 &lt;strong&gt;&lt;&lt;print $jobName&gt;&gt;&lt;/strong&gt; (&lt;&lt;print $workdays&gt;&gt; days left, $&lt;&lt;print $jobPay&gt;&gt;)
-		&lt;&lt;else&gt;&gt;
-			&lt;span class=&quot;hud-disabled&quot;&gt;💼 No active job&lt;/span&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-
-	/* ===== CTA PASS ===== */
-	&lt;&lt;if $transitDays &gt; 0&gt;&gt;
-	&lt;div class=&quot;hud-section&quot;&gt;
-		&lt;&lt;if $transitDays &lt;= 2&gt;&gt;
-			&lt;span class=&quot;hud-warning&quot;&gt;🚇 Pass expires in &lt;strong&gt;&lt;&lt;print $transitDays&gt;&gt; days&lt;/strong&gt;&lt;/span&gt;
-		&lt;&lt;else&gt;&gt;
-			&lt;span class=&quot;hud-success&quot;&gt;🚇 Pass active (&lt;&lt;print $transitDays&gt;&gt; days)&lt;/span&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-	&lt;&lt;else&gt;&gt;
-	&lt;div class=&quot;hud-section&quot;&gt;
-		&lt;span class=&quot;hud-disabled&quot;&gt;🚇 No transit pass&lt;/span&gt;
-	&lt;/div&gt;
-	&lt;&lt;/if&gt;&gt;
-
-	/* ===== FAMILY &amp; WORRIES ===== */
-	&lt;div class=&quot;hud-section&quot;&gt;
-		&lt;&lt;if $worries.length &gt; 0&gt;&gt;
-			&lt;span class=&quot;hud-alert&quot;&gt;⚠️ &lt;strong&gt;&lt;&lt;print $worries.length&gt;&gt; Active Worries&lt;/strong&gt;&lt;/span&gt;
-		&lt;&lt;else&gt;&gt;
-			&lt;span class=&quot;hud-success&quot;&gt;👨‍👩‍👧 Family: &lt;&lt;print $familyHealth&gt;&gt;%&lt;/span&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-
-	/* ===== QUICK STATS (optional, shows on hover or expanded view) ===== */
-	&lt;div class=&quot;hud-section-mini&quot;&gt;
-		Jobs Done: &lt;&lt;print $jobsCompleted&gt;&gt; |
-		Total Earned: $&lt;&lt;print $totalIncomeEarned&gt;&gt; |
-		Housing Rejections: &lt;&lt;print $housingRejectionCount&gt;&gt;
-	&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;hr class=&quot;hud-divider&quot;&gt;
-
-/* Debug toggle - small link to show/hide header */
-&lt;div style=&quot;text-align: right; margin: -10px 0 10px 0;&quot;&gt;
-&lt;&lt;link &quot;[Hide Status Header]&quot; `passage()`&gt;&gt;
-	&lt;&lt;set $debugShowHeader = false&gt;&gt;
-&lt;&lt;/link&gt;&gt;
-&lt;/div&gt;
-&lt;&lt;elseif $gameStarted and !$debugShowHeader&gt;&gt;
-/* Game started but header is hidden - show toggle to bring it back */
-&lt;div style=&quot;text-align: right; margin: 5px 0;&quot;&gt;
-&lt;&lt;link &quot;[Show Status Header]&quot; `passage()`&gt;&gt;
-	&lt;&lt;set $debugShowHeader = true&gt;&gt;
-&lt;&lt;/link&gt;&gt;
+		📅 &lt;&lt;= $dayNames[$currentDayOfWeek]&gt;&gt; D&lt;&lt;= $day&gt;&gt;/&lt;&lt;= $gameTimelineMax&gt;&gt; (L:&lt;&lt;= _daysRemaining&gt;&gt;)
+	&lt;/span&gt;
+	&lt;span class=&quot;hud-item&quot; title=&quot;Money&quot;&gt;💰 $&lt;&lt;= $money&gt;&gt;&lt;/span&gt;
+	&lt;span class=&quot;hud-item&quot; title=&quot;Housing&quot;&gt;
+		&lt;&lt;if $hasHousing&gt;&gt;🏠 &lt;&lt;= $housingType&gt;&gt;&lt;&lt;elseif $housingApplicationPending&gt;&gt;🏠 Pending&lt;&lt;else&gt;&gt;🏠 None&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
+	&lt;span class=&quot;hud-item&quot; title=&quot;Job&quot;&gt;
+		&lt;&lt;if $job&gt;&gt;💼 &lt;&lt;= $jobName&gt;&gt; (&lt;&lt;= $workdays&gt;&gt;d)&lt;&lt;else&gt;&gt;💼 None&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
+	&lt;span class=&quot;hud-item&quot; title=&quot;Transit&quot;&gt;
+		&lt;&lt;if $transitDays &gt; 0&gt;&gt;🚇 &lt;&lt;= $transitDays&gt;&gt;d&lt;&lt;else&gt;&gt;🚇 None&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
+	&lt;span class=&quot;hud-item&quot; title=&quot;Family / worries&quot;&gt;
+		&lt;&lt;if $worries.length &gt; 0&gt;&gt;⚠️ &lt;&lt;= $worries.length&gt;&gt;&lt;&lt;else&gt;&gt;👨‍👩‍👧 &lt;&lt;= $familyHealth&gt;&gt;%&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
+	&lt;span class=&quot;hud-item hud-toggle&quot;&gt;
+		&lt;&lt;link &quot;×&quot; `passage()`&gt;&gt;&lt;&lt;set $debugShowHeader = false&gt;&gt;&lt;&lt;/link&gt;&gt;
+	&lt;/span&gt;
 &lt;/div&gt;
 &lt;&lt;else&gt;&gt;
-/* Game not started yet - show minimal or no header on Landing/Options pages */
+&lt;div id=&quot;persistent-header-toggle&quot; class=&quot;hud-toggle-bar&quot; style=&quot;margin:0;padding:0;&quot;&gt;
+	&lt;&lt;link &quot;+ HUD&quot; `passage()`&gt;&gt;&lt;&lt;set $debugShowHeader = true&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;/div&gt;
+&lt;&lt;/if&gt;&gt;
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="3" name="StoryAuthor" tags="" position="350,100" size="100,100">Course Template</tw-passagedata><tw-passagedata pid="4" name="StorySettings" tags="" position="475,100" size="100,100">StoryFormat: SugarCube 2.37.3</tw-passagedata><tw-passagedata pid="5" name="StoryInit" tags="" position="600,100" size="100,100">&lt;&lt;set $jobtype = &quot;Paint&quot; &gt;&gt;
 &lt;&lt;set $jobs = [
     {   name: &quot;Painter&quot;,
@@ -642,9 +587,7 @@ Config.passages.start = "Landing";</script><tw-tag name="definition" color="oran
 /* Small helper to display current job info */
 /* Small helper to display current job info */
 &lt;&lt;widget &quot;JobSummary&quot;&gt;&gt;
-	&lt;&lt;if $job&gt;&gt;
-		Current job: &lt;strong&gt;&lt;&lt;= $jobName &gt;&gt;&lt;/strong&gt;
-		Pay: $&lt;&lt;= $jobPay &gt;&gt; per week 
+	&lt;&lt;if $job&gt;&gt;Current job: &lt;strong&gt;&lt;&lt;= $jobName &gt;&gt;&lt;/strong&gt; Pay: $&lt;&lt;= $jobPay &gt;&gt; per week 
 		Workdays: &lt;&lt;= $workdays &gt;&gt;
 		 &lt;&lt;if $jobDesc&gt;&gt;Description: &lt;em&gt;&lt;&lt;= $jobDesc &gt;&gt;&lt;/em&gt;&lt;&lt;/if&gt;&gt;
 	&lt;&lt;else&gt;&gt;You don&#39;t have a job yet.&lt;&lt;/if&gt;&gt;
@@ -709,399 +652,228 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 			&lt;&lt;/link&gt;&gt;
 		&lt;&lt;/if&gt;&gt;
 	&lt;/div&gt;
-&lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="EndOfDayHub" tags="" position="850,100" size="100,100">/*End of Day Hub - Status updates, payments, worries, and apartment news*/
-&lt;&lt;set $step = 0&gt;&gt;
-&lt;&lt;ShowInfo&gt;&gt;
+&lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="EndOfDayHub" tags="" position="850,100" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
+&lt;&lt;if $eodPage is undefined&gt;&gt;&lt;&lt;set $eodPage = 1&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;set _maxEodPage = 2&gt;&gt;
 
-&lt;h2&gt;End of Day - Day &lt;&lt;= $day&gt;&gt;&lt;/h2&gt;
+&lt;h2 style=&quot;margin:0;&quot;&gt;End of Day – Day &lt;&lt;= $day&gt;&gt;&lt;/h2&gt;
+&lt;p style=&quot;font-size:0.8em;color:var(--muted);margin:0;&quot;&gt;Page &lt;&lt;= $eodPage&gt;&gt; of &lt;&lt;= _maxEodPage&gt;&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;You return home after a long day. Here&#39;s what happened today:&lt;/em&gt;&lt;/p&gt;
+&lt;&lt;switch $eodPage&gt;&gt;
 
-&lt;hr&gt;
+	&lt;&lt;case 1&gt;&gt;
+		&lt;&lt;if $pendingPayment &gt; 0&gt;&gt;
+			&lt;div style=&quot;margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(56,178,75,.08);border-left:3px solid rgba(56,178,75,.3);&quot;&gt;
+				&lt;strong&gt;💰 Payment: $&lt;&lt;= $pendingPayment&gt;&gt;&lt;/strong&gt;&lt;br&gt;
+				&lt;&lt;set $money += $pendingPayment&gt;&gt;&lt;&lt;set $totalIncomeEarned += $pendingPayment&gt;&gt;&lt;&lt;set $incomeHistory.push({amount:$pendingPayment,day:$day})&gt;&gt;&lt;&lt;set $jobsCompleted += 1&gt;&gt;
+				Balance: $&lt;&lt;= $money&gt;&gt; · Total: $&lt;&lt;= $totalIncomeEarned&gt;&gt; · Jobs: &lt;&lt;= $jobsCompleted&gt;&gt;&lt;&lt;set $pendingPayment = 0&gt;&gt;
+			&lt;/div&gt;
+		&lt;&lt;else&gt;&gt;
+			&lt;div style=&quot;margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);&quot;&gt;
+				&lt;strong&gt;💰 No new payment today.&lt;/strong&gt;
+			&lt;/div&gt;
+		&lt;&lt;/if&gt;&gt;
 
-/* ========== JOB PAYMENT SECTION ========== */
-&lt;&lt;if $pendingPayment &gt; 0&gt;&gt;
-&lt;div class=&quot;status-box status-box-success&quot;&gt;
-    &lt;h3 class=&quot;text-success&quot;&gt;💰 Payment Received!&lt;/h3&gt;
-    &lt;p&gt;&lt;strong&gt;You completed your job and received $&lt;&lt;= $pendingPayment&gt;&gt;!&lt;/strong&gt;&lt;/p&gt;
-    &lt;&lt;set $money += $pendingPayment&gt;&gt;
-    &lt;&lt;set $totalIncomeEarned += $pendingPayment&gt;&gt;
-    &lt;&lt;set $incomeHistory.push({amount: $pendingPayment, day: $day})&gt;&gt;
-    &lt;&lt;set $jobsCompleted += 1&gt;&gt;
-    &lt;p&gt;New Balance: &lt;strong&gt;$&lt;&lt;= $money&gt;&gt;&lt;/strong&gt;&lt;/p&gt;
-    &lt;p&gt;Total Earned: $&lt;&lt;= $totalIncomeEarned&gt;&gt; | Jobs Completed: &lt;&lt;= $jobsCompleted&gt;&gt;&lt;/p&gt;
-    &lt;&lt;set $pendingPayment = 0&gt;&gt;
-&lt;/div&gt;
-&lt;hr&gt;
-&lt;&lt;/if&gt;&gt;
+		&lt;div style=&quot;margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(208,213,224,.08);border-left:3px solid rgba(208,213,224,.3);&quot;&gt;
+			&lt;&lt;if $housingApplicationPending&gt;&gt;
+				&lt;strong&gt;🏠 Application: &lt;&lt;= $pendingHousingType&gt;&gt;&lt;/strong&gt;&lt;br&gt;
+				&lt;&lt;if $housingApplicationDaysRemaining &lt;= 0&gt;&gt;
+					Decision ready. &lt;&lt;link &quot;Check result&quot; &quot;HousingApplicationResult&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+				&lt;&lt;else&gt;&gt;
+					~&lt;&lt;= $housingApplicationDaysRemaining&gt;&gt; business days left.
+					&lt;&lt;set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)&gt;&gt;
+					&lt;&lt;if _isWeekend&gt;&gt;&lt;span style=&quot;font-size:0.8em;&quot;&gt; 📅 Weekend – no processing.&lt;/span&gt;&lt;&lt;/if&gt;&gt;
+				&lt;&lt;/if&gt;&gt;
+			&lt;&lt;elseif $hasHousing&gt;&gt;
+				&lt;strong&gt;🏠 Housing:&lt;/strong&gt; &lt;&lt;= $housingType&gt;&gt; · Rent: $&lt;&lt;= $housingCost&gt;&gt;/mo
+			&lt;&lt;else&gt;&gt;
+				&lt;strong&gt;🏠 No housing yet.&lt;/strong&gt; · Days remaining: &lt;&lt;= $gameTimelineMax - $day&gt;&gt;
+			&lt;&lt;/if&gt;&gt;
+		&lt;/div&gt;
 
-/* ========== HOUSING UPDATE SECTION ========== */
-&lt;&lt;if $housingApplicationPending&gt;&gt;
-&lt;div class=&quot;status-box status-box-warning&quot;&gt;
-    &lt;h3&gt;🏠 Housing Application Status&lt;/h3&gt;
-    &lt;p&gt;Your application for the &lt;strong&gt;&lt;&lt;= $pendingHousingType&gt;&gt; Apartment&lt;/strong&gt; is still pending.&lt;/p&gt;
-    &lt;&lt;if $housingApplicationDaysRemaining &lt;= 0&gt;&gt;
-        &lt;p class=&quot;text-success&quot;&gt;&lt;strong&gt;✓ Decision Ready!&lt;/strong&gt; You can check your application result.&lt;/p&gt;
-        &lt;&lt;link &quot;Check Application Result Now&quot; &quot;HousingApplicationResult&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;&lt;else&gt;&gt;
-        &lt;p&gt;Estimated business days until decision: &lt;strong&gt;~&lt;&lt;= $housingApplicationDaysRemaining&gt;&gt;&lt;/strong&gt;&lt;/p&gt;
-        &lt;&lt;set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)&gt;&gt;
-        &lt;&lt;if _isWeekend&gt;&gt;
-            &lt;p style=&quot;padding: 8px; border-radius: 4px; background: rgba(245,167,66,.08); border-left: 3px solid rgba(245,167,66,.3);&quot;&gt;
-                &lt;em&gt;📅 It&#39;s the weekend. Applications are only processed on business days (Monday-Friday).&lt;/em&gt;
-            &lt;/p&gt;
-        &lt;&lt;else&gt;&gt;
-            &lt;p&gt;&lt;em&gt;Applications are processed on business days. You&#39;ll be notified when the landlord makes a decision.&lt;/em&gt;&lt;/p&gt;
-        &lt;&lt;/if&gt;&gt;
-    &lt;&lt;/if&gt;&gt;
-&lt;/div&gt;
-&lt;hr&gt;
-&lt;&lt;elseif $hasHousing&gt;&gt;
-&lt;div class=&quot;status-box status-box-success&quot;&gt;
-    &lt;h3&gt;🏠 Your Housing&lt;/h3&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;&lt;= $housingType&gt;&gt; Apartment&lt;/strong&gt; - Monthly Rent: $&lt;&lt;= $housingCost&gt;&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;em&gt;You have secured stable housing for your family.&lt;/em&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;hr&gt;
-&lt;&lt;else&gt;&gt;
-&lt;div class=&quot;status-box status-box-error&quot;&gt;
-    &lt;h3&gt;🏠 Housing Status&lt;/h3&gt;
-    &lt;p class=&quot;text-error&quot;&gt;&lt;strong&gt;⚠️ No Housing Secured&lt;/strong&gt;&lt;/p&gt;
-    &lt;p&gt;Days Remaining: &lt;&lt;= $gameTimelineMax - $day&gt;&gt; | You need to find housing soon!&lt;/p&gt;
-&lt;/div&gt;
-&lt;hr&gt;
-&lt;&lt;/if&gt;&gt;
+	&lt;&lt;case 2&gt;&gt;
+		&lt;div style=&quot;margin:4px 0;padding:6px 6px;border-radius:6px;background:rgba(236,201,75,.08);border-left:3px solid rgba(236,201,75,.3);&quot;&gt;
+			&lt;strong&gt;👨‍👩‍👧 Family:&lt;/strong&gt; &lt;&lt;= $familyHealth&gt;&gt;%
+			&lt;&lt;if $pregnancyProgress &lt; $gameTimelineMax&gt;&gt;
+				&lt;&lt;set _daysUntilBirth = $gameTimelineMax - $pregnancyProgress&gt;&gt; · Pregnancy: ~&lt;&lt;= _daysUntilBirth&gt;&gt; days until birth.
+			&lt;&lt;/if&gt;&gt;
+			&lt;&lt;if $worries.length &gt; 0&gt;&gt;
+				&lt;strong&gt;⚠️ Worries: &lt;&lt;= $worries.length&gt;&gt;&lt;/strong&gt;
+				&lt;&lt;for _i = 0; _i &lt; $worries.length; _i++&gt;&gt;
+					&lt;&lt;set _w = $worries[_i]&gt;&gt;· Sev &lt;&lt;= _w.severity&gt;&gt;/5 – &lt;&lt;= _w.description&gt;&gt; (&lt;&lt;= _w.daysActive&gt;&gt;d)
+				&lt;&lt;/for&gt;&gt;
+			&lt;&lt;else&gt;&gt;
+				&lt;br&gt;✓ No current worries.
+			&lt;&lt;/if&gt;&gt;
+		&lt;/div&gt;
 
-/* ========== WORRIES SECTION ========== */
-&lt;div class=&quot;status-box status-box-info&quot;&gt;
-    &lt;h3&gt;👨‍👩‍👧 Family &amp; Worries&lt;/h3&gt;
+		&lt;div style=&quot;margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);&quot;&gt;
+			&lt;strong&gt;📊 Summary:&lt;/strong&gt;&lt;br&gt;
+			Day &lt;&lt;= $day&gt;&gt; / &lt;&lt;= $gameTimelineMax&gt;&gt; · Left: &lt;&lt;= $gameTimelineMax - $day&gt;&gt;&lt;br&gt;
+			Money: $&lt;&lt;= $money&gt;&gt;&lt;br&gt;
+			&lt;&lt;if $job&gt;&gt;Job: &lt;&lt;= $jobName&gt;&gt; (&lt;&lt;= $workdays&gt;&gt;d left)&lt;&lt;else&gt;&gt;Job: none&lt;&lt;/if&gt;&gt;
+		&lt;/div&gt;
 
-    /* Family Status */
-    &lt;p&gt;&lt;strong&gt;Family Health:&lt;/strong&gt; &lt;&lt;= $familyHealth&gt;&gt;%&lt;/p&gt;
+		&lt;div style=&quot;margin-top:4px;font-size:0.9em;&quot;&gt;
+			&lt;&lt;if $worries.length &gt; 0&gt;&gt;
+				&lt;&lt;link &quot;Address family concerns (placeholder)&quot;&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;br&gt;
+			&lt;&lt;/if&gt;&gt;
+			&lt;&lt;link &quot;Continue to next day&quot; &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;br&gt;
+			&lt;&lt;link &quot;Game options&quot; &quot;GameOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+		&lt;/div&gt;
 
-    /* Pregnancy tracking */
-    &lt;&lt;if $pregnancyProgress &lt; $gameTimelineMax&gt;&gt;
-        &lt;&lt;set _daysUntilBirth = $gameTimelineMax - $pregnancyProgress&gt;&gt;
-        &lt;p&gt;&lt;strong&gt;Pregnancy:&lt;/strong&gt; Your wife is pregnant. The baby will arrive in approximately &lt;&lt;= _daysUntilBirth&gt;&gt; days.&lt;/p&gt;
-    &lt;&lt;/if&gt;&gt;
+&lt;&lt;/switch&gt;&gt;
 
-    /* Active Worries Display */
-    &lt;&lt;if $worries.length &gt; 0&gt;&gt;
-        &lt;hr style=&quot;margin: 10px 0;&quot;&gt;
-        &lt;h4 class=&quot;text-warning&quot;&gt;⚠️ Active Worries (&lt;&lt;= $worries.length&gt;&gt;):&lt;/h4&gt;
+&lt;div style=&quot;display:flex;justify-content:space-between;font-size:0.85em;margin-top:4px;&quot;&gt;
+	&lt;span&gt;
+		&lt;&lt;if $eodPage &gt; 1&gt;&gt;&lt;&lt;link &quot;◀ Back&quot;&gt;&gt;&lt;&lt;set $eodPage -= 1&gt;&gt;&lt;&lt;goto &quot;EndOfDayHub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
+	&lt;span&gt;
+		&lt;&lt;if $eodPage &lt; _maxEodPage&gt;&gt;&lt;&lt;link &quot;Next ▶&quot;&gt;&gt;&lt;&lt;set $eodPage += 1&gt;&gt;&lt;&lt;goto &quot;EndOfDayHub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="GameEnd" tags="" position="975,100" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 
-        &lt;&lt;for _i = 0; _i &lt; $worries.length; _i++&gt;&gt;
-            &lt;&lt;set _worry = $worries[_i]&gt;&gt;
-            &lt;div style=&quot;margin: 10px 0; padding: 10px; background: rgba(245,167,66,.08); border-radius: 4px; border-left: 3px solid rgba(245,167,66,.3);&quot;&gt;
-                &lt;p&gt;&lt;strong&gt;Severity &lt;&lt;= _worry.severity&gt;&gt;/5:&lt;/strong&gt; &lt;&lt;= _worry.description&gt;&gt;&lt;/p&gt;
-                &lt;p style=&quot;font-size: 0.9em; color: var(--muted);&quot;&gt;&lt;em&gt;Active for &lt;&lt;= _worry.daysActive&gt;&gt; days&lt;/em&gt;&lt;/p&gt;
-
-                /* Future: Add buttons to address specific worries */
-                &lt;span style=&quot;color: var(--muted); font-style: italic;&quot;&gt;[Worry resolution system - Coming soon]&lt;/span&gt;
-            &lt;/div&gt;
-        &lt;&lt;/for&gt;&gt;
-
-        &lt;p style=&quot;margin-top: 10px; padding: 8px; background: rgba(245,167,66,.08); border-left: 3px solid rgba(245,167,66,.3); border-radius: 4px;&quot;&gt;
-            &lt;strong&gt;Note:&lt;/strong&gt; Unaddressed worries can compound over time and affect your family&#39;s wellbeing.
-        &lt;/p&gt;
-    &lt;&lt;else&gt;&gt;
-        &lt;p class=&quot;text-success&quot;&gt;&lt;strong&gt;✓ No current worries.&lt;/strong&gt; Your family is managing well today.&lt;/p&gt;
-    &lt;&lt;/if&gt;&gt;
-&lt;/div&gt;
-
-&lt;hr&gt;
-
-/* ========== DAY SUMMARY ========== */
-&lt;div style=&quot;background: rgba(208,213,224,.08); padding: 15px; margin: 10px 0; border-radius: .5rem; border-left: 4px solid var(--line);&quot;&gt;
-    &lt;h3&gt;📊 Day Summary&lt;/h3&gt;
-    &lt;ul&gt;
-        &lt;li&gt;&lt;strong&gt;Current Day:&lt;/strong&gt; &lt;&lt;= $day&gt;&gt; / &lt;&lt;= $gameTimelineMax&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Days Remaining:&lt;/strong&gt; &lt;&lt;= $gameTimelineMax - $day&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Current Funds:&lt;/strong&gt; $&lt;&lt;= $money&gt;&gt;&lt;/li&gt;
-        &lt;&lt;if $job&gt;&gt;
-            &lt;li&gt;&lt;strong&gt;Current Job:&lt;/strong&gt; &lt;&lt;= $jobName&gt;&gt; (&lt;&lt;= $workdays&gt;&gt; days left)&lt;/li&gt;
-        &lt;&lt;else&gt;&gt;
-            &lt;li&gt;&lt;strong&gt;Employment Status:&lt;/strong&gt; No active job&lt;/li&gt;
-        &lt;&lt;/if&gt;&gt;
-    &lt;/ul&gt;
-&lt;/div&gt;
-
-&lt;hr&gt;
-
-/* ========== NAVIGATION ========== */
-&lt;h3&gt;What would you like to do?&lt;/h3&gt;
-
-&lt;div style=&quot;margin: 20px 0;&quot;&gt;
-&lt;&lt;if $worries.length &gt; 0&gt;&gt;
-    &lt;&lt;link &quot;Address Family Concerns (Worries System - Coming Soon)&quot;&gt;&gt;
-        /* Future: Go to worry management screen */
-        &lt;&lt;goto &quot;Hub&quot;&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-    &lt;br&gt;&lt;br&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;&lt;link &quot;Continue to Next Day&quot; &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;br&gt;&lt;br&gt;
-&lt;&lt;link &quot;View Game Options&quot; &quot;GameOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="GameEnd" tags="" position="975,100" size="100,100">/*Game End - Timeline expired*/
-&lt;&lt;set $step = 0&gt;&gt;
-
-&lt;h2&gt;Time&#39;s Up&lt;/h2&gt;
-
-&lt;div class=&quot;game-end-summary&quot;&gt;
+&lt;h2 style=&quot;margin:0;&quot;&gt;Time’s Up&lt;/h2&gt;
 &lt;&lt;if $hasHousing&gt;&gt;
-    &lt;h3 class=&quot;text-success&quot;&gt;Success - You Secured Housing!&lt;/h3&gt;
-
-    &lt;p&gt;Congratulations! Despite the challenges, you managed to secure housing for your family.&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;Your Results:&lt;/strong&gt;&lt;/p&gt;
-    &lt;ul&gt;
-        &lt;li&gt;&lt;strong&gt;Housing Type:&lt;/strong&gt; &lt;&lt;= $housingType&gt;&gt; Apartment&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $&lt;&lt;= $housingCost&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Days Taken:&lt;/strong&gt; &lt;&lt;= $day&gt;&gt; / &lt;&lt;= $gameTimelineMax&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Total Income Earned:&lt;/strong&gt; $&lt;&lt;= $totalIncomeEarned&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Jobs Completed:&lt;/strong&gt; &lt;&lt;= $jobsCompleted&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Current Balance:&lt;/strong&gt; $&lt;&lt;= $money&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Applications Rejected:&lt;/strong&gt; &lt;&lt;= $housingRejectionCount&gt;&gt;&lt;/li&gt;
-        &lt;&lt;if $hasRentSupport&gt;&gt;&lt;li&gt;&lt;strong&gt;Rent Support Used:&lt;/strong&gt; Yes ($1,500)&lt;/li&gt;&lt;&lt;/if&gt;&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;Your family now has a stable place to live. The journey was difficult, reflecting the real challenges many immigrants face when trying to establish themselves in a new country.&lt;/p&gt;
-
+	&lt;div style=&quot;margin:2px 0;padding:6px 8px;border-radius:6px;background:rgba(56,178,75,.08);border-left:3px solid rgba(56,178,75,.3);&quot;&gt;
+		&lt;strong class=&quot;text-success&quot;&gt;✅ Success – You Secured Housing!&lt;/strong&gt;&lt;br&gt;
+		Despite the challenges, you found housing for your family.&lt;br&gt;
+		&lt;strong&gt;Your Results:&lt;/strong&gt;&lt;br&gt;
+		&lt;ul style=&quot;margin:2px 0;padding-left:16px;font-size:0.9em;&quot;&gt;
+			&lt;li&gt;🏠 &lt;strong&gt;Type:&lt;/strong&gt; &lt;&lt;= $housingType&gt;&gt; ($&lt;&lt;= $housingCost&gt;&gt;/mo)&lt;/li&gt;
+			&lt;li&gt;📅 &lt;strong&gt;Days:&lt;/strong&gt; &lt;&lt;= $day&gt;&gt; / &lt;&lt;= $gameTimelineMax&gt;&gt;&lt;/li&gt;
+			&lt;li&gt;💰 &lt;strong&gt;Earned:&lt;/strong&gt; $&lt;&lt;= $totalIncomeEarned&gt;&gt; · Jobs: &lt;&lt;= $jobsCompleted&gt;&gt;&lt;/li&gt;
+			&lt;li&gt;💼 &lt;strong&gt;Balance:&lt;/strong&gt; $&lt;&lt;= $money&gt;&gt; · Rejections: &lt;&lt;= $housingRejectionCount&gt;&gt;&lt;/li&gt;
+			&lt;&lt;if $hasRentSupport&gt;&gt;&lt;li&gt;🏛 Rent Support Used ($1,500)&lt;/li&gt;&lt;&lt;/if&gt;&gt;
+		&lt;/ul&gt;
+		Your family now has a stable home—reflecting how difficult this journey is for many immigrants.
+	&lt;/div&gt;
 &lt;&lt;else&gt;&gt;
-    &lt;h3 class=&quot;text-warning&quot;&gt;Time Expired - No Housing Secured&lt;/h3&gt;
-
-    &lt;p&gt;Unfortunately, you were unable to secure permanent housing within the &lt;&lt;= $gameTimelineMax&gt;&gt;-day timeline.&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;Your Results:&lt;/strong&gt;&lt;/p&gt;
-    &lt;ul&gt;
-        &lt;li&gt;&lt;strong&gt;Days Used:&lt;/strong&gt; &lt;&lt;= $day&gt;&gt; / &lt;&lt;= $gameTimelineMax&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Total Income Earned:&lt;/strong&gt; $&lt;&lt;= $totalIncomeEarned&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Jobs Completed:&lt;/strong&gt; &lt;&lt;= $jobsCompleted&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Final Balance:&lt;/strong&gt; $&lt;&lt;= $money&gt;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;Applications Rejected:&lt;/strong&gt; &lt;&lt;= $housingRejectionCount&gt;&gt;&lt;/li&gt;
-        &lt;&lt;if $housingApplicationPending&gt;&gt;&lt;li&gt;&lt;strong&gt;Pending Application:&lt;/strong&gt; &lt;&lt;= $pendingHousingType&gt;&gt; Apartment (never received decision)&lt;/li&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $hasRentSupport&gt;&gt;&lt;li&gt;&lt;strong&gt;Rent Support Available:&lt;/strong&gt; Yes ($1,500)&lt;/li&gt;&lt;&lt;/if&gt;&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;This reflects the harsh reality many immigrants face - even with hard work and determination, systemic barriers can make it extremely difficult to secure stable housing.&lt;/p&gt;
-
-    &lt;div class=&quot;status-box status-box-warning&quot; style=&quot;margin-top: 20px;&quot;&gt;
-    &lt;p&gt;&lt;strong&gt;What could have helped?&lt;/strong&gt;&lt;/p&gt;
-    &lt;ul&gt;
-        &lt;li&gt;More time (try 60 or 90 day timeline)&lt;/li&gt;
-        &lt;li&gt;Rent support program (enable in Game Options)&lt;/li&gt;
-        &lt;li&gt;Completing more jobs before applying&lt;/li&gt;
-        &lt;li&gt;Applying to more affordable apartments first&lt;/li&gt;
-        &lt;li&gt;Saving more money before applying&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;/div&gt;
+	&lt;div style=&quot;margin:2px 0;padding:6px 8px;border-radius:6px;background:rgba(236,201,75,.08);border-left:3px solid rgba(236,201,75,.3);&quot;&gt;
+		&lt;strong class=&quot;text-warning&quot;&gt;⚠️ Time Expired – No Housing Secured&lt;/strong&gt;&lt;br&gt;
+		You couldn’t secure housing within &lt;&lt;= $gameTimelineMax&gt;&gt; days.&lt;br&gt;
+		&lt;strong&gt;Your Results:&lt;/strong&gt;&lt;br&gt;
+		&lt;ul style=&quot;margin:2px 0;padding-left:16px;font-size:0.9em;&quot;&gt;
+			&lt;li&gt;📅 &lt;strong&gt;Days Used:&lt;/strong&gt; &lt;&lt;= $day&gt;&gt; / &lt;&lt;= $gameTimelineMax&gt;&gt;&lt;/li&gt;
+			&lt;li&gt;💰 &lt;strong&gt;Earned:&lt;/strong&gt; $&lt;&lt;= $totalIncomeEarned&gt;&gt; · Jobs: &lt;&lt;= $jobsCompleted&gt;&gt;&lt;/li&gt;
+			&lt;li&gt;💼 &lt;strong&gt;Final Balance:&lt;/strong&gt; $&lt;&lt;= $money&gt;&gt; · Rejections: &lt;&lt;= $housingRejectionCount&gt;&gt;&lt;/li&gt;
+			&lt;&lt;if $housingApplicationPending&gt;&gt;&lt;li&gt;🏠 Pending: &lt;&lt;= $pendingHousingType&gt;&gt; (no decision)&lt;/li&gt;&lt;&lt;/if&gt;&gt;
+			&lt;&lt;if $hasRentSupport&gt;&gt;&lt;li&gt;🏛 Rent Support: Available ($1,500)&lt;/li&gt;&lt;&lt;/if&gt;&gt;
+		&lt;/ul&gt;
+		This reflects the barriers immigrants face—hard work isn’t always enough under systemic limits.
+		&lt;div style=&quot;margin-top:4px;padding:6px 8px;border-radius:6px;background:rgba(245,167,66,.08);border-left:3px solid rgba(245,167,66,.3);font-size:0.9em;&quot;&gt;
+			&lt;strong&gt;What could have helped?&lt;/strong&gt;&lt;br&gt;
+			· More time (60–90 days)&lt;br&gt;
+			· Rent support enabled&lt;br&gt;
+			· Completing more jobs first&lt;br&gt;
+			· Applying to cheaper units&lt;br&gt;
+			· Saving more before applying
+		&lt;/div&gt;
+	&lt;/div&gt;
 &lt;&lt;/if&gt;&gt;
+
+&lt;div style=&quot;margin-top:4px;padding:6px 8px;border-radius:6px;background:rgba(208,213,224,.08);border-left:3px solid rgba(208,213,224,.3);&quot;&gt;
+	&lt;strong&gt;Real World Context:&lt;/strong&gt;&lt;br&gt;
+	This game reflects real challenges faced by undocumented immigrants:&lt;br&gt;
+	&lt;ul style=&quot;margin:2px 0;padding-left:16px;font-size:0.9em;&quot;&gt;
+		&lt;li&gt;Discrimination and fear of deportation&lt;/li&gt;
+		&lt;li&gt;No credit history or documentation&lt;/li&gt;
+		&lt;li&gt;Unstable jobs and limited income&lt;/li&gt;
+		&lt;li&gt;Language and system barriers&lt;/li&gt;
+		&lt;li&gt;High rent relative to wages&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;hr&gt;
-
-&lt;h3&gt;Real World Context&lt;/h3&gt;
-&lt;p&gt;This game simulates just a fraction of the challenges undocumented immigrants face when seeking housing:&lt;/p&gt;
-&lt;ul&gt;
-    &lt;li&gt;Discrimination and fear of deportation&lt;/li&gt;
-    &lt;li&gt;Lack of credit history and documentation&lt;/li&gt;
-    &lt;li&gt;Limited job opportunities and inconsistent income&lt;/li&gt;
-    &lt;li&gt;Language barriers and unfamiliarity with local systems&lt;/li&gt;
-    &lt;li&gt;High housing costs relative to available work&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;&lt;link &quot;Play Again&quot; &quot;Start&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;br&gt;&lt;br&gt;
-&lt;&lt;link &quot;Change Game Options&quot; &quot;GameOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="GameOptions" tags="" position="1100,100" size="100,100">/*Game Options Menu - Configure realism and experience level (Redirects to paginated version)*/
+&lt;div style=&quot;margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;&quot;&gt;
+	&lt;span&gt;&lt;&lt;link &quot;Play Again&quot; &quot;Start&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+	&lt;span&gt;&lt;&lt;link &quot;Change Options&quot; &quot;GameOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="GameOptions" tags="" position="1100,100" size="100,100">/* Redirect to first options page */
 &lt;&lt;set $step = 0&gt;&gt;
-&lt;&lt;goto &quot;GameOptions_Support&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="10" name="GameOptions_Support" tags="" position="1225,100" size="100,100">/*Page 1 of 3: Support Systems Configuration*/
+&lt;&lt;goto &quot;GameOptions_Support&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="10" name="GameOptions_Support" tags="" position="1225,100" size="100,100">/* Page 1: Rent support */
 &lt;&lt;set $step = 0&gt;&gt;
-
-&lt;div style=&quot;text-align: center; margin-bottom: 10px;&quot;&gt;
-&lt;span style=&quot;color: var(--muted); font-size: 0.9em;&quot;&gt;Page 1 of 3&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h2&gt;Configure Your Experience&lt;/h2&gt;
 
 &lt;&lt;if $optionsLocked&gt;&gt;
-    &lt;div class=&quot;status-box status-box-warning&quot;&gt;
-    &lt;p&gt;&lt;strong&gt;⚠️ Experience settings are locked.&lt;/strong&gt; You cannot change settings during an active game. Start a new game to change your configuration.&lt;/p&gt;
-    &lt;/div&gt;
+	&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;
+		Experience settings are locked for this run. Rent support is currently 
+		&lt;&lt;if $hasRentSupport&gt;&gt;ON (you have $1,500)&lt;&lt;&lt;else&gt;&gt;OFF (full realism)&lt;&lt;/if&gt;&gt;. 
+		Start a new game to change this.
+	&lt;/p&gt;
 &lt;&lt;else&gt;&gt;
-    &lt;p&gt;Choose how realistically you want to simulate the immigrant experience. These settings reflect different levels of support and time pressure that immigrants face in real life.&lt;/p&gt;
-    &lt;p class=&quot;text-error&quot;&gt;&lt;strong&gt;Note:&lt;/strong&gt; Once you start the game, these settings cannot be changed until you start a new game.&lt;/p&gt;
+	&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;
+		Rent support changes how hard the game feels. Right now it is 
+		&lt;&lt;if $hasRentSupport&gt;&gt;ON (you have $1,500)&lt;&lt;else&gt;&gt;OFF (you rely only on income)&lt;&lt;/if&gt;&gt;. 
+		&lt;&lt;if $hasRentSupport&gt;&gt;
+			&lt;&lt;link &quot;Turn it OFF (harder)&quot;&gt;&gt;&lt;&lt;set $hasRentSupport = false&gt;&gt;&lt;&lt;goto &quot;GameOptions_Support&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+		&lt;&lt;else&gt;&gt;
+			&lt;&lt;link &quot;Turn it ON (easier)&quot;&gt;&gt;&lt;&lt;set $hasRentSupport = true&gt;&gt;&lt;&lt;goto &quot;GameOptions_Support&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;/p&gt;
 &lt;&lt;/if&gt;&gt;
 
-&lt;hr&gt;
-
-&lt;h3&gt;Support Systems Available&lt;/h3&gt;
-
-&lt;div class=&quot;option-section&quot;&gt;
-&lt;p&gt;&lt;strong&gt;Reality:&lt;/strong&gt; Some immigrants have access to rent support programs through nonprofits or government assistance. Others receive no support and must navigate housing on their own.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Current Setting:&lt;/strong&gt; &lt;&lt;if $hasRentSupport&gt;&gt;&lt;span class=&quot;text-success&quot;&gt;✓ With Rent Support ($1,500 available)&lt;/span&gt;&lt;&lt;else&gt;&gt;&lt;span class=&quot;text-warning&quot;&gt;✗ No Rent Support (More Realistic)&lt;/span&gt;&lt;&lt;/if&gt;&gt;&lt;/p&gt;
-
-&lt;&lt;if !$optionsLocked&gt;&gt;
-    &lt;&lt;if $hasRentSupport&gt;&gt;
-        &lt;&lt;link &quot;Remove Rent Support (More Realistic)&quot;&gt;&gt;
-            &lt;&lt;set $hasRentSupport = false&gt;&gt;
-            &lt;&lt;goto &quot;GameOptions_Support&quot;&gt;&gt;
-        &lt;&lt;/link&gt;&gt;
-    &lt;&lt;else&gt;&gt;
-        &lt;&lt;link &quot;Add Rent Support (Less Realistic)&quot;&gt;&gt;
-            &lt;&lt;set $hasRentSupport = true&gt;&gt;
-            &lt;&lt;goto &quot;GameOptions_Support&quot;&gt;&gt;
-        &lt;&lt;/link&gt;&gt;
-    &lt;&lt;/if&gt;&gt;
-&lt;&lt;else&gt;&gt;
-    &lt;span style=&quot;color: var(--muted);&quot;&gt;Settings locked - start a new game to change&lt;/span&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;p style=&quot;margin-top: 10px; font-size: 0.9em; color: var(--muted);&quot;&gt;
-&lt;&lt;if $hasRentSupport&gt;&gt;
-&lt;em&gt;With support: Easier to qualify for housing, less financial stress. Simulates immigrants with access to assistance programs.&lt;/em&gt;
-&lt;&lt;else&gt;&gt;
-&lt;em&gt;Without support: Must rely entirely on earned income. Simulates the most common immigrant experience.&lt;/em&gt;
-&lt;&lt;/if&gt;&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;hr&gt;
-
-&lt;div style=&quot;display: flex; justify-content: space-between; align-items: center; margin-top: 30px;&quot;&gt;
-    &lt;div&gt;
-    &lt;&lt;link &quot;← Back to Introduction&quot; &quot;Landing&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;/div&gt;
-    &lt;div style=&quot;text-align: right;&quot;&gt;
-    &lt;&lt;link &quot;Next: Time Pressure →&quot; &quot;GameOptions_Timeline&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="GameOptions_Timeline" tags="" position="100,225" size="100,100">/*Page 2 of 3: Time Pressure Configuration*/
+&lt;div style=&quot;margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;&quot;&gt;
+	&lt;span&gt;&lt;&lt;link &quot;Intro&quot; &quot;Landing&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+	&lt;span&gt;&lt;&lt;link &quot;Next: Time&quot; &quot;GameOptions_Timeline&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="GameOptions_Timeline" tags="" position="100,225" size="100,100">/* Page 2: Time pressure */
 &lt;&lt;set $step = 0&gt;&gt;
-
-&lt;div style=&quot;text-align: center; margin-bottom: 10px;&quot;&gt;
-&lt;span style=&quot;color: var(--muted); font-size: 0.9em;&quot;&gt;Page 2 of 3&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h2&gt;Configure Your Experience&lt;/h2&gt;
 
 &lt;&lt;if $optionsLocked&gt;&gt;
-    &lt;div class=&quot;status-box status-box-warning&quot;&gt;
-    &lt;p&gt;&lt;strong&gt;⚠️ Experience settings are locked.&lt;/strong&gt; You cannot change settings during an active game. Start a new game to change your configuration.&lt;/p&gt;
-    &lt;/div&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;hr&gt;
-
-&lt;h3&gt;Time Pressure&lt;/h3&gt;
-
-&lt;div class=&quot;option-section&quot;&gt;
-&lt;p&gt;&lt;strong&gt;Reality:&lt;/strong&gt; Time pressure varies based on circumstances. Some immigrants have urgent housing needs (pregnant family member, unsafe current situation), while others have more time to establish themselves.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Current Setting:&lt;/strong&gt; &lt;span class=&quot;text-success&quot;&gt;&lt;&lt;= $gameTimelineMax&gt;&gt; days&lt;/span&gt;&lt;/p&gt;
-
-&lt;&lt;if !$optionsLocked&gt;&gt;
-    &lt;div class=&quot;timeline-options&quot;&gt;
-    &lt;&lt;link &quot;30 Days - High Urgency (Most Realistic)&quot;&gt;&gt;
-        &lt;&lt;set $gameTimelineMax = 30&gt;&gt;
-        &lt;&lt;goto &quot;GameOptions_Timeline&quot;&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-    &lt;p style=&quot;margin: 5px 0 15px 20px; font-size: 0.9em; color: var(--muted);&quot;&gt;&lt;em&gt;Baby coming soon, current housing unstable. The most common urgent scenario.&lt;/em&gt;&lt;/p&gt;
-
-    &lt;&lt;link &quot;60 Days - Moderate Urgency&quot;&gt;&gt;
-        &lt;&lt;set $gameTimelineMax = 60&gt;&gt;
-        &lt;&lt;goto &quot;GameOptions_Timeline&quot;&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-    &lt;p style=&quot;margin: 5px 0 15px 20px; font-size: 0.9em; color: var(--muted);&quot;&gt;&lt;em&gt;Some breathing room, but still significant pressure to secure housing.&lt;/em&gt;&lt;/p&gt;
-
-    &lt;&lt;link &quot;90 Days - Lower Urgency&quot;&gt;&gt;
-        &lt;&lt;set $gameTimelineMax = 90&gt;&gt;
-        &lt;&lt;goto &quot;GameOptions_Timeline&quot;&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-    &lt;p style=&quot;margin: 5px 0 15px 20px; font-size: 0.9em; color: var(--muted);&quot;&gt;&lt;em&gt;More time to build income history and savings. Less realistic for urgent situations.&lt;/em&gt;&lt;/p&gt;
-    &lt;/div&gt;
+	&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;
+		Your time limit is &lt;&lt;= $gameTimelineMax&gt;&gt; days. Settings are locked for this run; 
+		start a new game to change the timeline.
+	&lt;/p&gt;
 &lt;&lt;else&gt;&gt;
-    &lt;span style=&quot;color: var(--muted);&quot;&gt;Settings locked - start a new game to change&lt;/span&gt;
+	&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;
+		Time pressure sets how urgent housing feels. Current limit: &lt;&lt;= $gameTimelineMax&gt;&gt; days. 
+		Choose: 
+		&lt;&lt;link &quot;30 days&quot;&gt;&gt;&lt;&lt;set $gameTimelineMax = 30&gt;&gt;&lt;&lt;goto &quot;GameOptions_Timeline&quot;&gt;&gt;&lt;&lt;/link&gt;&gt; / 
+		&lt;&lt;link &quot;60 days&quot;&gt;&gt;&lt;&lt;set $gameTimelineMax = 60&gt;&gt;&lt;&lt;goto &quot;GameOptions_Timeline&quot;&gt;&gt;&lt;&lt;/link&gt;&gt; / 
+		&lt;&lt;link &quot;90 days&quot;&gt;&gt;&lt;&lt;set $gameTimelineMax = 90&gt;&gt;&lt;&lt;goto &quot;GameOptions_Timeline&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;.
+	&lt;/p&gt;
 &lt;&lt;/if&gt;&gt;
-&lt;/div&gt;
 
-&lt;hr&gt;
-
-&lt;div style=&quot;display: flex; justify-content: space-between; align-items: center; margin-top: 30px;&quot;&gt;
-    &lt;div&gt;
-    &lt;&lt;link &quot;← Back: Support Systems&quot; &quot;GameOptions_Support&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;/div&gt;
-    &lt;div style=&quot;text-align: right;&quot;&gt;
-    &lt;&lt;link &quot;Next: Review &amp; Start →&quot; &quot;GameOptions_Summary&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="GameOptions_Summary" tags="" position="225,225" size="100,100">/*Page 3 of 3: Configuration Summary and Start*/
+&lt;div style=&quot;margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;&quot;&gt;
+	&lt;span&gt;&lt;&lt;link &quot;Back: Support&quot; &quot;GameOptions_Support&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+	&lt;span&gt;&lt;&lt;link &quot;Next: Summary&quot; &quot;GameOptions_Summary&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="GameOptions_Summary" tags="" position="225,225" size="100,100">/* Page 3: Summary + start */
 &lt;&lt;set $step = 0&gt;&gt;
 
-&lt;div style=&quot;text-align: center; margin-bottom: 10px;&quot;&gt;
-&lt;span style=&quot;color: var(--muted); font-size: 0.9em;&quot;&gt;Page 3 of 3&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h2&gt;Your Experience Level&lt;/h2&gt;
-
-&lt;div class=&quot;config-summary&quot; style=&quot;background: rgba(208,213,224,.08); padding: 20px; border-radius: 8px; border-left: 4px solid var(--line);&quot;&gt;
-&lt;ul style=&quot;list-style: none; padding: 0;&quot;&gt;
-&lt;li&gt;&lt;strong&gt;Rent Support:&lt;/strong&gt; &lt;&lt;if $hasRentSupport&gt;&gt;&lt;span class=&quot;text-success&quot;&gt;Yes - $1,500 available&lt;/span&gt;&lt;&lt;else&gt;&gt;&lt;span class=&quot;text-error&quot;&gt;No - Full realism&lt;/span&gt;&lt;&lt;/if&gt;&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Timeline:&lt;/strong&gt; &lt;&lt;= $gameTimelineMax&gt;&gt; days to secure housing&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Starting Money:&lt;/strong&gt; $900&lt;/li&gt;
-&lt;li style=&quot;margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;&quot;&gt;
-&lt;strong&gt;Realism Level:&lt;/strong&gt;
+&lt;&lt;set _realism = &quot;Moderate realism&quot;&gt;&gt;
 &lt;&lt;if $hasRentSupport and $gameTimelineMax &gt;= 90&gt;&gt;
-    &lt;span class=&quot;text-success&quot;&gt;Lower Realism&lt;/span&gt; - More forgiving simulation
+	&lt;&lt;set _realism = &quot;Lower realism (more forgiving)&quot;&gt;&gt;
 &lt;&lt;elseif !$hasRentSupport and $gameTimelineMax &lt;= 30&gt;&gt;
-    &lt;span class=&quot;text-error&quot;&gt;Highest Realism&lt;/span&gt; - Simulates most common urgent scenario
+	&lt;&lt;set _realism = &quot;Highest realism (urgent and difficult)&quot;&gt;&gt;
 &lt;&lt;elseif !$hasRentSupport and $gameTimelineMax == 60&gt;&gt;
-    &lt;span class=&quot;text-warning&quot;&gt;High Realism&lt;/span&gt; - Challenging but achievable
-&lt;&lt;else&gt;&gt;
-    &lt;span class=&quot;text-info&quot;&gt;Moderate Realism&lt;/span&gt; - Balanced experience
+	&lt;&lt;set _realism = &quot;High realism (challenging)&quot;&gt;&gt;
 &lt;&lt;/if&gt;&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-
-&lt;hr&gt;
 
 &lt;&lt;if !$optionsLocked&gt;&gt;
-    &lt;div style=&quot;text-align: center; margin: 20px 0;&quot;&gt;
-    &lt;p style=&quot;font-size: 0.95em; color: var(--muted); margin-bottom: 20px;&quot;&gt;Want to adjust your settings? Use the navigation below.&lt;/p&gt;
-    &lt;/div&gt;
+	&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;
+		You will start with $900, rent support is 
+		&lt;&lt;if $hasRentSupport&gt;&gt;ON&lt;&lt;else&gt;&gt;OFF&lt;&lt;/if&gt;&gt;, and you have 
+		&lt;&lt;= $gameTimelineMax&gt;&gt; days to secure housing. This setup is: &lt;&lt;= _realism&gt;&gt;. 
+		When you begin, these options will lock for this run.
+	&lt;/p&gt;
 
-    &lt;div class=&quot;status-box status-box-success&quot; style=&quot;margin: 20px 0; text-align: center;&quot;&gt;
-    &lt;h3 style=&quot;margin-top: 0;&quot;&gt;Ready to Experience This Story?&lt;/h3&gt;
-    &lt;p&gt;Once you begin, these settings will be locked until you start a new game.&lt;/p&gt;
-    &lt;p style=&quot;font-size: 1.1em; margin: 20px 0;&quot;&gt;
-    &lt;&lt;link &quot;BEGIN YOUR STORY →&quot; &quot;Start&quot;&gt;&gt;
-        &lt;&lt;set $optionsLocked = true&gt;&gt;
-        &lt;&lt;set $gameStarted = true&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-    &lt;/p&gt;
-    &lt;/div&gt;
+	&lt;div style=&quot;margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;align-items:center;&quot;&gt;
+		&lt;span&gt;&lt;&lt;link &quot;Back: Time&quot; &quot;GameOptions_Timeline&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+		&lt;span&gt;
+			&lt;&lt;link &quot;BEGIN&quot; &quot;Start&quot;&gt;&gt;
+				&lt;&lt;set $optionsLocked = true&gt;&gt;
+				&lt;&lt;set $gameStarted = true&gt;&gt;
+			&lt;&lt;/link&gt;&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
 &lt;&lt;else&gt;&gt;
-    &lt;div style=&quot;text-align: center; margin-top: 30px;&quot;&gt;
-    &lt;&lt;link &quot;Return to Hub&quot; &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;br&gt;&lt;br&gt;
-    &lt;&lt;link &quot;Start New Game&quot; &quot;Landing&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;/div&gt;
-&lt;&lt;/if&gt;&gt;
+	&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;
+		Current run: rent support 
+		&lt;&lt;if $hasRentSupport&gt;&gt;ON&lt;&lt;else&gt;&gt;OFF&lt;&lt;/if&gt;&gt;, &lt;&lt;= $gameTimelineMax&gt;&gt; days, 
+		&lt;&lt;= _realism&gt;&gt;. You can return to the hub or start a new game to reconfigure.
+	&lt;/p&gt;
 
-&lt;hr&gt;
-
-&lt;div style=&quot;display: flex; justify-content: space-between; align-items: center; margin-top: 30px;&quot;&gt;
-    &lt;div&gt;
-    &lt;&lt;link &quot;← Back: Time Pressure&quot; &quot;GameOptions_Timeline&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;/div&gt;
-    &lt;&lt;if !$optionsLocked&gt;&gt;
-    &lt;div style=&quot;text-align: right;&quot;&gt;
-    &lt;&lt;link &quot;← Back to Introduction&quot; &quot;Landing&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-    &lt;/div&gt;
-    &lt;&lt;/if&gt;&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="HousingApplicationRejected" tags="" position="350,225" size="100,100">/*Application has been rejected - show reason and allow retry*/
+	&lt;div style=&quot;margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;&quot;&gt;
+		&lt;span&gt;&lt;&lt;link &quot;Hub&quot; &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+		&lt;span&gt;&lt;&lt;link &quot;New Game&quot; &quot;Landing&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
+	&lt;/div&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="HousingApplicationRejected" tags="" position="350,225" size="100,100">/*Application has been rejected - show reason and allow retry*/
 &lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
@@ -1324,86 +1096,84 @@ You are applying for the &lt;strong&gt;&lt;&lt;= $selectedHousingType&gt;&gt; Ap
     &lt;&lt;goto &quot;ApplicationSubmitted&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Cancel and go back&quot;&gt;&gt; &lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="HousingOptions" tags="" position="725,225" size="100,100">/*Housing options - various affordability levels*/
-&lt;&lt;set $step = 0&gt;&gt;
-&lt;&lt;ShowInfo&gt;&gt;
+&lt;&lt;link &quot;Cancel and go back&quot;&gt;&gt; &lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="HousingOptions" tags="" position="725,225" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
+&lt;&lt;if $housingPage is undefined&gt;&gt;&lt;&lt;set $housingPage = 1&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;set _maxHousingPage = 3&gt;&gt;
 
-&lt;h3&gt;Available Housing Options&lt;/h3&gt;
+&lt;h3 style=&quot;margin:0;&quot;&gt;Available Housing Options&lt;/h3&gt;
+&lt;p style=&quot;margin:0 0 4px 0;font-size:0.9em;color:var(--muted);&quot;&gt;Page &lt;&lt;= $housingPage&gt;&gt; of &lt;&lt;= _maxHousingPage&gt;&gt;&lt;/p&gt;
+&lt;p style=&quot;margin:4px 0;font-size:0.9em;&quot;&gt;You have $&lt;&lt;= $money&gt;&gt; in your bank account. The minimum livable rent is around $1100, but higher rent (≈$1600) brings better work opportunities.&lt;/p&gt;
 
-&lt;div class=&quot;housing-intro&quot;&gt;
-&lt;p&gt;You have $&lt;&lt;= $money&gt;&gt; in your bank account, but the minimum you should be spending for a livable apartment is $1100. You know that there is access to significantly more non-legal employment opportunities in other areas if you are willing to spend more on rent, closer to $1600.&lt;/p&gt;
+&lt;&lt;switch $housingPage&gt;&gt;
+
+	&lt;&lt;case 1&gt;&gt;
+		&lt;div style=&quot;margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.3);&quot;&gt;
+			&lt;h4 style=&quot;margin:0;&quot;&gt;Affordable Apartment&lt;/h4&gt;
+			&lt;p style=&quot;margin:2px 0;&quot;&gt;A basic studio or 1-bedroom in a working-class neighborhood. Older building, but livable. Public transit accessible.&lt;/p&gt;
+			&lt;p style=&quot;margin:2px 0;&quot;&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $30&lt;br&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $900&lt;br&gt;&lt;em&gt;Landlords require 3x rent ($2,700/mo).&lt;/em&gt;&lt;/p&gt;
+			&lt;&lt;if $money &gt;= 30&gt;&gt;
+				&lt;&lt;link &quot;Apply for Affordable Apartment&quot;&gt;&gt;
+					&lt;&lt;set $selectedHousingType = &quot;Affordable&quot;&gt;&gt;
+					&lt;&lt;set $selectedApplicationFee = 30&gt;&gt;
+					&lt;&lt;set $selectedMonthlyCost = 900&gt;&gt;
+					&lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
+				&lt;&lt;/link&gt;&gt;
+			&lt;&lt;else&gt;&gt;
+				&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;
+			&lt;&lt;/if&gt;&gt;
+		&lt;/div&gt;
+
+	&lt;&lt;case 2&gt;&gt;
+		&lt;div style=&quot;margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);&quot;&gt;
+			&lt;h4 style=&quot;margin:0;&quot;&gt;Standard Apartment&lt;/h4&gt;
+			&lt;p style=&quot;margin:2px 0;&quot;&gt;A decent 1-bedroom in a mixed neighborhood with some amenities. Area has more employment opportunities.&lt;/p&gt;
+			&lt;p style=&quot;margin:2px 0;&quot;&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $50&lt;br&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $1,400&lt;br&gt;&lt;em&gt;Requires income of 3x rent ($4,200/mo) and stricter documentation.&lt;/em&gt;&lt;/p&gt;
+			&lt;&lt;if $money &gt;= 50&gt;&gt;
+				&lt;&lt;link &quot;Apply for Standard Apartment&quot;&gt;&gt;
+					&lt;&lt;set $selectedHousingType = &quot;Standard&quot;&gt;&gt;
+					&lt;&lt;set $selectedApplicationFee = 50&gt;&gt;
+					&lt;&lt;set $selectedMonthlyCost = 1400&gt;&gt;
+					&lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
+				&lt;&lt;/link&gt;&gt;
+			&lt;&lt;else&gt;&gt;
+				&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;
+			&lt;&lt;/if&gt;&gt;
+		&lt;/div&gt;
+
+	&lt;&lt;case 3&gt;&gt;
+		&lt;div style=&quot;margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(245,167,66,.08);border-left:3px solid rgba(245,167,66,.3);&quot;&gt;
+			&lt;h4 style=&quot;margin:0;&quot;&gt;Premium Apartment in Better Area&lt;/h4&gt;
+			&lt;p style=&quot;margin:2px 0;&quot;&gt;Modern 1–2 bedroom in a nicer area with more job options, both legal and under-the-table. Expect documentation requests and long searches balanced against long workdays.&lt;/p&gt;
+			&lt;p style=&quot;margin:2px 0;&quot;&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $75&lt;br&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $1,800&lt;br&gt;&lt;em&gt;Landlords require income of 3x rent ($5,400/mo), credit check, employment verification, and often a co-signer.&lt;/em&gt;&lt;/p&gt;
+			&lt;&lt;if $money &gt;= 75&gt;&gt;
+				&lt;&lt;link &quot;Apply for Premium Apartment&quot;&gt;&gt;
+					&lt;&lt;set $selectedHousingType = &quot;Premium&quot;&gt;&gt;
+					&lt;&lt;set $selectedApplicationFee = 75&gt;&gt;
+					&lt;&lt;set $selectedMonthlyCost = 1800&gt;&gt;
+					&lt;&lt;goto &quot;PremiumHousingConsequences&quot;&gt;&gt;
+				&lt;&lt;/link&gt;&gt;
+			&lt;&lt;else&gt;&gt;
+				&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;
+			&lt;&lt;/if&gt;&gt;
+		&lt;/div&gt;
+
+&lt;&lt;/switch&gt;&gt;
+
+&lt;div style=&quot;display:flex;justify-content:space-between;font-size:0.85em;margin-top:4px;&quot;&gt;
+	&lt;span&gt;
+		&lt;&lt;if $housingPage &gt; 1&gt;&gt;
+			&lt;&lt;link &quot;◀ Back&quot;&gt;&gt;&lt;&lt;set $housingPage -= 1&gt;&gt;&lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
+	&lt;span&gt;
+		&lt;&lt;if $housingPage &lt; _maxHousingPage&gt;&gt;
+			&lt;&lt;link &quot;Next ▶&quot;&gt;&gt;&lt;&lt;set $housingPage += 1&gt;&gt;&lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;
 &lt;/div&gt;
 
-&lt;hr&gt;
-
-Select an apartment to apply:
-
-&lt;hr&gt;
-
-&lt;div class=&quot;housing-option&quot;&gt;
-&lt;h4&gt;Affordable Apartment&lt;/h4&gt;
-&lt;p&gt;A basic studio or 1-bedroom in a working-class neighborhood. Older building, but livable. Public transit accessible.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $30&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $900&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Landlords typically require income of 3x rent ($2,700/month)&lt;/em&gt;&lt;/p&gt;
-
-&lt;&lt;if $money &gt;= 30&gt;&gt;
-    &lt;&lt;link &quot;Apply for Affordable Apartment&quot;&gt;&gt;
-        &lt;&lt;set $selectedHousingType = &quot;Affordable&quot;&gt;&gt;
-        &lt;&lt;set $selectedApplicationFee = 30&gt;&gt;
-        &lt;&lt;set $selectedMonthlyCost = 900&gt;&gt;
-        &lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-&lt;&lt;else&gt;&gt;
-    &lt;p style=&quot;color: red;&quot;&gt;You don&#39;t have enough money for this application fee.&lt;/p&gt;
-&lt;&lt;/if&gt;&gt;
-&lt;/div&gt;
-
-&lt;hr&gt;
-
-&lt;div class=&quot;housing-option&quot;&gt;
-&lt;h4&gt;Standard Apartment&lt;/h4&gt;
-&lt;p&gt;A decent 1-bedroom in a mixed neighborhood. Better maintained building with some amenities. You know this area has more employment opportunities.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $50&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $1,400&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Landlords typically require income of 3x rent ($4,200/month) and will scrutinize your documentation more carefully.&lt;/em&gt;&lt;/p&gt;
-
-&lt;&lt;if $money &gt;= 50&gt;&gt;
-    &lt;&lt;link &quot;Apply for Standard Apartment&quot;&gt;&gt;
-        &lt;&lt;set $selectedHousingType = &quot;Standard&quot;&gt;&gt;
-        &lt;&lt;set $selectedApplicationFee = 50&gt;&gt;
-        &lt;&lt;set $selectedMonthlyCost = 1400&gt;&gt;
-        &lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-&lt;&lt;else&gt;&gt;
-    &lt;p style=&quot;color: red;&quot;&gt;You don&#39;t have enough money for this application fee.&lt;/p&gt;
-&lt;&lt;/if&gt;&gt;
-&lt;/div&gt;
-
-&lt;hr&gt;
-
-&lt;div class=&quot;housing-option&quot;&gt;
-&lt;h4&gt;Premium Apartment in Better Area&lt;/h4&gt;
-&lt;p&gt;A modern 1-2 bedroom in a nicer neighborhood with significantly more employment opportunities—both legal and under-the-table work. However, the property owner may ask for and expect certain legal documents. The apartment search will be longer and you will have to balance it with the 10-12 hour days you&#39;ve been working just to keep up with your family&#39;s needs.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $75&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $1,800&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Landlords require income of 3x rent ($5,400/month), full credit check, employment verification, and often a co-signer.&lt;/em&gt;&lt;/p&gt;
-
-&lt;&lt;if $money &gt;= 75&gt;&gt;
-    &lt;&lt;link &quot;Apply for Premium Apartment&quot;&gt;&gt;
-        &lt;&lt;set $selectedHousingType = &quot;Premium&quot;&gt;&gt;
-        &lt;&lt;set $selectedApplicationFee = 75&gt;&gt;
-        &lt;&lt;set $selectedMonthlyCost = 1800&gt;&gt;
-        &lt;&lt;goto &quot;PremiumHousingConsequences&quot;&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
-&lt;&lt;else&gt;&gt;
-    &lt;p style=&quot;color: red;&quot;&gt;You don&#39;t have enough money for this application fee.&lt;/p&gt;
-&lt;&lt;/if&gt;&gt;
-&lt;/div&gt;
-
-&lt;hr&gt;
-
-&lt;&lt;link &quot;Go back&quot;&gt;&gt; &lt;&lt;goto &quot;HousingStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="17" name="HousingStart" tags="" position="850,225" size="100,100">/*This is the entry point for housing search*/
+&lt;div style=&quot;margin-top:6px;font-size:0.85em;text-align:center;&quot;&gt;
+	&lt;&lt;link &quot;⬅ Go Back to Housing Start&quot;&gt;&gt;&lt;&lt;goto &quot;HousingStart&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="HousingStart" tags="" position="850,225" size="100,100">/*This is the entry point for housing search*/
 &lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
@@ -1638,15 +1408,13 @@ The day is over. Let&#39;s see what happened today.
 Welcome Home!
 Here are your options for the day
 
-&lt;&lt;link &quot;See summary of your job&quot;&gt;&gt; &lt;&lt;goto &quot;Summary&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;&lt;link &quot;Start your day&quot;&gt;&gt; &lt;&lt;goto &quot;DayChoice&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
-&lt;&lt;link &quot;Game Options&quot;&gt;&gt; &lt;&lt;goto &quot;GameOptions&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="25" name="DayChoice" tags="" position="600,350" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
+&lt;&lt;link &quot;Start your day&quot;&gt;&gt; &lt;&lt;goto &quot;DayChoice&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="25" name="DayChoice" tags="" position="600,350" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
 What would you like to do today?
-
 &lt;&lt;link &quot;Look for Housing&quot;&gt;&gt; &lt;&lt;goto &quot;HousingStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
-&lt;&lt;link &quot;Go to Work&quot;&gt;&gt; &lt;&lt;goto &quot;WorkStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="26" name="ConstructionCheck" tags="" position="725,350" size="100,100">&lt;&lt;if !$jobRef&gt;&gt;
+&lt;&lt;link &quot;Go to Work&quot;&gt;&gt; &lt;&lt;goto &quot;WorkStart&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;
+&lt;&lt;link &quot;See summary of your job&quot;&gt;&gt; &lt;&lt;goto &quot;Summary&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="26" name="ConstructionCheck" tags="" position="725,350" size="100,100">&lt;&lt;if !$jobRef&gt;&gt;
 You need a job reference before a construction crew will hire you.
 
 &lt;&lt;link &quot;Go back to the job board&quot;&gt;&gt;
@@ -1686,80 +1454,36 @@ You have a reference and your own tools. You&#39;re ready to start construction 
 &lt;&lt;link &quot;Head to the job kiosk&quot;&gt;&gt;
 	&lt;&lt;goto &quot;Kiosk&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="27" name="JobBoard" tags="" position="850,350" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
-&lt;&lt;ShowInfo&gt;&gt;
-&lt;&lt;set _availableJobs = clone($jobs)&gt;&gt;
-&lt;&lt;set _availableJobs.shuffle()&gt;&gt;
-&lt;&lt;set _count = Math.min(3, _availableJobs.length)&gt;&gt;
-Choose a job: 
-&lt;&lt;for _i = 0; _i &lt; _count; _i++&gt;&gt;
-&lt;&lt;JobListing _availableJobs[_i] &quot;Kiosk&quot;&gt;&gt;
-&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="28" name="Kiosk" tags="" position="975,350" size="100,100">&lt;&lt;set $step = 0&gt;&gt;
-&lt;&lt;ShowInfo&gt;&gt;
-
-&lt;&lt;if $transitDays &gt; 0&gt;&gt; /* Code for if you have a transit pass */
-	Your transit pass expires in &lt;&lt;= $transitDays&gt;&gt; days.
-	&lt;&lt;set $transitDays -=1 &gt;&gt;
-	&lt;&lt;set $workdays-=2&gt;&gt;
-	&lt;&lt;set _chance = random(1,100)&gt;&gt;
-
-	&lt;&lt;link &quot;Use your pass and go to work&quot;&gt;&gt; 
-		&lt;&lt;if _chance &lt;25&gt;&gt;
-			UH OH! There is a delay and you cannot make it to work today!
-			&lt;&lt;set $workdays+=2&gt;&gt;
-			&lt;&lt;link &quot;You have to go home&quot;&gt;&gt; &lt;&lt;goto &quot;Hub&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;		
-				&lt;&lt;/if&gt;&gt;
-
-			&lt;&lt;goto &quot;Workday&quot;&gt;&gt;
-
-	&lt;&lt;/link&gt;&gt;&lt;br&gt;
-
-
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="27" name="JobBoard" tags="" position="850,350" size="100,100">&lt;&lt;if !$jobOrder&gt;&gt;&lt;&lt;set $jobOrder = clone($jobs)&gt;&gt;&lt;&lt;$jobOrder.shuffle()&gt;&gt;&lt;&lt;/if&gt;&gt; &lt;&lt;set _count = $jobOrder.length&gt;&gt;
+&lt;&lt;if $jobIndex is undefined&gt;&gt;&lt;&lt;set $jobIndex = 0&gt;&gt;&lt;&lt;/if&gt;&gt; &lt;&lt;set _job = $jobOrder[$jobIndex]&gt;&gt;
+&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;Check out the jobs:&lt;/p&gt;
+&lt;&lt;JobListing _job &quot;Kiosk&quot;&gt;&gt;
+&lt;div style=&quot;display:flex;justify-content:space-between;font-size:0.5em;margin-top:2px;&quot;&gt;
+	&lt;&lt;link &quot;◀&quot;&gt;&gt;&lt;&lt;set $jobIndex = ($jobIndex - 1 + _count) % _count&gt;&gt;&lt;&lt;goto &quot;JobBoard&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+	&lt;span&gt;&lt;&lt;=$jobIndex + 1&gt;&gt;/&lt;&lt;=_count&gt;&gt;&lt;/span&gt;
+	&lt;&lt;link &quot;▶&quot;&gt;&gt;&lt;&lt;set $jobIndex = ($jobIndex + 1) % _count&gt;&gt;&lt;&lt;goto &quot;JobBoard&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="28" name="Kiosk" tags="" position="975,350" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
+&lt;&lt;if $transitDays &gt; 0&gt;&gt;
+&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;🚇 Pass active – &lt;&lt;= $transitDays&gt;&gt; days left.&lt;/p&gt;
+&lt;&lt;set $transitDays -= 1&gt;&gt;&lt;&lt;set $workdays -= 2&gt;&gt;&lt;&lt;set _chance = random(1,100)&gt;&gt;
+&lt;&lt;link &quot;Use pass and go to work&quot;&gt;&gt;
+	&lt;&lt;if _chance &lt; 25&gt;&gt;
+		&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;Delay! You couldn’t make it today.&lt;/p&gt;
+		&lt;&lt;set $workdays += 2&gt;&gt;&lt;&lt;link &quot;Go home&quot;&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;&lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;/link&gt;&gt;
 &lt;&lt;else&gt;&gt;
-	You do not have a transit pass right now.&lt;br&gt;
-	Transit passes reduce your work time. Choose a pass option below:&lt;br&gt;&lt;br&gt;
-
-	&lt;div class=&quot;transit-options&quot;&gt;
-	&lt;h4&gt;Available CTA/Pace Passes:&lt;/h4&gt;
-
-	&lt;&lt;if $money &gt;= 15&gt;&gt;
-		&lt;&lt;link &quot;Buy 3-Day Pass for $15&quot;&gt;&gt;
-			&lt;&lt;set $money -= 15&gt;&gt;
-			&lt;&lt;set $transit = true&gt;&gt;
-			&lt;&lt;set $transitDays = 3&gt;&gt;
-			&lt;&lt;set $workDays-=2&gt;&gt;
-			&lt;&lt;goto &quot;Workday&quot;&gt;&gt;
-		&lt;&lt;/link&gt;&gt;&lt;br&gt;
-	&lt;&lt;else&gt;&gt;
-		&lt;span style=&quot;color: gray;&quot;&gt;3-Day Pass ($15) - Not enough money&lt;/span&gt;&lt;br&gt;
-	&lt;&lt;/if&gt;&gt;
-
-	&lt;&lt;if $money &gt;= 20&gt;&gt;
-		&lt;&lt;link &quot;Buy 7-Day Pass for $20&quot;&gt;&gt;
-			&lt;&lt;set $money -= 20&gt;&gt;
-			&lt;&lt;set $transit = true&gt;&gt;
-			&lt;&lt;set $transitDays = 7&gt;&gt;
-			&lt;&lt;set $workDays-=2&gt;&gt;
-			&lt;&lt;goto &quot;Workday&quot;&gt;&gt;
-		&lt;&lt;/link&gt;&gt;&lt;br&gt;
-	&lt;&lt;else&gt;&gt;
-		&lt;span style=&quot;color: gray;&quot;&gt;7-Day Pass ($20) - Not enough money&lt;/span&gt;&lt;br&gt;
-	&lt;&lt;/if&gt;&gt;
-
-	&lt;&lt;if $money &gt;= 75&gt;&gt;
-		&lt;&lt;link &quot;Buy 30-Day Pass for $75&quot;&gt;&gt;
-			&lt;&lt;set $money -= 75&gt;&gt;
-			&lt;&lt;set $transit = true&gt;&gt;
-			&lt;&lt;set $transitDays = 30&gt;&gt;
-			&lt;&lt;set $workDays-=2&gt;&gt;
-			&lt;&lt;goto &quot;Workday&quot;&gt;&gt;
-		&lt;&lt;/link&gt;&gt;&lt;br&gt;
-	&lt;&lt;else&gt;&gt;
-		&lt;span style=&quot;color: gray;&quot;&gt;30-Day Pass ($75) - Not enough money&lt;/span&gt;&lt;br&gt;
-	&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-	&lt;br&gt;
-	&lt;&lt;link &quot;Walk Instead&quot;&gt;&gt; &lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;set $workdays-=1&gt;&gt; &lt;&lt;/link&gt;&gt;
+&lt;p style=&quot;margin:0;font-size:0.9em;&quot;&gt;🚶 No transit pass. Choose one below:&lt;/p&gt;
+&lt;&lt;if $money &gt;= 15&gt;&gt;
+	&lt;&lt;link &quot;3-Day – $15&quot;&gt;&gt;&lt;&lt;set $money -= 15&gt;&gt;&lt;&lt;set $transit=true&gt;&gt;&lt;&lt;set $transitDays=3&gt;&gt;&lt;&lt;set $workdays -=2&gt;&gt;&lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;&lt;else&gt;&gt;&lt;span style=&quot;color:gray;font-size:0.85em;&quot;&gt;3-Day – Not enough&lt;/span&gt;&lt;br&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $money &gt;= 20&gt;&gt;
+	&lt;&lt;link &quot;7-Day – $20&quot;&gt;&gt;&lt;&lt;set $money -= 20&gt;&gt;&lt;&lt;set $transit=true&gt;&gt;&lt;&lt;set $transitDays=7&gt;&gt;&lt;&lt;set $workdays -=2&gt;&gt;&lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;&lt;else&gt;&gt;&lt;span style=&quot;color:gray;font-size:0.85em;&quot;&gt;7-Day – Not enough&lt;/span&gt;&lt;br&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $money &gt;= 75&gt;&gt;
+	&lt;&lt;link &quot;30-Day – $75&quot;&gt;&gt;&lt;&lt;set $money -= 75&gt;&gt;&lt;&lt;set $transit=true&gt;&gt;&lt;&lt;set $transitDays=30&gt;&gt;&lt;&lt;set $workdays -=2&gt;&gt;&lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;&lt;else&gt;&gt;&lt;span style=&quot;color:gray;font-size:0.85em;&quot;&gt;30-Day – Not enough&lt;/span&gt;&lt;br&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;link &quot;Walk instead&quot;&gt;&gt;&lt;&lt;set $workdays -= 1&gt;&gt;&lt;&lt;goto &quot;Workday&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="29" name="Summary" tags="" position="1100,350" size="100,100">&lt;&lt;if $workDays&gt;0&gt;&gt; 
 	Here are the current details of your job...
 	&lt;&lt;JobSummary&gt;&gt;

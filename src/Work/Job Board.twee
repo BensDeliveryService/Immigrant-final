@@ -1,10 +1,10 @@
 :: JobBoard
-<<set $step = 0>>
-<<ShowInfo>>
-<<set _availableJobs = clone($jobs)>>
-<<set _availableJobs.shuffle()>>
-<<set _count = Math.min(3, _availableJobs.length)>>
-Choose a job: 
-<<for _i = 0; _i < _count; _i++>>
-<<JobListing _availableJobs[_i] "Kiosk">>
-<</for>>
+<<if !$jobOrder>><<set $jobOrder = clone($jobs)>><<$jobOrder.shuffle()>><</if>> <<set _count = $jobOrder.length>>
+<<if $jobIndex is undefined>><<set $jobIndex = 0>><</if>> <<set _job = $jobOrder[$jobIndex]>>
+<p style="margin:0;font-size:0.9em;">Check out the jobs:</p>
+<<JobListing _job "Kiosk">>
+<div style="display:flex;justify-content:space-between;font-size:0.5em;margin-top:2px;">
+	<<link "◀">><<set $jobIndex = ($jobIndex - 1 + _count) % _count>><<goto "JobBoard">><</link>>
+	<span><<=$jobIndex + 1>>/<<=_count>></span>
+	<<link "▶">><<set $jobIndex = ($jobIndex + 1) % _count>><<goto "JobBoard">><</link>>
+</div>

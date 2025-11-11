@@ -22,6 +22,7 @@ Important for collaborators:
 */
 
 :: StoryStylesheet[stylesheet]
+
 :root{
   /* Softer backgrounds and text for reduced eye strain */
   --ui:#12151e; --panel:#1a1f2e; --ink:#d0d5e0; --muted:#8a92a0; --line:#2a3040;
@@ -57,8 +58,55 @@ body{background:var(--ui); color:var(--ink); font-family:Inter,Segoe UI,system-u
   display:flex; flex-direction:column; gap:.2rem;
   padding-right:1rem; border-right:1px solid var(--line);
   line-height:1.4;
+}#persistent-header {
+  font-size: 0.8em;
+  padding: 2px 6px;
+  margin: 0 0 4px 0;
+  display: flex;
+  flex-wrap: wrap;        /* will wrap to 2 lines if needed */
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid #ccc;
 }
+
+/* each "column" */
+.hud-item {
+  min-width: 7rem;        /* makes them line up vertically */
+  white-space: nowrap;
+}
+
+/* lets the whole bar stay slim if screen is wide */
+.hud-day   { flex: 1 1 auto; }
+.hud-money,
+.hud-housing,
+.hud-job,
+.hud-transit,
+.hud-family { flex: 0 0 auto; }
+
+.hud-toggle-bar {
+  text-align: right;
+  font-size: 0.8em;
+  margin: 0 0 4px 0;
+}
+
+.hud-toggle a {
+  text-decoration: none;
+}
+
 .hud-section:last-of-type{border-right:none; padding-right:0;}
+.status-box {
+  margin: 2px 0;
+  padding: 6px 8px;
+  font-size: 0.85em;
+}
+#persistent-header, .hud-toggle-bar {
+	margin: 0;
+	padding: 2px 6px;
+	line-height: 1.2;
+}
+#story {
+	margin-top: 0 !important;
+}
 
 .hud-section-mini{
   flex-basis:100%; padding-top:.5rem; margin-top:.25rem;

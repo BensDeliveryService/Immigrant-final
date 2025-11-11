@@ -1,200 +1,104 @@
 :: GameOptions
-/*Game Options Menu - Configure realism and experience level (Redirects to paginated version)*/
+/* Redirect to first options page */
 <<set $step = 0>>
 <<goto "GameOptions_Support">>
 
 
+
 :: GameOptions_Support
-/*Page 1 of 3: Support Systems Configuration*/
+/* Page 1: Rent support */
 <<set $step = 0>>
 
-<div style="text-align: center; margin-bottom: 10px;">
-<span style="color: var(--muted); font-size: 0.9em;">Page 1 of 3</span>
-</div>
-
-<h2>Configure Your Experience</h2>
-
 <<if $optionsLocked>>
-    <div class="status-box status-box-warning">
-    <p><strong>⚠️ Experience settings are locked.</strong> You cannot change settings during an active game. Start a new game to change your configuration.</p>
-    </div>
+	<p style="margin:0;font-size:0.9em;">
+		Experience settings are locked for this run. Rent support is currently 
+		<<if $hasRentSupport>>ON (you have $1,500)<<<else>>OFF (full realism)<</if>>. 
+		Start a new game to change this.
+	</p>
 <<else>>
-    <p>Choose how realistically you want to simulate the immigrant experience. These settings reflect different levels of support and time pressure that immigrants face in real life.</p>
-    <p class="text-error"><strong>Note:</strong> Once you start the game, these settings cannot be changed until you start a new game.</p>
+	<p style="margin:0;font-size:0.9em;">
+		Rent support changes how hard the game feels. Right now it is 
+		<<if $hasRentSupport>>ON (you have $1,500)<<else>>OFF (you rely only on income)<</if>>. 
+		<<if $hasRentSupport>>
+			<<link "Turn it OFF (harder)">><<set $hasRentSupport = false>><<goto "GameOptions_Support">><</link>>
+		<<else>>
+			<<link "Turn it ON (easier)">><<set $hasRentSupport = true>><<goto "GameOptions_Support">><</link>>
+		<</if>>
+	</p>
 <</if>>
 
-<hr>
-
-<h3>Support Systems Available</h3>
-
-<div class="option-section">
-<p><strong>Reality:</strong> Some immigrants have access to rent support programs through nonprofits or government assistance. Others receive no support and must navigate housing on their own.</p>
-
-<p><strong>Current Setting:</strong> <<if $hasRentSupport>><span class="text-success">✓ With Rent Support ($1,500 available)</span><<else>><span class="text-warning">✗ No Rent Support (More Realistic)</span><</if>></p>
-
-<<if !$optionsLocked>>
-    <<if $hasRentSupport>>
-        <<link "Remove Rent Support (More Realistic)">>
-            <<set $hasRentSupport = false>>
-            <<goto "GameOptions_Support">>
-        <</link>>
-    <<else>>
-        <<link "Add Rent Support (Less Realistic)">>
-            <<set $hasRentSupport = true>>
-            <<goto "GameOptions_Support">>
-        <</link>>
-    <</if>>
-<<else>>
-    <span style="color: var(--muted);">Settings locked - start a new game to change</span>
-<</if>>
-
-<p style="margin-top: 10px; font-size: 0.9em; color: var(--muted);">
-<<if $hasRentSupport>>
-<em>With support: Easier to qualify for housing, less financial stress. Simulates immigrants with access to assistance programs.</em>
-<<else>>
-<em>Without support: Must rely entirely on earned income. Simulates the most common immigrant experience.</em>
-<</if>>
-</p>
+<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;">
+	<span><<link "Intro" "Landing">><</link>></span>
+	<span><<link "Next: Time" "GameOptions_Timeline">><</link>></span>
 </div>
 
-<hr>
-
-<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
-    <div>
-    <<link "← Back to Introduction" "Landing">><</link>>
-    </div>
-    <div style="text-align: right;">
-    <<link "Next: Time Pressure →" "GameOptions_Timeline">><</link>>
-    </div>
-</div>
 
 
 :: GameOptions_Timeline
-/*Page 2 of 3: Time Pressure Configuration*/
+/* Page 2: Time pressure */
 <<set $step = 0>>
 
-<div style="text-align: center; margin-bottom: 10px;">
-<span style="color: var(--muted); font-size: 0.9em;">Page 2 of 3</span>
-</div>
-
-<h2>Configure Your Experience</h2>
-
 <<if $optionsLocked>>
-    <div class="status-box status-box-warning">
-    <p><strong>⚠️ Experience settings are locked.</strong> You cannot change settings during an active game. Start a new game to change your configuration.</p>
-    </div>
-<</if>>
-
-<hr>
-
-<h3>Time Pressure</h3>
-
-<div class="option-section">
-<p><strong>Reality:</strong> Time pressure varies based on circumstances. Some immigrants have urgent housing needs (pregnant family member, unsafe current situation), while others have more time to establish themselves.</p>
-
-<p><strong>Current Setting:</strong> <span class="text-success"><<= $gameTimelineMax>> days</span></p>
-
-<<if !$optionsLocked>>
-    <div class="timeline-options">
-    <<link "30 Days - High Urgency (Most Realistic)">>
-        <<set $gameTimelineMax = 30>>
-        <<goto "GameOptions_Timeline">>
-    <</link>>
-    <p style="margin: 5px 0 15px 20px; font-size: 0.9em; color: var(--muted);"><em>Baby coming soon, current housing unstable. The most common urgent scenario.</em></p>
-
-    <<link "60 Days - Moderate Urgency">>
-        <<set $gameTimelineMax = 60>>
-        <<goto "GameOptions_Timeline">>
-    <</link>>
-    <p style="margin: 5px 0 15px 20px; font-size: 0.9em; color: var(--muted);"><em>Some breathing room, but still significant pressure to secure housing.</em></p>
-
-    <<link "90 Days - Lower Urgency">>
-        <<set $gameTimelineMax = 90>>
-        <<goto "GameOptions_Timeline">>
-    <</link>>
-    <p style="margin: 5px 0 15px 20px; font-size: 0.9em; color: var(--muted);"><em>More time to build income history and savings. Less realistic for urgent situations.</em></p>
-    </div>
+	<p style="margin:0;font-size:0.9em;">
+		Your time limit is <<= $gameTimelineMax>> days. Settings are locked for this run; 
+		start a new game to change the timeline.
+	</p>
 <<else>>
-    <span style="color: var(--muted);">Settings locked - start a new game to change</span>
+	<p style="margin:0;font-size:0.9em;">
+		Time pressure sets how urgent housing feels. Current limit: <<= $gameTimelineMax>> days. 
+		Choose: 
+		<<link "30 days">><<set $gameTimelineMax = 30>><<goto "GameOptions_Timeline">><</link>> / 
+		<<link "60 days">><<set $gameTimelineMax = 60>><<goto "GameOptions_Timeline">><</link>> / 
+		<<link "90 days">><<set $gameTimelineMax = 90>><<goto "GameOptions_Timeline">><</link>>.
+	</p>
 <</if>>
+
+<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;">
+	<span><<link "Back: Support" "GameOptions_Support">><</link>></span>
+	<span><<link "Next: Summary" "GameOptions_Summary">><</link>></span>
 </div>
 
-<hr>
-
-<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
-    <div>
-    <<link "← Back: Support Systems" "GameOptions_Support">><</link>>
-    </div>
-    <div style="text-align: right;">
-    <<link "Next: Review & Start →" "GameOptions_Summary">><</link>>
-    </div>
-</div>
 
 
 :: GameOptions_Summary
-/*Page 3 of 3: Configuration Summary and Start*/
+/* Page 3: Summary + start */
 <<set $step = 0>>
 
-<div style="text-align: center; margin-bottom: 10px;">
-<span style="color: var(--muted); font-size: 0.9em;">Page 3 of 3</span>
-</div>
-
-<h2>Your Experience Level</h2>
-
-<div class="config-summary" style="background: rgba(208,213,224,.08); padding: 20px; border-radius: 8px; border-left: 4px solid var(--line);">
-<ul style="list-style: none; padding: 0;">
-<li><strong>Rent Support:</strong> <<if $hasRentSupport>><span class="text-success">Yes - $1,500 available</span><<else>><span class="text-error">No - Full realism</span><</if>></li>
-<li><strong>Timeline:</strong> <<= $gameTimelineMax>> days to secure housing</li>
-<li><strong>Starting Money:</strong> $900</li>
-<li style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
-<strong>Realism Level:</strong>
+<<set _realism = "Moderate realism">>
 <<if $hasRentSupport and $gameTimelineMax >= 90>>
-    <span class="text-success">Lower Realism</span> - More forgiving simulation
+	<<set _realism = "Lower realism (more forgiving)">>
 <<elseif !$hasRentSupport and $gameTimelineMax <= 30>>
-    <span class="text-error">Highest Realism</span> - Simulates most common urgent scenario
+	<<set _realism = "Highest realism (urgent and difficult)">>
 <<elseif !$hasRentSupport and $gameTimelineMax == 60>>
-    <span class="text-warning">High Realism</span> - Challenging but achievable
-<<else>>
-    <span class="text-info">Moderate Realism</span> - Balanced experience
+	<<set _realism = "High realism (challenging)">>
 <</if>>
-</li>
-</ul>
-</div>
-
-<hr>
 
 <<if !$optionsLocked>>
-    <div style="text-align: center; margin: 20px 0;">
-    <p style="font-size: 0.95em; color: var(--muted); margin-bottom: 20px;">Want to adjust your settings? Use the navigation below.</p>
-    </div>
+	<p style="margin:0;font-size:0.9em;">
+		You will start with $900, rent support is 
+		<<if $hasRentSupport>>ON<<else>>OFF<</if>>, and you have 
+		<<= $gameTimelineMax>> days to secure housing. This setup is: <<= _realism>>. 
+		When you begin, these options will lock for this run.
+	</p>
 
-    <div class="status-box status-box-success" style="margin: 20px 0; text-align: center;">
-    <h3 style="margin-top: 0;">Ready to Experience This Story?</h3>
-    <p>Once you begin, these settings will be locked until you start a new game.</p>
-    <p style="font-size: 1.1em; margin: 20px 0;">
-    <<link "BEGIN YOUR STORY →" "Start">>
-        <<set $optionsLocked = true>>
-        <<set $gameStarted = true>>
-    <</link>>
-    </p>
-    </div>
+	<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;align-items:center;">
+		<span><<link "Back: Time" "GameOptions_Timeline">><</link>></span>
+		<span>
+			<<link "BEGIN" "Start">>
+				<<set $optionsLocked = true>>
+				<<set $gameStarted = true>>
+			<</link>>
+		</span>
+	</div>
 <<else>>
-    <div style="text-align: center; margin-top: 30px;">
-    <<link "Return to Hub" "Hub">><</link>>
-    <br><br>
-    <<link "Start New Game" "Landing">><</link>>
-    </div>
+	<p style="margin:0;font-size:0.9em;">
+		Current run: rent support 
+		<<if $hasRentSupport>>ON<<else>>OFF<</if>>, <<= $gameTimelineMax>> days, 
+		<<= _realism>>. You can return to the hub or start a new game to reconfigure.
+	</p>
+
+	<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;">
+		<span><<link "Hub" "Hub">><</link>></span>
+		<span><<link "New Game" "Landing">><</link>></span>
+	</div>
 <</if>>
-
-<hr>
-
-<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
-    <div>
-    <<link "← Back: Time Pressure" "GameOptions_Timeline">><</link>>
-    </div>
-    <<if !$optionsLocked>>
-    <div style="text-align: right;">
-    <<link "← Back to Introduction" "Landing">><</link>>
-    </div>
-    <</if>>
-</div>

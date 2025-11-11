@@ -1,68 +1,24 @@
 :: Kiosk
-<<set $step = 0>>
-<<ShowInfo>>
-
-<<if $transitDays > 0>> /* Code for if you have a transit pass */
-	Your transit pass expires in <<= $transitDays>> days.
-	<<set $transitDays -=1 >>
-	<<set $workdays-=2>>
-	<<set _chance = random(1,100)>>
-
-	<<link "Use your pass and go to work">> 
-		<<if _chance <25>>
-			UH OH! There is a delay and you cannot make it to work today!
-			<<set $workdays+=2>>
-			<<link "You have to go home">> <<goto "Hub">> <</link>>		
-				<</if>>
-
-			<<goto "Workday">>
-
-	<</link>><br>
-
-
+<<set $step = 0>><<ShowInfo>>
+<<if $transitDays > 0>>
+<p style="margin:0;font-size:0.9em;">🚇 Pass active – <<= $transitDays>> days left.</p>
+<<set $transitDays -= 1>><<set $workdays -= 2>><<set _chance = random(1,100)>>
+<<link "Use pass and go to work">>
+	<<if _chance < 25>>
+		<p style="margin:0;font-size:0.9em;">Delay! You couldn’t make it today.</p>
+		<<set $workdays += 2>><<link "Go home">><<goto "Hub">><</link>>
+	<<else>><<goto "Workday">><</if>>
+<</link>>
 <<else>>
-	You do not have a transit pass right now.<br>
-	Transit passes reduce your work time. Choose a pass option below:<br><br>
-
-	<div class="transit-options">
-	<h4>Available CTA/Pace Passes:</h4>
-
-	<<if $money >= 15>>
-		<<link "Buy 3-Day Pass for $15">>
-			<<set $money -= 15>>
-			<<set $transit = true>>
-			<<set $transitDays = 3>>
-			<<set $workDays-=2>>
-			<<goto "Workday">>
-		<</link>><br>
-	<<else>>
-		<span style="color: gray;">3-Day Pass ($15) - Not enough money</span><br>
-	<</if>>
-
-	<<if $money >= 20>>
-		<<link "Buy 7-Day Pass for $20">>
-			<<set $money -= 20>>
-			<<set $transit = true>>
-			<<set $transitDays = 7>>
-			<<set $workDays-=2>>
-			<<goto "Workday">>
-		<</link>><br>
-	<<else>>
-		<span style="color: gray;">7-Day Pass ($20) - Not enough money</span><br>
-	<</if>>
-
-	<<if $money >= 75>>
-		<<link "Buy 30-Day Pass for $75">>
-			<<set $money -= 75>>
-			<<set $transit = true>>
-			<<set $transitDays = 30>>
-			<<set $workDays-=2>>
-			<<goto "Workday">>
-		<</link>><br>
-	<<else>>
-		<span style="color: gray;">30-Day Pass ($75) - Not enough money</span><br>
-	<</if>>
-	</div>
-	<br>
-	<<link "Walk Instead">> <<goto "Workday">><<set $workdays-=1>> <</link>>
+<p style="margin:0;font-size:0.9em;">🚶 No transit pass. Choose one below:</p>
+<<if $money >= 15>>
+	<<link "3-Day – $15">><<set $money -= 15>><<set $transit=true>><<set $transitDays=3>><<set $workdays -=2>><<goto "Workday">><</link>>
+<<else>><span style="color:gray;font-size:0.85em;">3-Day – Not enough</span><br><</if>>
+<<if $money >= 20>>
+	<<link "7-Day – $20">><<set $money -= 20>><<set $transit=true>><<set $transitDays=7>><<set $workdays -=2>><<goto "Workday">><</link>>
+<<else>><span style="color:gray;font-size:0.85em;">7-Day – Not enough</span><br><</if>>
+<<if $money >= 75>>
+	<<link "30-Day – $75">><<set $money -= 75>><<set $transit=true>><<set $transitDays=30>><<set $workdays -=2>><<goto "Workday">><</link>>
+<<else>><span style="color:gray;font-size:0.85em;">30-Day – Not enough</span><br><</if>>
+<<link "Walk instead">><<set $workdays -= 1>><<goto "Workday">><</link>>
 <</if>>
