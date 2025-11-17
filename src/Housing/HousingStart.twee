@@ -42,5 +42,6 @@
         <hr>
     <</if>>
 
-    <<link "View available housing options">> <<goto "HousingOptions">> <</link>>
+    <<link "View available housing options">> <<goto "HousingOptions">> <</link>><br>
+    <<link "◀ Back to day choice">> <<goto "DayChoice">> <</link>>
 <</if>>

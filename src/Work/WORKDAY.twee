@@ -17,6 +17,10 @@ You've finished all your scheduled work for the day.
 		<<set $pendingPayment = $jobPay>>
 		<<set $job=false>>
 		<<set $daysWorked += 1>>
+		/* Track excessive hours if applicable */
+		<<if $workingExcessiveHours>>
+			<<set $excessiveHoursDaysWorked += 1>>
+		<</if>>
 		/* Only process housing applications on business days (Mon-Fri) */
 		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
 			<<set _isBusinessDay = ($currentDayOfWeek >= 0 and $currentDayOfWeek <= 4)>>
@@ -24,7 +28,13 @@ You've finished all your scheduled work for the day.
 				<<set $housingApplicationDaysRemaining -= 1>>
 			<</if>>
 		<</if>>
-		<<goto "EndOfDayHub">>
+		/* Check for overwork sickness trigger */
+		<<if $workingExcessiveHours and $excessiveHoursDaysWorked >= 12 and !$overworkSicknessTriggered>>
+			<<set $overworkSicknessTriggered = true>>
+			<<goto "OverworkSickness">>
+		<<else>>
+			<<goto "EndOfDayHub">>
+		<</if>>
 	<</link>>
 <hr>
 <<else>>
@@ -32,6 +42,10 @@ You've finished all your scheduled work for the day.
 	<<link "Head home for the day">>
 		<<AdvanceDay>>
 		<<set $daysWorked += 1>>
+		/* Track excessive hours if applicable */
+		<<if $workingExcessiveHours>>
+			<<set $excessiveHoursDaysWorked += 1>>
+		<</if>>
 		/* Only process housing applications on business days (Mon-Fri) */
 		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
 			<<set _isBusinessDay = ($currentDayOfWeek >= 0 and $currentDayOfWeek <= 4)>>
@@ -39,6 +53,12 @@ You've finished all your scheduled work for the day.
 				<<set $housingApplicationDaysRemaining -= 1>>
 			<</if>>
 		<</if>>
-		<<goto "EndOfDayHub">>
+		/* Check for overwork sickness trigger */
+		<<if $workingExcessiveHours and $excessiveHoursDaysWorked >= 12 and !$overworkSicknessTriggered>>
+			<<set $overworkSicknessTriggered = true>>
+			<<goto "OverworkSickness">>
+		<<else>>
+			<<goto "EndOfDayHub">>
+		<</if>>
 	<</link>>
 <</if>>

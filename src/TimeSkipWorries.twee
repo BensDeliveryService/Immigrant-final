@@ -1,0 +1,50 @@
+:: TimeSkipWorries
+/*Shows worries accumulated during time skip and allows addressing them*/
+<<set $step = 0>><<ShowInfo>>
+
+<h2 style="margin:0;">Family Concerns During This Time</h2>
+
+<<if _worriesGenerated and _worriesGenerated > 0>>
+	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(240,173,78,.08);border-left:3px solid rgba(240,173,78,.5);">
+		<p style="margin:2px 0;"><strong>⚠️ New Family Worries</strong></p>
+		<p style="margin:4px 0;font-size:0.9em;">During this period, <<= _worriesGenerated>> new concern<<if _worriesGenerated > 1>>s<</if>> arose that need<<if _worriesGenerated === 1>>s<</if>> your attention.</p>
+	</div>
+<</if>>
+
+<<if _rentPaidDuringSkip and _rentPaidDuringSkip > 0>>
+	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);">
+		<p style="margin:2px 0;"><strong>🏠 Rent Paid</strong></p>
+		<p style="margin:4px 0;font-size:0.9em;">You paid $<<= _rentPaidDuringSkip>> in rent during this time period.</p>
+	</div>
+<</if>>
+
+<hr>
+
+<<if $worries.length > 0>>
+	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(236,201,75,.08);border-left:3px solid rgba(236,201,75,.3);">
+		<p style="margin:2px 0;"><strong>Current Family Worries: <<= $worries.length>></strong></p>
+		<<for _i = 0; _i < $worries.length; _i++>>
+			<<set _w = $worries[_i]>>
+			<p style="margin:4px 0;font-size:0.9em;">• Sev <<= _w.severity>>/5 – <<= _w.description>> (Cost: $<<= _w.cost>>)</p>
+		<</for>>
+	</div>
+
+	<div style="margin:8px 0;">
+		<p style="font-size:0.9em;"><strong>Current Balance:</strong> $<<= $money>></p>
+	</div>
+
+	<hr>
+
+	<div style="margin-top:8px;">
+		<<link "Address family concerns">><<goto "AddressWorries">><</link>><br>
+		<<link "Skip for now and continue">><<goto $timeSkipReturnPassage>><</link>>
+	</div>
+<<else>>
+	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.5);">
+		<p style="margin:2px 0;">✓ Your family has no current worries. Things are going well!</p>
+	</div>
+
+	<div style="margin-top:8px;">
+		<<link "Continue">><<goto $timeSkipReturnPassage>><</link>>
+	</div>
+<</if>>

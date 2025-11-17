@@ -19,7 +19,7 @@ constantly visible.
 <div id="persistent-header" class="hud-bar" style="margin:0;padding:0;">
 	<span class="hud-item" title="Current day and days left">
 		<<set _daysRemaining = $gameTimelineMax - $day>>
-		📅 <<= $dayNames[$currentDayOfWeek]>> D<<= $day>>/<<= $gameTimelineMax>> (L:<<= _daysRemaining>>)
+		📅 <<= $dayNames[$currentDayOfWeek]>>, Day <<= $day>>/<<= $gameTimelineMax>> (L:<<= _daysRemaining>>)
 	</span>
 	<span class="hud-item" title="Money">💰 $<<= $money>></span>
 	<span class="hud-item" title="Housing">
@@ -33,6 +33,9 @@ constantly visible.
 	</span>
 	<span class="hud-item" title="Family / worries">
 		<<if $worries.length > 0>>⚠️ <<= $worries.length>><<else>>👨‍👩‍👧 <<= $familyHealth>>%<</if>>
+	</span>
+	<span class="hud-item" title="Debug menu">
+		<<link "🛠️" "DebugMenu">><</link>>
 	</span>
 	<span class="hud-item hud-toggle">
 		<<link "×" `passage()`>><<set $debugShowHeader = false>><</link>>

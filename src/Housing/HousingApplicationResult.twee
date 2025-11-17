@@ -66,8 +66,8 @@
         <<set _baseApprovalChance -= 15>>
     <</if>>
 
-/* PREMIUM APARTMENT - Very strict */
-<<elseif $pendingHousingType === "Premium">>
+/* Unaffordable APARTMENT - Very strict */
+<<elseif $pendingHousingType === "Unaffordable">>
     <<if _estimatedMonthlyIncome >= _requiredMonthlyIncome and $jobsCompleted >= 3>>
         <<set _baseApprovalChance = 45>>
     <<elseif $totalIncomeEarned >= 2500 and $money >= 2000>>
@@ -133,11 +133,18 @@
         <<set $hasHousing = true>>
         <<set $housingType = $pendingHousingType>>
         <<set $housingCost = $pendingHousingCost>>
+        <<set $lastRentPaidDay = $day>> /* Track when rent was last paid */
         <<set $housingApplicationPending = false>>
         <<set $housingApplicationDaysRemaining = 0>>
         <<set $pendingHousingType = "">>
         <<set $pendingHousingCost = 0>>
-        <<goto "DayChoice">>
+        <<if $housingType === "Unaffordable">>
+            <<goto "UnaffordableHousingConsequences">>
+        <<elseif $housingType === "Affordable" or $housingType === "Standard">>
+            <<goto "AffordableStandardConsequences">>
+        <<else>>
+            <<goto "DayChoice">>
+        <</if>>
     <</link>>
 <<else>>
     /* REJECTED */

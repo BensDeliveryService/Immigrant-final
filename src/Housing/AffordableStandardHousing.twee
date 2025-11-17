@@ -1,0 +1,1656 @@
+:: AffordableStandardConsequences
+/*Post-approval reality check for Affordable and Standard housing*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Welcome to Your New Neighborhood</h3>
+
+<div class="consequence-text">
+<p>You've secured housing at $<<= $housingCost>> per month. It's a relief to have a place to call home.</p>
+<p>But as you settle in, you start to realize the challenges of your location. This neighborhood is predominantly Guatemalan - you hear Spanish and K'iche' on the streets, and there are familiar faces from your community. That's comforting. You feel safer here.</p>
+
+<p>However, the informal employment opportunities you rely on are scarce in this area. The construction sites, landscaping jobs, day labor pickup spots - they're all in other parts of the city, sometimes 45 minutes to an hour away.</p>
+
+<p>You have tools - a toolbox with basic carpentry equipment, painting supplies, landscaping tools. They're essential for getting hired for the better-paying jobs. But transporting them across the city? That's going to be a daily challenge.</p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="margin:4px 0;"><strong>Reality of your situation:</strong></p>
+<ul style="margin:4px 0;">
+<li>Your rent is $<<= $housingCost>> per month - you need to earn at least that much, plus money for food, transportation, and emergencies</li>
+<li>Most informal work opportunities are far from your neighborhood</li>
+<li>You'll need to bring your tools with you to get hired for better-paying jobs</li>
+<li>You'll be working 10-12 hour days once you factor in travel time</li>
+</ul>
+</div>
+
+<div class="consequence-text">
+<p>The question now is: how do you get yourself and your tools to where the work is?</p>
+</div>
+
+<<link "Figure out transportation">> <<goto "TransportationChallenge">> <</link>>
+
+
+:: TransportationChallenge
+/*Choose transportation method for getting to work with tools*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Getting to Work</h3>
+
+<div class="consequence-text">
+<p>Every morning, you face the same challenge: how to get yourself and your heavy toolbox across the city to where the jobs are.</p>
+
+<p>You need a solution that's affordable enough to do daily, but also practical for carrying tools. A hammer, saw, paint cans, measuring tape, level - these aren't things you can easily hide or carry discreetly.</p>
+
+<p>The question is: how will you transport yourself and your tools?</p>
+</div>
+
+<hr>
+
+<h4>Choose your transportation method:</h4>
+
+<div class="housing-choice">
+<<link "Use public transportation">>
+    <<set $transportMethod = "publicTransit">>
+    <<goto "PublicTransitIntro">>
+<</link>>
+<p><em>Buses and trains are cheaper - around $2-3 per trip. But they won't get you exactly where you need to be. You'll have to walk the last part carrying your tools, and transit police sometimes question people with large bags or work equipment. The official reason is "safety concerns" but you know what they're really looking for. Monthly cost: ~$120-150.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Use rideshare services and taxis">>
+    <<set $transportMethod = "rideshare">>
+    <<goto "RideshareIntro">>
+<</link>>
+<p><em>Taxis and rideshare services like Uber or Lyft will take you directly to job sites. No walking with heavy tools. No transit police. But it's expensive - $15-25 per trip depending on distance. The monthly cost could be $400-600, almost as much as you're saving by not paying $1,600 in rent. You'll need to be strategic about how you use this option.</em></p>
+</div>
+
+
+:: PublicTransitIntro
+/*Intro to public transit challenges before work structure choice*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Public Transit Reality</h3>
+
+<div class="consequence-text">
+<p>You commit to using public transportation. It's the most affordable option, and you'll make it work.</p>
+
+<p>The bus and train system can get you close to the work sites, though not exactly where you need to be. You'll still have to walk the last bit, carrying everything.</p>
+
+<p>It's cheaper than alternatives, but there are risks. Transit police sometimes question people carrying large bags or work equipment. The official reason is "safety concerns" but you know what they're really looking for.</p>
+</div>
+
+<hr>
+
+<div class="consequence-text">
+<p>Now you need to decide how you'll structure your work once you get to the job areas:</p>
+</div>
+
+<<link "Continue">> <<goto "PublicTransitChoice">> <</link>>
+
+
+:: PublicTransitChoice
+/*Choose between job-per-day structure or freelance approach*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $usingPublicTransit = true>> /* Flag for future encounters */
+
+<h3>How Will You Work?</h3>
+
+<div class="consequence-text">
+<p>You're committed to using public transit to get to the job sites each day. Now you need to decide how you'll structure your work.</p>
+</div>
+
+<hr>
+
+<h4>Choose your approach:</h4>
+
+<div class="housing-choice">
+<<link "Job-per-day structure: One location, stable and safe">>
+    <<set $workStructure = "jobPerDay">>
+    <<goto "JobPerDayStructure">>
+<</link>>
+<p><em>Find one job each day at a specific location. Once you're there, you stay put - no moving around the city. You'll only bring the specific tools needed for that job, reducing your profile. Less risk of law enforcement encounters, but also less income opportunity. You'll make enough to survive, but barely.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Freelance approach: Multiple jobs, higher risk and reward">>
+    <<set $workStructure = "freelance">>
+    <<goto "FreelanceStructure">>
+<</link>>
+<p><em>Take multiple jobs throughout the day, moving from site to site across the city. You'll carry your full toolbox everywhere, making yourself more visible to law enforcement. Higher risk of being stopped and questioned, but significantly better income. If you can avoid trouble, you might earn enough to eventually move to a better neighborhood.</em></p>
+</div>
+
+
+:: JobPerDayStructure
+/*Lower risk, lower income path - leads to random outcome*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 30>> /* Simulate a month of this work structure */
+<<GenerateTimeSkipWorries 30>> /* Generate worries during time skip */
+
+<h3>Steady, Careful Work</h3>
+
+<div class="consequence-text">
+<p>You adopt a careful routine. Each morning, you check which jobs are available that day - usually through word of mouth or a community message board. You pick one, figure out what tools you'll need, and pack only those.</p>
+
+<p>Instead of carrying your entire heavy toolbox, you might just bring a paint roller and tray. Or just a saw and measuring tape. You look like any other commuter with a bag.</p>
+
+<p>It works. You blend in. The authorities barely notice you.</p>
+
+<p>The jobs themselves are fine - painting apartments, basic repairs, helping with moving jobs. Nothing glamorous, but honest work. You're home by evening, tired but safe.</p>
+
+<p>A month passes this way. The routine becomes comfortable. You know which buses to take, which times to avoid, which job coordinators are reliable.</p>
+</div>
+
+<hr>
+
+<<set _outcomeRoll = random(1, 100)>>
+<<if _outcomeRoll <= 50>>
+    /* FAIL path - job falls through */
+    <<goto "JobPerDayFail">>
+<<else>>
+    /* SUCCESS path - become reliable */
+    <<goto "JobPerDaySuccess">>
+<</if>>
+
+
+:: JobPerDayFail
+/*Job falls through, can't make rent*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>When Plans Fall Apart</h3>
+
+<div class="consequence-text">
+<p>The second month starts normally. You've been working with a contractor who seems reliable - he's been giving you painting jobs three or four times a week. Today, he promised you a full week of work on a big project. You're counting on it. Rent is due in ten days, and you're exactly $<<= Math.max(0, $housingCost - $money)>> short.</p>
+
+<p>You show up at the job site at 7 AM as instructed. The contractor isn't there.</p>
+
+<p>You wait. 8 AM. 9 AM. You call the number he gave you. No answer.</p>
+
+<p>By 10 AM, you realize the truth: he's not coming. The job isn't happening.</p>
+
+<p>You try to find other work, but by this point in the morning, all the jobs are taken. You go home empty-handed.</p>
+
+<p>The contractor never calls back. Maybe he found someone cheaper. Maybe the client canceled. Maybe he was never serious to begin with. You'll never know.</p>
+
+<p>You scramble for the next week, taking whatever jobs you can find, but they're not enough. Some days you can't find anything at all. The job-per-day structure that felt stable now feels precarious - you're too dependent on other people's reliability.</p>
+
+<p>When rent day comes, you're $<<= Math.max(200, $housingCost - $money)>> short.</p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="color: orange;"><strong>Financial Crisis:</strong> You cannot make rent this month. The landlord gives you a warning, but you know you're in trouble. You need to find a different approach or risk losing your housing.</p>
+</div>
+
+/* Calculate 2 months of inconsistent job-per-day work */
+<<set _monthsPassed = 2>>
+<<set _daysWorked = 28>> /* Inconsistent work, only ~14 days/month */
+<<set _dailyEarnings = 110>>
+<<set _totalEarned = (_daysWorked * _dailyEarnings)>> /* $3,080 */
+<<set _totalRent = ($housingCost * _monthsPassed)>>
+<<set _transportCosts = (130 * _monthsPassed)>> /* $260 */
+<<set _livingExpenses = (300 * _monthsPassed)>> /* $600 */
+<<set _additionalSearchCosts = 100>> /* Money spent looking for work */
+<<set _netChange = (_totalEarned - _totalRent - _transportCosts - _livingExpenses - _additionalSearchCosts)>>
+
+<<set $money += _netChange>> /* Apply net change (will be negative) */
+<<set $familyHealth -= 12>> /* Stress from financial instability */
+<<set $lastRentPaidDay = $day>> /* Update rent tracking to prevent double-charging */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Earnings (2 months):</strong> $<<= _totalEarned>><br>
+    <strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+    <strong>Transport & Living:</strong> -$<<= _transportCosts + _livingExpenses>><br>
+    <strong>Job Search Costs:</strong> -$100<br>
+    <strong>Net Loss:</strong> $<<= _netChange>><br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Rent Due Next Month:</strong> $<<= $housingCost>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (stress from financial crisis)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>The reliability you thought you had built was an illusion. In the informal economy, there is no promise of income.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: JobPerDaySuccess
+/*Become reliable and known, earn consistently*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 60>> /* Another two months pass */
+<<GenerateTimeSkipWorries 60>> /* Generate worries during time skip */
+
+<h3>Building a Reputation</h3>
+
+<div class="consequence-text">
+<p>Week after week, you show up on time..</p>
+
+<p>The job coordinators start to remember you,"I know I can count on you."</p>
+
+<p>It starts small - a coordinator calls you the night before to reserve you for a job, instead of making you show up and hope. Then another coordinator starts doing the same. Then another.</p>
+
+<p>Three months in, you have something remarkable: a routine. Not a job, exactly.. but a network! You know who to call, and they know you. On Monday you might paint for one contractor. Wednesday and Thursday you do repairs for another. Friday you help with moving jobs.</p>
+
+<p>None of them would call it "employment." There's no contract, no paperwork, no guarantees. But there's trust. You've proven yourself to be reliable.</p>
+
+<p>The money is steady now - not great, but enough. You make rent every month. You have a little left over for food, for small emergencies. Your wife feels more secure. Your family's health improves with the reduced stress.</p>
+
+<p>One evening, one of the contractors tells you about a family that's looking for someone to do regular maintenance on their properties. "I told them about you," he says. "Good work, reliable, trustworthy. They want to meet you."</p>
+
+<p>It's not a ticket to wealth, but it's stability. In the informal economy, that's worth its weight in gold.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> Through consistency and reliability, you've built a reputation and a support network. You have steady work and can support your family.</p>
+</div>
+
+/* Calculate earnings over 3 months of steady work */
+<<set _monthsPassed = 3>>
+<<set _daysWorked = 66>> /* ~22 days per month for 3 months */
+<<set _dailyEarnings = 110>> /* Steady job-per-day rate */
+<<set _totalEarned = (_daysWorked * _dailyEarnings)>> /* $7,260 */
+<<set _totalRent = ($housingCost * _monthsPassed)>> /* $2,700 or $3,300 */
+<<set _transportCosts = (130 * _monthsPassed)>> /* Public transit: ~$390 */
+<<set _livingExpenses = (300 * _monthsPassed)>> /* Food and basics: ~$900 */
+<<set _netSavings = (_totalEarned - _totalRent - _transportCosts - _livingExpenses)>>
+
+<<set $money += _netSavings>> /* Add net savings after all expenses */
+<<set $familyHealth += 12>> /* Reduced stress from stable income */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $lastRentPaidDay = $day>> /* Update rent tracking to prevent double-charging */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Earnings (3 months):</strong> $<<= _totalEarned>><br>
+    <strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+    <strong>Transport & Living:</strong> -$<<= _transportCosts + _livingExpenses>><br>
+    <strong>Net Savings:</strong> +$<<= _netSavings>><br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (improved from financial stability)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>You've found a way to make it work. It's not the life you dreamed of, but it's secure. Your family is safe and housed. That's what matters.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: FreelanceStructure
+/*Higher risk, higher income path - eventual law enforcement encounter*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $freelanceDaysWorked = 0>> /* Track how long until inevitable encounter */
+
+<h3>Hustling Across the City</h3>
+
+<div class="consequence-text">
+<p>You decide to maximize your income. Every day, you pack your full toolbox - everything you might need for any job. It's heavy, awkward to carry, and obvious. But it means you can take any opportunity that comes up.</p>
+
+<p>Your days become a blur of movement. Morning: painting job in one neighborhood. Noon: quick repair in another. Afternoon: landscaping across town. Evening: maybe one more small job if you can fit it in.</p>
+
+<p>You're constantly on buses and trains, lugging your toolbox. Sometimes people stare. Sometimes transit workers eye you suspiciously. But so far, no one has stopped you.</p>
+
+<p>The money is good - much better than the job-per-day approach. Some days you make $150, $200, even more. You're building up savings. You start to think: maybe in a few months, you could afford to move to a neighborhood closer to the work. Maybe eventually you could even get a car.</p>
+
+<p>But there's always a tension. Every time you step onto a bus with your toolbox, every time you transfer trains, you're rolling the dice. How long can you keep this up?</p>
+</div>
+
+<hr>
+
+<<link "Continue working this way">> <<goto "FreelanceProgress">> <</link>>
+
+
+:: FreelanceProgress
+/*Track freelance work progression - leads to eventual encounter*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $freelanceDaysWorked += 45>> /* 45 days of freelancing */
+<<set $day += 45>>
+<<GenerateTimeSkipWorries 45>> /* Generate worries during time skip */
+
+<h3>Six Weeks of Success</h3>
+
+<div class="consequence-text">
+<p>Six weeks pass. You've gotten good at this. You know which train cars are less crowded, which times of day to avoid. You've learned to carry your toolbox in a certain way that looks less suspicious. You keep your head down, blend in as much as you can.</p>
+
+<p>The money keeps coming. You've paid rent easily every month. You've even started saving - $<<= Math.floor($freelanceDaysWorked * 25)>> so far. At this rate, you could move to a better neighborhood in a few months.</p>
+
+<p>Your wife is relieved to see money coming in. The stress on your family has decreased. Things are looking up.</p>
+
+<p>But the risk is always there. You see transit police more often than you'd like. Sometimes they're checking fares. Sometimes they're looking for something else. You've watched them pull other workers aside, seen the fear in those workers' eyes.</p>
+
+<p>You tell yourself you're being careful. You tell yourself you can keep this up just a little longer, until you've saved enough.</p>
+</div>
+
+<hr>
+
+/* Deduct rent for time period (45 days = 1.5 months) */
+<<set _monthsInPeriod = Math.floor(45 / 30)>> /* 1 month */
+<<set _rentPaid = ($housingCost * _monthsInPeriod)>>
+<<set $money -= _rentPaid>> /* Deduct rent */
+<<set $money += ($freelanceDaysWorked * 25)>> /* Earnings from freelance work */
+<<set $familyHealth += 10>> /* Better financial situation */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $lastRentPaidDay = $day>> /* Update rent tracking */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Rent Paid (45 days):</strong> -$<<= _rentPaid>><br>
+    <strong>Earnings:</strong> +$<<= ($freelanceDaysWorked * 25)>><br>
+    <strong>Current Balance:</strong> $<<= $money>> (after rent and earnings)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (improved from better income)<br>
+    <strong>Days Freelanced:</strong> <<= $freelanceDaysWorked>>
+</p>
+</div>
+
+<<set _freelanceOutcome = random(1, 100)>>
+<<if _freelanceOutcome <= 50>>
+    /* FAIL - Law enforcement encounter */
+    <<link "Continue freelancing">> <<goto "FreelanceEncounter">> <</link>>
+<<else>>
+    /* SUCCESS - Evade long enough to earn better housing */
+    <<link "Continue freelancing">> <<goto "FreelanceSuccess">> <</link>>
+<</if>>
+
+
+:: FreelanceEncounter
+/*Inevitable law enforcement encounter - FAIL ending*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 3>>
+/* Only 3 days - too short for worries or rent */
+
+<h3>The Day It Catches Up</h3>
+
+<div class="consequence-text">
+<p>It happens on a Tuesday morning.</p>
+
+<p>You're on the Red Line train, heading to a painting job on the north side. Your toolbox is at your feet. The train is crowded - rush hour. You're tired; you were up late last night with your son who couldn't sleep.</p>
+
+<p>The train pulls into a station and two transit police officers board the car.</p>
+
+<p>They're doing a "routine safety check," they announce. Checking fares, looking for prohibited items. Your fare is fine - you paid - but your toolbox isn't small, and paint cans technically aren't allowed on transit.</p>
+
+<p>They work their way down the car. You keep your eyes down, try to look unremarkable. But when they reach you, they stop.</p>
+
+<p>"Sir, what's in the bag?"</p>
+
+<p>You explain: work tools, you're heading to a job. They ask to see. You open it. Paint cans, brushes, a hammer, a small saw.</p>
+
+<p>"You can't bring paint cans on the train. Safety hazard." They're not wrong, technically. But dozens of workers do it every day. They're just not usually stopped.</p>
+
+<p>"Step off at the next station, please. We need to verify some information."</p>
+
+<p>Your heart sinks. You know what "verify information" means. They're going to ask for ID. They're going to run your name. They're going to find out you're undocumented.</p>
+</div>
+
+<hr>
+
+<<link "Continue">> <<goto "FreelanceDetained">> <</link>>
+
+
+:: FreelanceDetained
+/*Final outcome - detained and discovered*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Detained</h3>
+
+<div class="consequence-text">
+<p>At the station, they ask for identification. You show them what you have - a Guatemalan ID card. Not enough. They want a driver's license, a state ID, proof of legal status.</p>
+
+<p>You don't have it. You can't have it.</p>
+
+<p>They call it in. Within twenty minutes, immigration enforcement is involved. Within an hour, you're in custody.</p>
+
+<p>Your toolbox sits on the platform, unclaimed. The painting job you were heading to - someone else will get it, or it won't get done at all. The client will never know why you didn't show up.</p>
+
+<p>Your phone has three missed calls from your wife. She's probably worried. By evening, she'll be panicked. By tomorrow, she'll understand what happened.</p>
+
+<p>The attempt to maximize income, to save enough to move to a better situation - it's ended in the worst possible outcome. You took the risk every day, and eventually, inevitably, it caught up with you.</p>
+
+<p>The freelance life promised higher rewards, but the cost of failure was always catastrophic. Now you're learning that cost firsthand.</p>
+</div>
+
+<hr>
+
+<div class="failure-box">
+<p style="color: red;"><strong>Game Over:</strong> You have been detained by immigration enforcement. The high-risk, high-reward strategy has led to the outcome you were trying to avoid. Your attempt to build a better life has ended in detention and likely deportation.</p>
+</div>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Final Balance:</strong> $<<= $money>><br>
+    <strong>Days Freelanced:</strong> <<= $freelanceDaysWorked + 3>><br>
+    <strong>Outcome:</strong> Detention
+</p>
+</div>
+
+<div class="consequence-text">
+<p>In the informal economy, the highest rewards come with the highest risks. Sometimes those risks have consequences you can't come back from.</p>
+</div>
+
+<<link "Game Over" "GameEnd">> <</link>>
+
+
+:: FreelanceSuccess
+/*Success - evaded law enforcement and earned enough for better housing*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $freelanceDaysWorked += 30>> /* Another month of successful freelancing */
+<<set $day += 30>>
+<<GenerateTimeSkipWorries 30>> /* Generate worries during time skip */
+
+<h3>Three Months Later</h3>
+
+<div class="consequence-text">
+<p>Three months of freelancing. Three months of carrying your toolbox on buses and trains. Three months of keeping your head down, watching for transit police, timing your movements to minimize risk.</p>
+
+<p>You've had close calls. Once, a transit officer looked right at your toolbox and you were certain this was it - but they just moved on. Another time, they stopped you to check your fare, and your hands were shaking as you showed your pass, but they waved you through.</p>
+
+<p>But you made it. Day after day, you made it.</p>
+
+<p>And the money accumulated. Extra jobs here and there. Good days where you'd land three or four gigs. The occasional tip from a satisfied client. Your savings grew: $50, then $100, then $500, then more.</p>
+
+<p>One evening, you sit down with your wife and count it all. You have enough saved now.</p>
+
+<p>"We can move," you tell her. "Closer to the work. A neighborhood where I don't have to spend three hours a day on transit. Where I can walk to job sites."</p>
+
+<p>She looks at the money, then at you. "You won't have to carry your tools on the train anymore?"</p>
+
+<p>"No more trains. No more transit police. No more looking over my shoulder every morning."</p>
+
+<p>The relief in her eyes tells you everything. She's been terrified every day you left the house with that toolbox. Every evening you came home safe felt like a miracle.</p>
+
+<p>You start looking at apartments in neighborhoods closer to where the construction and day labor work is concentrated. The rent is higher - around $1,450 for a decent place - but you'll save on transportation, and more importantly, you'll save on risk.</p>
+
+<p>You took a gamble, working the freelance circuit. You knew it was dangerous. You knew you were one bad encounter away from disaster.</p>
+
+<p>But you made it. Against the odds, you made it through.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> You've evaded law enforcement long enough to save money for better housing. You can now move to a neighborhood with more job opportunities and less daily risk.</p>
+</div>
+
+/* Calculate final month earnings and expenses */
+<<set _additionalEarnings = (30 * 25)>> /* $750 from final month */
+<<set _rentPaid = ($housingCost * 3)>> /* 3 months of rent */
+<<set _transportCosts = (130 * 3)>> /* Public transit for 3 months: ~$390 */
+<<set _livingExpenses = (300 * 3)>> /* Food and basics: ~$900 */
+<<set _netGains = (_additionalEarnings - _rentPaid - _transportCosts - _livingExpenses)>>
+
+<<set $money += _netGains>> /* Add net after expenses (note: some paths may result in slight loss) */
+<<set $familyHealth += 15>> /* Relief from reduced risk */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $lastRentPaidDay = $day>> /* Update rent tracking */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Additional Earnings:</strong> +$<<= _additionalEarnings>><br>
+    <strong>Rent Paid (3 months):</strong> -$<<= _rentPaid>><br>
+    <strong>Transport & Living:</strong> -$<<= _transportCosts + _livingExpenses>><br>
+    <strong>Net Change:</strong> $<<= _netGains>><br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (improved from success and reduced stress)<br>
+    <strong>Total Days Freelanced:</strong> <<= $freelanceDaysWorked>><br>
+    <strong>Outcome:</strong> Evaded detection, earned upgrade opportunity
+</p>
+</div>
+
+<div class="consequence-text">
+<p>The high-risk strategy paid off this time. You know how lucky you are. You know others who took the same risks and didn't make it through. But for now, you and your family have a path forward to a safer, more stable life.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: RideshareIntro
+/*Introduction to rideshare transportation challenges*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>The Rideshare Strategy</h3>
+
+<div class="consequence-text">
+<p>You decide to use rideshare services - Uber, Lyft, and local taxis - to get to your jobs. It's significantly more expensive than public transit, but it solves several problems:</p>
+
+<ul style="margin:8px 0;">
+<li>You can bring your full toolbox without worrying about transit police</li>
+<li>You get dropped off exactly where you need to be - no walking with heavy tools</li>
+<li>You look professional arriving in a car, which can help with clients</li>
+<li>No risk of law enforcement encounters on public transit</li>
+</ul>
+
+<p>But the math is challenging. Each rideshare trip costs $15-25 depending on distance. If you're taking multiple trips per day, the costs add up fast. You could easily spend $400-600 per month on transportation alone - almost as much as you're saving by not paying $1,600 Unaffordable rent.</p>
+
+<p>You'll need to be strategic. The question is: how do you structure your work to make the rideshare costs worthwhile?</p>
+</div>
+
+<hr>
+
+<<link "Decide on your work strategy">> <<goto "RideshareChoice">> <</link>>
+
+
+:: RideshareChoice
+/*Choose between area-focused or individual-home strategy*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $usingRideshare = true>> /* Flag for rideshare usage */
+
+<h3>Rideshare Work Strategy</h3>
+
+<div class="consequence-text">
+<p>Since you're spending significant money on rideshares, you need to be smart about how you use them. You have two main strategies:</p>
+</div>
+
+<hr>
+
+<h4>Choose your approach:</h4>
+
+<div class="housing-choice">
+<<link "Plan jobs within one area to minimize rideshare costs">>
+    <<set $rideshareStrategy = "areaFocused">>
+    <<goto "AreaFocusedStrategy">>
+<</link>>
+<p><em>Take one rideshare to a neighborhood known for job opportunities, then plan all your jobs within walking distance of that area. You'll save money by not ridesharing between jobs, but your mobility is limited. You might have to turn down higher-paying jobs that are too far away. Monthly transport cost: ~$800-900.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Travel directly to individual homes for higher-paying jobs">>
+    <<set $rideshareStrategy = "directTravel">>
+    <<goto "DirectTravelStrategy">>
+<</link>>
+<p><em>Tell clients and employers you can travel directly to their homes or job sites. Take separate rideshares to each location. This is expensive ($400-600/month in transport), but you can take the higher-paying jobs that require direct service. You'll get referred to other clients who value this convenience. Higher risk, higher reward.</em></p>
+</div>
+
+
+:: AreaFocusedStrategy
+/*Area-focused rideshare strategy - lower costs, limited mobility*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 45>> /* 45 days of this strategy */
+<<GenerateTimeSkipWorries 45>> /* Generate worries during time skip */
+
+<h3>The Area-Focused Approach</h3>
+
+<div class="consequence-text">
+<p>You develop a routine: each morning, you take a single rideshare ($18-22) to a neighborhood where you know there are job opportunities. Once there, you plan your day around jobs within walking distance.</p>
+
+<p>It works well at first. You're saving money on transportation - only one rideshare each direction per day, around $40 total, instead of $60-80 if you were going to individual locations. Your tools are with you, you look professional, and you're not worried about police.</p>
+
+<p>You take painting jobs, repair work, small construction gigs - whatever's available within your chosen area each day. The work is steady enough.</p>
+
+<p>But after six weeks, you start noticing a problem.</p>
+
+<p>A client calls and asks if you can come paint their house across town. Good pay - $200 for a day's work. But it's too far from your usual area. You'd need a separate rideshare just for that job, eating into profits. You turn it down.</p>
+
+<p>A week later, another opportunity: emergency repair job, needs to be done today, client will pay Unaffordable. But it's in a different neighborhood. You turn it down again.</p>
+
+<p>Then another. And another.</p>
+
+<p>You're saying "no" to jobs because they don't fit your transportation constraints. And in the informal economy, word gets around.</p>
+</div>
+
+<hr>
+
+<<set _areaOutcome = random(1, 100)>>
+<<if _areaOutcome <= 50>>
+    /* FAIL - reputation suffers */
+    <<goto "AreaFocusedFail">>
+<<else>>
+    /* SUCCESS - frugality pays off */
+    <<goto "AreaFocusedSuccess">>
+<</if>>
+
+
+:: AreaFocusedFail
+/*Area-focused strategy fails - reputation diminishes*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 30>>
+<<GenerateTimeSkipWorries 30>> /* Generate worries during time skip */
+
+<h3>Diminishing Returns</h3>
+
+<div class="consequence-text">
+<p>Two more months pass, and the problems compound.</p>
+
+<p>The job coordinators you work with start calling you less often. When you ask why, one of them is blunt: "You turn down too many jobs. I need people who are flexible, who can go where the work is. You're too limited."</p>
+
+<p>Another tells you: "I had clients asking for you specifically, but you kept saying no because of location. Now they're using other workers. Those other workers are getting the referrals you could have had."</p>
+
+<p>Your reputation as a reliable worker is being replaced by a reputation as someone who's inflexible. Too picky. Can't be counted on when a job is outside your preferred area.</p>
+
+<p>The irony stings: you limited yourself to save money on transportation, but now you're losing jobs - and income - because of those limitations.</p>
+
+<p>Job offers become less frequent. Some weeks you're only working three or four days instead of six. Your income drops. The money you saved on rideshares is offset by the money you're not earning from lost opportunities.</p>
+
+<p>You still make rent each month, but barely. There's no savings, no progress toward a better situation. You're stuck in the same position, and your business prospects are declining.</p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="color: orange;"><strong>Outcome:</strong> Your attempt to save money on transportation has cost you reputation and job opportunities. You're earning less now than when you started, and your prospects are getting worse.</p>
+</div>
+
+/* Calculate 2.5 months of declining area-focused work */
+<<set _daysWorked = 44>> /* Declining from ~22 to ~15 days/month */
+<<set _dailyGross = 140>>
+<<set _dailyTransport = 40>>
+<<set _totalEarned = (_daysWorked * _dailyGross)>> /* $6,160 */
+<<set _totalTransport = (_daysWorked * _dailyTransport)>> /* $1,760 */
+<<set _monthsPassed = 2.5>>
+<<set _totalRent = ($housingCost * _monthsPassed)>>
+<<set _livingExpenses = (300 * _monthsPassed)>> /* $750 */
+<<set _netChange = (_totalEarned - _totalTransport - _totalRent - _livingExpenses)>>
+
+<<set $money += _netChange>> /* Add net (likely small or negative) */
+<<set $familyHealth -= 12>> /* Stress from declining prospects */
+<<set $lastRentPaidDay = $day>> /* Update rent tracking */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Earnings (2.5 months):</strong> $<<= _totalEarned>><br>
+    <strong>Transport Costs:</strong> -$<<= _totalTransport>><br>
+    <strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+    <strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+    <strong>Net Change:</strong> $<<= Math.floor(_netChange)>><br>
+    <strong>Current Balance:</strong> $<<= $money>> (barely above rent)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (stress from financial insecurity)<br>
+    <strong>Business Reputation:</strong> Declining (seen as inflexible)<br>
+    <strong>Monthly Transport Cost:</strong> ~$880
+</p>
+</div>
+
+<div class="consequence-text">
+<p>In trying to minimize costs, you've minimized opportunities. Your business is contracting instead of growing. You need to find a different approach or accept that you're stuck in this position indefinitely.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: AreaFocusedSuccess
+/*Area-focused strategy succeeds - save for car*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 60>> /* Two more months */
+<<GenerateTimeSkipWorries 60>> /* Generate worries during time skip */
+
+<h3>Frugality Pays Off</h3>
+
+<div class="consequence-text">
+<p>Four months of disciplined, area-focused work. Four months of saying no to jobs outside your zone, but saying yes to every opportunity within it.</p>
+
+<p>It's been tight. Some weeks you wondered if you'd made a mistake. You watched other workers take jobs all over the city, seemingly making more money. You heard about opportunities you had to turn down.</p>
+
+<p>But you stuck to your strategy. Every rideshare dollar saved went into a jar at home. Every week, you and your wife counted it together: $50, $100, $200, $400, $800.</p>
+
+<p>And something unexpected happened: by becoming the reliable worker in your specific area, you became known. The job coordinators in that neighborhood started calling you first. "I know you're always around here," one says. "I can count on you to show up."</p>
+
+<p>Local homeowners started asking for you by name. Small business owners recommended you to each other. You lost the city-wide opportunities, but you gained a neighborhood reputation.</p>
+
+<p>The income was steady. Not spectacular, but consistent. And with your disciplined approach to transportation costs, you've been saving.</p>
+
+<p>One evening, you count the savings and realize you have enough for a car - but cars are expensive. A decent used vehicle costs around $1,600.</p>
+</div>
+
+<hr>
+
+/* Calculate 3.5 months of area-focused earnings */
+<<set _daysWorked = 77>> /* ~22 days/month × 3.5 months */
+<<set _dailyGross = 140>> /* Area-focused daily rate */
+<<set _dailyTransport = 40>> /* Round-trip rideshare */
+<<set _totalEarned = (_daysWorked * _dailyGross)>> /* $10,780 */
+<<set _totalTransport = (_daysWorked * _dailyTransport)>> /* $3,080 */
+<<set _monthsPassed = 3.5>>
+<<set _totalRent = ($housingCost * _monthsPassed)>>
+<<set _livingExpenses = (300 * _monthsPassed)>> /* $1,050 */
+<<set _savings = (_totalEarned - _totalTransport - _totalRent - _livingExpenses)>>
+
+<<set $money += _savings>> /* Add accumulated savings */
+<<set $lastRentPaidDay = $day>> /* Update rent tracking to prevent double-charging */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Total Earned (3.5 months):</strong> $<<= _totalEarned>><br>
+    <strong>Transport Costs:</strong> -$<<= _totalTransport>><br>
+    <strong>Rent Paid (automatically deducted):</strong> -$<<= _totalRent>><br>
+    <strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+    <strong>Net Savings:</strong> +$<<= Math.floor(_savings)>><br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Car Cost:</strong> $1,600 (or $800 if shared)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>%
+</p>
+</div>
+
+<h4>How will you get a car?</h4>
+
+<div class="housing-choice">
+<<link "Buy a car on your own">>
+    <<goto "AreaFocusedBuyAlone">>
+<</link>>
+<p><em>Purchase a used car for $1,600. It's expensive and will take most of your savings, plus you'll need insurance and registration. But it's yours alone - you can use it whenever you need, make all decisions about it, and don't have to coordinate with anyone else.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Find another family to share the cost">>
+    <<goto "AreaFocusedCarShare">>
+<</link>>
+<p><em>Reach out to your network at the shelter and find another immigrant family that also needs a car. Split the $1,600 cost - you each pay $800. You'll have to coordinate schedules and share usage, but it makes car ownership much more affordable. Plus you'll build community ties.</em></p>
+</div>
+
+
+:: AreaFocusedBuyAlone
+/*Buy car alone - full ownership, high cost*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Solo Purchase</h3>
+
+<div class="consequence-text">
+<p>You decide to buy the car on your own. It's a 2008 Honda Civic with 165,000 miles. The engine runs rough and the paint is faded, but mechanically it's sound. The seller wants $1,600 cash.</p>
+
+<p>You negotiate down slightly but not much - everyone knows cars are expensive right now. You pay $1,600 for the car, another $150 for insurance, and $100 for registration and title transfer.</p>
+
+<p>It takes almost all your savings, but when you drive it home for the first time, you feel something you haven't felt in months: freedom.</p>
+
+<p>No more waiting for rideshares. No more expensive trips adding up. No more being limited to one neighborhood. The city is yours to work in now.</p>
+
+<p>Your wife smiles when she sees it. "Now you can go anywhere," she says.</p>
+
+<p>And she's right. Your business is about to change completely.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> You own a car outright. Your transportation costs will drop dramatically, and you can take jobs anywhere in the city without restrictions.</p>
+</div>
+
+<<set $money -= 1600>> /* Car purchase */
+<<set $money -= 150>> /* Insurance */
+<<set $money -= 100>> /* Registration */
+<<set $familyHealth += 15>> /* Relief and achievement */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>>
+<<set $carOwnership = "sole">> /* Owns car alone */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Car Purchase:</strong> -$1,600<br>
+    <strong>Insurance & Registration:</strong> -$250<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (major achievement)<br>
+    <strong>Asset Acquired:</strong> 2008 Honda Civic (165k miles)<br>
+    <strong>Ownership:</strong> Sole owner<br>
+    <strong>Future Monthly Transport:</strong> ~$120 (gas + insurance vs $880 rideshare)
+</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: AreaFocusedCarShare
+/*Share car cost with another family - lower cost, coordination needed*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Shared Ownership</h3>
+
+<div class="consequence-text">
+<p>You reach out to your network from the shelter. Word spreads quickly - there's another family in almost exactly the same situation. They've been saving too, doing rideshare work, dreaming of a car.</p>
+
+<p>You meet them at a coffee shop. They're from El Salvador - a husband and wife with two young children. They're cautious at first, but as you talk, you realize you have a lot in common. Same struggles, same dreams, same determination.</p>
+
+<p>"We have $800 saved," the husband says. "If you have $800, we could buy a car together."</p>
+
+<p>You discuss the details: who drives when, how to split gas costs, what happens if someone damages it, how to handle insurance. It's complicated, but it's doable.</p>
+
+<p>Together, you find a 2008 Honda Civic for $1,600. It's old but reliable. You each pay $800. You split the insurance ($150) and registration ($100) evenly.</p>
+
+<p>When you drive it home for the first time - your day to use it - you feel not just freedom, but community. You're not doing this alone anymore.</p>
+
+<p>Your wife is nervous at first. "What if there are problems? What if we disagree?"</p>
+
+<p>"Then we'll work it out," you tell her. "That's what community is."</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> You co-own a car with another family. Your costs are cut in half, and you've built a strong community connection. You'll need to coordinate usage, but you have reliable transportation now.</p>
+</div>
+
+<<set $money -= 800>> /* Half of car purchase */
+<<set $money -= 75>> /* Half of insurance */
+<<set $money -= 50>> /* Half of registration */
+<<set $familyHealth += 20>> /* Achievement + community support */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>>
+<<set $carOwnership = "shared">> /* Shares car with another family */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Your Share (Car):</strong> -$800 (split 50/50)<br>
+    <strong>Your Share (Insurance & Registration):</strong> -$125<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (major achievement + community)<br>
+    <strong>Asset Acquired:</strong> 2008 Honda Civic (165k miles) - Shared<br>
+    <strong>Ownership:</strong> Co-owned with Salvadoran family<br>
+    <strong>Future Monthly Transport:</strong> ~$60 (gas + insurance split vs $880 rideshare)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>The other family becomes part of your support network. When one family has an emergency, the other helps. When schedules conflict, you work it out. It's not always easy, but it's better than being alone.</p>
+</div>
+
+<<link "Continue">> <<goto "CarSharingDoubleUpOffer">> <</link>>
+
+
+:: DirectTravelStrategy
+/*Direct travel to homes - higher costs, higher potential*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 45>> /* 45 days of this strategy */
+<<GenerateTimeSkipWorries 45>> /* Generate worries during time skip */
+
+<h3>The Direct Service Model</h3>
+
+<div class="consequence-text">
+<p>You make a decision: you'll position yourself as someone who provides direct, professional service. When clients call, you tell them: "I can come directly to your home. I'll bring all my tools. You won't have to worry about picking me up or coordinating."</p>
+
+<p>This differentiates you. Many informal workers can't offer this - they rely on clients picking them up, or they're limited by public transit. But you're willing to rideshare directly to each job.</p>
+
+<p>It's expensive. Most days you're taking 3-4 separate rideshares - to the first job, to the second, to the third, then home. At $18-25 per ride, that's $70-100 per day in transportation alone. Some days you spend $500+ per week just getting around.</p>
+
+<p>But the strategy has an advantage: clients who value convenience will pay more. And they refer you to other clients who value the same thing.</p>
+
+<p>"I know someone who needs painting done," a satisfied client tells their neighbor. "This guy will come directly to you. Very professional."</p>
+
+<p>You start getting called for jobs you wouldn't have access to otherwise. Homeowners who don't want to coordinate transportation. Small business owners who need someone reliable. People who are willing to pay a Unaffordable for convenience.</p>
+
+<p>The question is: can you earn enough to make the rideshare costs worthwhile?</p>
+</div>
+
+<hr>
+
+<<link "See how it plays out">> <<goto "DirectTravelProgress">> <</link>>
+
+
+:: DirectTravelProgress
+/*Progress check for direct travel strategy*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 30>>
+<<GenerateTimeSkipWorries 30>> /* Generate worries during time skip */
+
+<h3>Two Months Later</h3>
+
+<div class="consequence-text">
+<p>You've been running the direct travel model for two and a half months now. Every morning, you check your phone for job requests. You plan your route. You rideshare from job to job, carrying your toolbox, presenting yourself professionally.</p>
+
+<p>The costs have been significant. You're spending $400-600 per month on rideshares, just as you predicted. Some weeks it feels unsustainable.</p>
+
+<p>But the work has been good. You're getting referrals. Clients like that you show up on time, at their location, ready to work. Your phone rings more often than it used to.</p>
+
+<p>The question is whether the higher-paying jobs and referrals will offset the transportation costs - or whether you're just running in place, earning more but spending more, with no net progress.</p>
+</div>
+
+<hr>
+
+<<set _directOutcome = random(1, 100)>>
+<<if _directOutcome <= 50>>
+    /* FAIL - costs exceed earnings */
+    <<goto "DirectTravelFail">>
+<<else>>
+    /* SUCCESS - referrals pay off */
+    <<goto "DirectTravelSuccess">>
+<</if>>
+
+
+:: DirectTravelFail
+/*Direct travel fails - costs exceed earnings*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 30>>
+<<GenerateTimeSkipWorries 30>> /* Generate worries during time skip */
+
+<h3>Unsustainable Economics</h3>
+
+<div class="consequence-text">
+<p>Three months in, you have to face the math.</p>
+
+<p>You're getting jobs. You're getting referrals. Clients are happy with your work. On the surface, the business model is working.</p>
+
+<p>But when you sit down and actually calculate the numbers, the reality is harsh:</p>
+
+<ul style="margin:8px 0;">
+<li>Average daily earnings: $180</li>
+<li>Average daily rideshare costs: $85</li>
+<li>Net daily income: $95</li>
+<li>Working 22 days per month: $2,090</li>
+<li>After rent ($<<= $housingCost>>): $<<= 2090 - $housingCost>> remaining</li>
+</ul>
+
+<p>That $<<= 2090 - $housingCost>> has to cover food for your family, unexpected expenses, everything else. There's no buffer. No savings. No progress toward a better situation.</p>
+
+<p>In fact, you realize you were doing better when you weren't spending so much on transportation. The higher-paying jobs and referrals sounded good, but they're not paying enough Unaffordable to offset the massive transportation costs.</p>
+
+<p>You're working just as hard as before, maybe harder, but you're not actually getting ahead. The rideshare companies are taking too much of your earnings.</p>
+
+<p>Worse, you're now dependent on this model. Your clients expect you to come directly to them. If you stop offering that service, you'll lose them. You're trapped in an expensive business model that isn't profitable.</p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="color: orange;"><strong>Outcome:</strong> The direct travel model isn't economically viable. Your transportation costs are eating most of the Unaffordable you're earning. You're working hard but not getting ahead.</p>
+</div>
+
+/* Calculate 3 months of direct travel without sufficient Unaffordable */
+<<set _daysWorked = 66>> /* 22 days/month × 3 months */
+<<set _dailyGross = 180>> /* Earning more but not enough */
+<<set _dailyTransport = 85>>
+<<set _totalEarned = (_daysWorked * _dailyGross)>> /* $11,880 */
+<<set _totalTransport = (_daysWorked * _dailyTransport)>> /* $5,610 */
+<<set _monthsPassed = 3>>
+<<set _totalRent = ($housingCost * _monthsPassed)>>
+<<set _livingExpenses = (300 * _monthsPassed)>> /* $900 */
+<<set _netChange = (_totalEarned - _totalTransport - _totalRent - _livingExpenses)>>
+
+<<set $money += _netChange>> /* Add minimal net */
+<<set $familyHealth -= 15>> /* Stress from financial treadmill */
+<<set $lastRentPaidDay = $day>> /* Update rent tracking to prevent double-charging */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Earnings (3 months):</strong> $<<= _totalEarned>><br>
+    <strong>Transport Costs:</strong> -$<<= _totalTransport>> (unsustainable)<br>
+    <strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+    <strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+    <strong>Net Change:</strong> $<<= Math.floor(_netChange)>><br>
+    <strong>Current Balance:</strong> $<<= $money>> (barely above survival level)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (stress from working hard without progress)<br>
+    <strong>Monthly Transport Cost:</strong> ~$1,870 (unsustainable)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>You're caught in a trap: working hard, earning more gross income, but spending so much on transportation that your net income is barely higher than before. The "professional" direct service model sounded good, but the economics don't work. You need to find a different approach or accept that you're stuck on this expensive treadmill.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: DirectTravelSuccess
+/*Direct travel succeeds - referrals overcome costs*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 60>> /* Two more months */
+<<GenerateTimeSkipWorries 60>> /* Generate worries during time skip */
+
+<h3>Unaffordable Service, Unaffordable Results</h3>
+
+<div class="consequence-text">
+<p>Five months of direct travel service. Five months of ridesharing across the city. Five months of significant transportation costs.</p>
+
+<p>But it's paying off.</p>
+
+<p>The referrals haven't just continued - they've accelerated. Satisfied clients tell their friends, family, neighbors. "I know someone," they say. "Professional, reliable, comes right to you."</p>
+
+<p>And crucially, you've learned to charge appropriately. Early on, you were charging the same rates as workers who couldn't travel. Now you know your service is worth more, and you've adjusted your prices:</p>
+
+<ul style="margin:8px 0;">
+<li>Basic repair job: $120 (was $80)</li>
+<li>Full day painting: $250 (was $180)</li>
+<li>Complex carpentry: $300+ (was $220)</li>
+</ul>
+
+<p>Clients accept these rates because of the convenience. They're not paying for just labor - they're paying for the fact that you show up at their door, professionally, with all tools, ready to work. No coordination needed on their part.</p>
+
+<p>Your daily earnings have increased to $220-280, even after rideshare costs of $80-100. You're netting $140-180 per day instead of the $95 you feared.</p>
+
+<p>More importantly, you've built a client base. People call you directly now, not through job coordinators. You have regulars who use you for all their home maintenance. They tip generously. They feed you lunch. They recommend you to everyone they know.</p>
+
+<p>After five months, you count your savings and realize you have enough for a car - and then some. A decent used vehicle costs around $1,600.</p>
+</div>
+
+<hr>
+
+/* Calculate 5 months of direct travel Unaffordable service */
+<<set _daysWorked = 110>> /* ~22 days/month × 5 months */
+<<set _dailyGross = 250>> /* Unaffordable service rate (increased over time) */
+<<set _dailyTransport = 85>> /* Multiple rideshares per day */
+<<set _totalEarned = (_daysWorked * _dailyGross)>> /* $27,500 */
+<<set _totalTransport = (_daysWorked * _dailyTransport)>> /* $9,350 */
+<<set _monthsPassed = 5>>
+<<set _totalRent = ($housingCost * _monthsPassed)>>
+<<set _livingExpenses = (300 * _monthsPassed)>> /* $1,500 */
+<<set _savings = (_totalEarned - _totalTransport - _totalRent - _livingExpenses)>>
+
+<<set $money += _savings>> /* Add accumulated savings */
+<<set $lastRentPaidDay = $day>> /* Update rent tracking to prevent double-charging */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Total Earned (5 months):</strong> $<<= _totalEarned>><br>
+    <strong>Transport Costs:</strong> -$<<= _totalTransport>><br>
+    <strong>Rent Paid (automatically deducted):</strong> -$<<= _totalRent>><br>
+    <strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+    <strong>Net Savings:</strong> +$<<= Math.floor(_savings)>><br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Car Cost:</strong> $1,600 (or $800 if shared)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>%
+</p>
+</div>
+
+<h4>How will you get a car?</h4>
+
+<div class="housing-choice">
+<<link "Buy a car on your own">>
+    <<goto "DirectTravelBuyAlone">>
+<</link>>
+<p><em>Purchase a used car for $1,600. Given your Unaffordable client base and higher earnings, you can easily afford this. You'll have full control and won't need to coordinate with anyone. Perfect for your direct-service business model.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Find another family to share the cost">>
+    <<goto "DirectTravelCarShare">>
+<</link>>
+<p><em>Even though you can afford to buy alone, you could split the $1,600 cost with another family from the shelter. You'd each pay $800, leaving you with significant savings to reinvest in your business. Plus, you'd be helping another family achieve the same opportunity you have.</em></p>
+</div>
+
+
+:: DirectTravelBuyAlone
+/*Buy car alone - full ownership, high cost*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Solo Purchase</h3>
+
+<div class="consequence-text">
+<p>You decide to buy the car on your own. With your successful Unaffordable service business, you can afford it comfortably.</p>
+
+<p>You find a 2010 Toyota Corolla with 145,000 miles. It's in good condition - well-maintained, clean interior, reliable engine. The seller wants $1,600 cash.</p>
+
+<p>You pay $1,600 for the car, another $150 for insurance, and $100 for registration. Even after these expenses, you still have money left over from your hard work.</p>
+
+<p>When you drive it to your first client job, they're impressed. "You have your own car now," one says. "You're really building something."</p>
+
+<p>And they're right. Your professional image just got even better. No more showing up in rideshares. You arrive in your own vehicle, tools in the trunk, ready to work.</p>
+
+<p>Your business has gone from informal day labor to legitimate professional service. The car is the final piece.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> You own a car outright and have established a Unaffordable service business. Your transportation costs will drop to minimal levels while maintaining complete control of your schedule.</p>
+</div>
+
+<<set $money -= 1600>> /* Car purchase */
+<<set $money -= 150>> /* Insurance */
+<<set $money -= 100>> /* Registration */
+<<set $familyHealth += 18>> /* Major achievement */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>>
+<<set $carOwnership = "sole">>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Car Purchase:</strong> -$1,600<br>
+    <strong>Insurance & Registration:</strong> -$250<br>
+    <strong>Current Balance:</strong> $<<= $money>> (still strong)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (major achievement)<br>
+    <strong>Asset Acquired:</strong> 2010 Toyota Corolla (145k miles)<br>
+    <strong>Ownership:</strong> Sole owner<br>
+    <strong>Business Status:</strong> Established Unaffordable direct service<br>
+    <strong>Future Monthly Transport:</strong> ~$120 (gas + insurance vs $1,870 rideshare)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>The gamble paid off. You spent heavily on transportation to build a Unaffordable business, and now you own the means to continue that business without the costs. Your future looks very bright.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: DirectTravelCarShare
+/*Share car cost with another family - lower cost, help community*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Shared Opportunity</h3>
+
+<div class="consequence-text">
+<p>You could easily afford to buy the car alone, but something makes you pause. You remember how hard it was to get here. How many times you almost gave up. How much you relied on the support of others.</p>
+
+<p>You reach out to your network from the shelter. There's another family - from Honduras this time - who's been struggling with the same transportation challenges. They've been saving but haven't reached $1,600 yet. They have about $800.</p>
+
+<p>You meet them at a restaurant. "I have a proposal," you tell them. "Let's buy a car together. We split the cost, split the usage. You get transportation now instead of waiting months. I get to keep more of my savings for my business."</p>
+
+<p>The husband is skeptical at first. "Why would you do this? You can afford your own car."</p>
+
+<p>"Because someone helped me when I needed it," you say. "Now I can help you."</p>
+
+<p>You work out the details: schedules, maintenance, insurance. It's more complicated than owning alone, but it's worth it. Together, you buy a 2010 Toyota Corolla for $1,600. You each pay $800, plus half the insurance and registration.</p>
+
+<p>Your wife understands immediately when you tell her. "This is how we survived," she says. "By helping each other."</p>
+
+<p>The other family becomes more than car co-owners. They become trusted friends, part of your support network. When you need help, they're there. When they need help, you're there.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> You co-own a car while maintaining significant savings for your business. You've built a strong community connection and helped another family access opportunity they couldn't reach alone.</p>
+</div>
+
+<<set $money -= 800>> /* Half of car purchase */
+<<set $money -= 75>> /* Half of insurance */
+<<set $money -= 50>> /* Half of registration */
+<<set $familyHealth += 22>> /* Achievement + community + generosity */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>>
+<<set $carOwnership = "shared">>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Your Share (Car):</strong> -$800 (split 50/50)<br>
+    <strong>Your Share (Insurance & Registration):</strong> -$125<br>
+    <strong>Current Balance:</strong> $<<= $money>> (strong savings retained)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (achievement + community)<br>
+    <strong>Asset Acquired:</strong> 2010 Toyota Corolla (145k miles) - Shared<br>
+    <strong>Ownership:</strong> Co-owned with Honduran family<br>
+    <strong>Business Status:</strong> Established Unaffordable service with capital reserves<br>
+    <strong>Future Monthly Transport:</strong> ~$60 (gas + insurance split vs $1,870 rideshare)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>You've achieved success, but you haven't forgotten where you came from. The shared car works perfectly for both families. Your Unaffordable clients don't care that you share ownership - they care that you show up professionally with your tools, ready to work. And you still have significant savings to grow your business or handle emergencies. This is what community looks like.</p>
+</div>
+
+<<link "Continue">> <<goto "CarSharingDoubleUpOffer">> <</link>>
+
+
+:: CarSharingDoubleUpOffer
+/*Car-sharing family proposes housing double-up*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 45>> /* 1.5 months of successful car-sharing */
+
+<h3>A New Proposal</h3>
+
+<div class="consequence-text">
+<p>Six weeks of sharing the car. It's been working remarkably well. You coordinate schedules, split gas costs, and help each other out when emergencies arise. The trust you've built is real.</p>
+
+<p>One evening, the other family invites you over for dinner. After the meal, as your wives chat and the children play, the husband brings up something they've been discussing.</p>
+
+<p>"The car-sharing has been great," he says. "We've been thinking... both our families are paying around $<<= $housingCost>> in rent each month. That's a lot of money."</p>
+
+<p>He pauses, then continues: "What if we doubled up? Shared an apartment the way we share the car? We could each pay $<<= Math.floor($housingCost / 2)>> instead. Save hundreds every month."</p>
+
+<p>Your wife is immediately hesitant. "We'd be living together? In one apartment?"</p>
+
+<p>"It wouldn't be forever," the other wife says. "Just until we both save enough to get ahead. Maybe a year. We've proven we can work together with the car."</p>
+
+<p>You do the math in your head: saving $<<= Math.floor($housingCost / 2)>> per month could mean $<<= Math.floor($housingCost / 2) * 12>> per year. That's significant money for emergencies, sending money back home, or saving for a better future.</p>
+
+<p>But your wife is pregnant. She'll give birth in the next few weeks. Privacy during that time matters.</p>
+</div>
+
+<hr>
+
+<h4>What do you decide?</h4>
+
+<div class="housing-choice">
+<<link "Accept the housing double-up offer">>
+    <<goto "AffordableDoubleUpHousing">>
+<</link>>
+<p><em>Share an apartment with the car-sharing family. Your rent drops to $<<= Math.floor($housingCost / 2)>> per month, saving significant money. But you'll have less privacy, and your wife will be giving birth soon. The car-sharing has worked well - maybe this will too.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Decline - keep separate housing">>
+    <<goto "DeclineDoubleUp">>
+<</link>>
+<p><em>Thank them for the offer but maintain separate housing. You'll keep paying $<<= $housingCost>> in rent, but you'll have privacy for your growing family. The car-sharing arrangement can continue without the added complexity of living together.</em></p>
+</div>
+
+
+:: AffordableDoubleUpHousing
+/*Accepting housing double-up with car-sharing family*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $housingCost = Math.floor($housingCost / 2)>> /* Reduce rent to half */
+<<set $doubleUpLiving = true>>
+<<set $familyHealth -= 12>> /* Privacy concerns and stress */
+<<set $day += 14>>
+
+<h3>Doubled-Up Living</h3>
+
+<div class="consequence-text">
+<p>You decide to accept. You move into the slightly larger of the two apartments - a two-bedroom that can fit both families if you're creative with space.</p>
+
+<p>The rent is now $<<= $housingCost>> per month for your family, down from $<<= $housingCost * 2>>. The savings are real and immediate.</p>
+
+<p>But so are the challenges. Two families, one apartment. You share the kitchen, the bathroom, the living space. Your wives coordinate cooking schedules. The children share toys and create noise. Every decision requires communication and compromise.</p>
+
+<p>Your wife is in her final weeks of pregnancy. She's anxious about giving birth with another family living just feet away. "Where will I recover?" she asks quietly one night. "How will we have any privacy?"</p>
+
+<p>You share a car. Now you share a home. The trust is strong, but you're about to test it in ways you didn't anticipate.</p>
+</div>
+
+<hr>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent (Your Share):</strong> $<<= $housingCost>> (down from $<<= $housingCost * 2>>)<br>
+    <strong>Monthly Savings:</strong> $<<= $housingCost>> (can use for other needs)<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (reduced due to privacy concerns)
+</p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="color: orange;"><strong>Warning:</strong> Living together will test the relationship you've built. Your wife is about to give birth, which will add stress to an already crowded situation.</p>
+</div>
+
+<hr>
+
+<<link "Continue" "AffordableCSectionCrisis">> <</link>>
+
+
+:: DeclineDoubleUp
+/*Declined housing double-up offer*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Maintaining Boundaries</h3>
+
+<div class="consequence-text">
+<p>You thank them for the offer, but explain that with the baby coming, you need to keep your own space. Your wife needs privacy for the birth and recovery.</p>
+
+<p>"We understand," the other husband says. "The car-sharing is working great - let's keep that going. Maybe we can revisit the housing idea later, after your baby is born and things settle down."</p>
+
+<p>Your wife is visibly relieved when you get home. "I was so worried you'd say yes," she admits. "Sharing the car is one thing. Sharing our home while I'm giving birth? That felt like too much."</p>
+
+<p>You'll continue paying $<<= $housingCost>> in rent, but you'll have the privacy and space your family needs during this critical time. The car-sharing partnership continues strong, and your relationship with the other family remains positive.</p>
+
+<p>Sometimes maintaining boundaries is the wisest choice.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Outcome:</strong> You've preserved both your privacy and your relationship with the car-sharing family by setting clear boundaries. The partnership continues without the added stress of shared living.</p>
+</div>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent:</strong> $<<= $housingCost>> (unchanged)<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Car Sharing:</strong> Continues successfully<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (maintaining stability)
+</p>
+</div>
+
+<hr>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: AffordableCSectionCrisis
+/*C-section complication - adapted for Affordable/Standard housing*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 21>>
+
+<h3>Emergency C-Section</h3>
+
+<div class="consequence-text">
+<p>Three weeks into your doubled-up living arrangement, your wife goes into labor. Complications arise, and the doctors determine she needs an emergency C-section. The surgery goes well, and you have a healthy baby, but your wife's recovery will be more difficult than expected.</p>
+
+<p>You bring her and the newborn home to the crowded apartment. The other family has tried to give you space, but there's only so much space to give. Every cry from the baby echoes through the apartment. Your wife needs help recovering from major surgery while living alongside another family.</p>
+
+<p>The situation is becoming untenable.</p>
+</div>
+
+<hr>
+
+<h4>How will you handle this situation?</h4>
+
+<div class="housing-choice">
+<<link "Ask about bringing in your wife's friend for help">>
+    <<goto "AffordableInviteFriendChoice">>
+<</link>>
+<p><em>Your wife's friend from the shelter has experience with C-section recovery. But the apartment is already crowded with two families. Do you bring her in despite the space issues?</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Make adjustments yourselves">>
+    <<goto "AffordableWorkLessPayMore">>
+<</link>>
+<p><em>Work less to help your wife personally, or offer to pay more of the rent in exchange for the other wife helping with recovery?</em></p>
+</div>
+
+
+:: AffordableInviteFriendChoice
+/*Choice: Bring friend in or respect other family's decision - Affordable version*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Your Wife's Friend</h3>
+
+<div class="consequence-text">
+<p>You ask the other family if your wife's friend can stay to help with recovery and the newborn. They hesitate. The apartment is already crowded, and another person would push everyone to the breaking point.</p>
+
+<p>"We need some time to think about it," they say. "It's a lot to process."</p>
+
+<p>But your wife's friend is ready to come now. She has experience with C-section recovery and knows how to help. Your wife is in pain and overwhelmed. Every day matters.</p>
+</div>
+
+<hr>
+
+<h4>What do you do?</h4>
+
+<div class="housing-choice">
+<<link "Bring the friend in anyway">>
+    <<goto "AffordableBringFriendIn">>
+<</link>>
+<p><em>Your wife needs help immediately. You'll deal with the consequences later.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Wait for their answer">>
+    <<goto "AffordableRespectPrivacy">>
+<</link>>
+<p><em>Respect the other family's need to decide. Find another way to manage for now.</em></p>
+</div>
+
+
+:: AffordableBringFriendIn
+/*Brought friend in - leads to family leaving and car loss*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 14>>
+
+<h3>Tension and Consequences</h3>
+
+<div class="consequence-text">
+<p>You bring your wife's friend in to help. For the first few days, it's a relief. She knows what she's doing, and your wife is getting the care she needs.</p>
+
+<p>But the apartment was already too small for two families. With an additional person, it's unbearable. The single bathroom becomes a nightmare. Kitchen space is impossible to share. The baby's crying at all hours wears everyone down.</p>
+
+<p>Household responsibilities aren't shared evenly. Your wife's friend, focused entirely on helping with the baby, doesn't contribute to cleaning or cooking for everyone. The other family starts to feel taken advantage of.</p>
+
+<p>After two weeks, the other family has had enough.</p>
+
+<p>"We're leaving," they tell you. "We found our own place. We can't live like this anymore."</p>
+
+<p>Then comes the blow you didn't expect: "We're taking the car," they say firmly. "We put in half the money, and we need it. You made this decision without us - we're making our own decisions now."</p>
+
+<p>You try to negotiate, to offer to buy out their half, but the trust is broken. They take the car keys and leave.</p>
+</div>
+
+<hr>
+
+<<set $hasCar = false>>
+<<set $carOwnership = "">>
+<<set $housingCost = $housingCost * 2>> /* Rent returns to full price */
+<<set $familyHealth -= 15>> /* Stress from situation */
+
+<div class="warning-box">
+<p style="color: red;"><strong>Crisis:</strong> The other family has moved out. You've lost the shared car and your rent is back to $<<= $housingCost>> per month. The car-sharing partnership and housing arrangement have both collapsed.</p>
+</div>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent:</strong> $<<= $housingCost>> (back to full price)<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Car Status:</strong> Lost (taken by other family)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (decreased from conflict)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>Your wife's friend stays through the recovery period, then returns to the shelter. You're left alone, paying full rent again, without the car you worked so hard to get. The decision to prioritize immediate needs over the partnership has cost you dearly.</p>
+
+<p>You're back where you started - but now with a newborn and no transportation.</p>
+</div>
+
+<hr>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: AffordableRespectPrivacy
+/*Respected boundaries - partnership strengthens*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 14>>
+
+<h3>Respect and Cooperation</h3>
+
+<div class="consequence-text">
+<p>You don't bring in your wife's friend out of respect for the other family. It's tough for the first two weeks. You're exhausted, trying to work while helping your wife recover, caring for the newborn, and managing the crowded household.</p>
+
+<p>But something unexpected happens.</p>
+
+<p>The wife of the other family sees how hard you're struggling. She's been through this herself. One morning, she knocks on your door.</p>
+
+<p>"I can help," she says. "I know what it's like. Let me watch the baby for a few hours so you both can rest."</p>
+
+<p>From that point on, both families begin working together. They help with the baby. You help with their kids. Cooking becomes shared. The apartment is still cramped, but it feels less like a desperate arrangement and more like a community.</p>
+
+<p>Your wife recovers well. The baby is healthy. The other family appreciates that you respected their boundaries, and the trust between you has deepened.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> By respecting the other family's boundaries, you've strengthened the partnership. The housing and car-sharing arrangements continue successfully.</p>
+</div>
+
+<<set $familyHealth += 15>> /* Positive outcome from cooperation */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent (Shared):</strong> $<<= $housingCost>><br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Car Status:</strong> Still shared with family<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (improved through community support)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>You've learned that strong partnerships require mutual respect and clear communication. The sacrifice of immediate help has paid off with a deeper, more sustainable relationship.</p>
+</div>
+
+<hr>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: AffordableWorkLessPayMore
+/*Second option - work less or pay more rent*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Managing Recovery</h3>
+
+<div class="consequence-text">
+<p>Your wife needs help to prevent post-partum medical issues. The C-section recovery is demanding, and without proper care, complications could arise.</p>
+
+<p>You have two options.</p>
+</div>
+
+<hr>
+
+<h4>How will you handle your wife's recovery?</h4>
+
+<div class="housing-choice">
+<<link "Offer to pay more rent in exchange for help">>
+    <<goto "AffordablePayMoreForHelp">>
+<</link>>
+<p><em>Negotiate with the other family to pay a larger share of the rent in exchange for the other wife helping your wife during recovery. This preserves your work schedule but increases financial burden.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Take fewer jobs to care for your wife yourself">>
+    <<goto "AffordableWorkLessHelpWife">>
+<</link>>
+<p><em>Reduce your work hours so you can be there for your wife during her recovery. You'll earn less money, but you'll provide the care she needs personally.</em></p>
+</div>
+
+
+:: AffordablePayMoreForHelp
+/*Pay more rent for help - leads to conflict and car loss*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 14>>
+
+<h3>Financial Arrangement</h3>
+
+<div class="consequence-text">
+<p>You approach the other family with a proposal: you'll pay a larger share of the rent if the other wife can help your wife during her recovery. After discussion, they agree. You'll now pay $<<= Math.floor($housingCost * 1.4)>> per month instead of $<<= $housingCost>>, while they pay $<<= Math.floor($housingCost * 0.6)>>.</p>
+
+<p>At first, it works. The other wife helps with the baby, prepares meals, and checks on your wife throughout the day.</p>
+
+<p>But problems emerge quickly.</p>
+
+<p>The two wives have fundamentally different approaches to childcare. Your wife believes in letting the baby cry briefly to develop independence. The other wife thinks babies should never be left to cry. Tensions build over parenting philosophies.</p>
+
+<p>Then there's the question of responsibility. Did the agreement include doing your wife's laundry? Cleaning your side of the apartment? Where does "helping with recovery" end and "being a servant" begin?</p>
+
+<p>Arguments start. Quiet at first, then loud enough that both families can hear through the thin walls. The atmosphere becomes toxic.</p>
+
+<p>The conflict escalates until it affects everything you share, including the car. After a particularly heated argument, the other family announces they want to end both arrangements.</p>
+
+<p>"We can't do this anymore," they say. "We're moving out, and we're taking the car. We need it more, and frankly, we can't stand being around you anymore."</p>
+
+<p>You're too exhausted from the conflict to fight about it.</p>
+</div>
+
+<hr>
+
+<<set $hasCar = false>>
+<<set $carOwnership = "">>
+<<set $housingCost = $housingCost * 2>> /* Rent returns to full price */
+<<set $familyHealth -= 20>> /* Conflict and stress */
+<<set $money -= 200>> /* Lost money from the arrangement */
+
+<div class="warning-box">
+<p style="color: red;"><strong>Outcome:</strong> The financial arrangement destroyed the partnership. You've lost both the shared car and the housing arrangement. Your rent is back to $<<= $housingCost>> per month.</p>
+</div>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent:</strong> $<<= $housingCost>> (back to full price)<br>
+    <strong>Current Balance:</strong> $<<= $money>> (lost money to conflict)<br>
+    <strong>Car Status:</strong> Lost (taken by other family)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (decreased due to conflict)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>Trying to solve one problem with money created a bigger problem. The partnership that started with such promise has ended in bitterness. You're back to paying full rent and have no car.</p>
+</div>
+
+<hr>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: AffordableWorkLessHelpWife
+/*Work less to help wife - success*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 21>>
+
+<h3>Personal Care</h3>
+
+<div class="consequence-text">
+<p>You decide to take fewer jobs so you can be there for your wife during her recovery. It means less money, but this is what she needs.</p>
+
+<p>For the next three weeks, you're there. You wake up with the baby at night. You help your wife to the bathroom. You cook, clean, change diapers, and handle all the household tasks she can't manage while healing.</p>
+
+<p>It's exhausting. The other family watches but doesn't interfere - this is clearly your choice.</p>
+
+<p>But something remarkable happens. With proper rest and care, your wife recovers faster than expected. By the third week, she's on her feet and feeling strong.</p>
+
+<p>"I want to help," she tells you. "You've been doing everything. Let me work while you take care of the baby. We'll take turns."</p>
+
+<p>Together, you develop a system. She takes some of the jobs you would have turned down. You split childcare. The other family, seeing how well you've worked together, starts offering to watch the baby for an hour here and there so both of you can work.</p>
+
+<p>The apartment feels less tense. The shared sacrifice has brought everyone closer together.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> By prioritizing your wife's recovery personally, you've strengthened your family and built deeper trust with the car-sharing family. The partnerships continue successfully.</p>
+</div>
+
+<<set $familyHealth += 12>> /* Positive outcome */
+<<set $money -= 150>> /* Lost some income from fewer jobs */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent (Shared):</strong> $<<= $housingCost>><br>
+    <strong>Current Balance:</strong> $<<= $money>> (some income lost, but wife can now work)<br>
+    <strong>Car Status:</strong> Still shared with family<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (improved through care and cooperation)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>You've made it through one of the hardest challenges yet. The sacrifice was worth it. Your partnerships - in housing and car-sharing - have survived because you put people before profit.</p>
+</div>
+
+<hr>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>

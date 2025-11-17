@@ -96,11 +96,47 @@ Important for collaborators:
 <<set $optionsLocked = false>> /* Once true, options cannot be changed */
 
 /* --- Worries System (Family concerns and stressors) ---*/
-<<set $worries = []>> /* Array of current worries: {type: "pregnancy", severity: 1-5, description: "", daysActive: 0} */
+<<set $worries = []>> /* Array of current worries: {type: "health", severity: 1-5, description: "", daysActive: 0, expiresIn: 7} */
 <<set $worriesIgnored = 0>> /* Count of worries left unaddressed */
 <<set $familyHealth = 100>> /* Overall family wellbeing (0-100) */
-<<set $pregnancyProgress = 0>> /* Days until baby is born (starts at ~90 days) */
 <<set $pendingPayment = 0>> /* Payment waiting at end of day hub */
+
+/* --- Possible Random Worries (everyday stressors for immigrant families) ---*/
+<<set $possibleWorries = [
+    {type: "basic_needs", severity: 2, description: "Kids need new clothes for school", expiresIn: 7, healthImpact: 5, cost: 80},
+    {type: "basic_needs", severity: 2, description: "Running low on groceries and household supplies", expiresIn: 5, healthImpact: 8, cost: 120},
+    {type: "health", severity: 3, description: "Child has persistent cough - should see a doctor", expiresIn: 5, healthImpact: 10, cost: 150},
+    {type: "social", severity: 2, description: "Kids feel isolated - need social activities", expiresIn: 10, healthImpact: 5, cost: 50},
+    {type: "basic_needs", severity: 3, description: "Winter coats needed for the family", expiresIn: 7, healthImpact: 8, cost: 150},
+    {type: "health", severity: 2, description: "Wife needs prenatal vitamins and checkup", expiresIn: 7, healthImpact: 8, cost: 100},
+    {type: "basic_needs", severity: 1, description: "Need to send money to family back home", expiresIn: 14, healthImpact: 3, cost: 200},
+    {type: "maintenance", severity: 2, description: "Car needs minor repairs to stay reliable", expiresIn: 10, healthImpact: 6, cost: 200},
+    {type: "health", severity: 3, description: "Dental pain - needs treatment soon", expiresIn: 5, healthImpact: 12, cost: 300},
+    {type: "social", severity: 1, description: "Child's birthday coming up - wants small celebration", expiresIn: 7, healthImpact: 4, cost: 60}
+]>>
+
+/* --- Unaffordable Housing Overwork Tracking ---*/
+<<set $workingExcessiveHours = false>> /* True if player chose 80-hour weeks path */
+<<set $excessiveHoursDaysWorked = 0>> /* Days worked while doing excessive hours */
+<<set $overworkSicknessTriggered = false>> /* Prevent re-triggering sickness event */
+<<set $seekingRentalAssistance = false>> /* True if player chose rental assistance path */
+<<set $doubleUpLiving = false>> /* True if player chose to double up with another family */
+
+/* --- Affordable/Standard Housing Work Structure Tracking ---*/
+<<set $transportMethod = "">> /* "publicTransit" or "rideshare" */
+<<set $usingPublicTransit = false>> /* True if player is using public transit with tools */
+<<set $usingRideshare = false>> /* True if player is using rideshare services */
+<<set $workStructure = "">> /* "jobPerDay" or "freelance" */
+<<set $rideshareStrategy = "">> /* "areaFocused" or "directTravel" */
+<<set $freelanceDaysWorked = 0>> /* Days worked as freelancer (tracks progression to encounter) */
+<<set $hasCar = false>> /* True if player has purchased a car */
+<<set $carOwnership = "">> /* "sole" (owns alone) or "shared" (co-owns with another family) */
+
+/* --- Wife Medical Emergency Tracking ---*/
+<<set $wifeMedicalEmergencyTriggered = false>> /* Prevent re-triggering wife event */
+<<set $wifeMedicalEmergencyResolved = false>> /* Tracks if event has been handled */
+<<set $iceDetained = false>> /* True if ICE detained the family at ER */
+<<set $hasAccessToICIRR = false>> /* True if player knows about ICIRR resources */
 
 /* --- Housing Rejection Reasons (realistic challenges migrants face) ---*/
 <<set $housingRejectionReasons = [

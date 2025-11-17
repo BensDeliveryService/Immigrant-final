@@ -97,6 +97,91 @@ Keeping this widget as a no-op so existing passages that call it don't error.
 	<<set $currentDayOfWeek = ($currentDayOfWeek + 1) % 7>>
 <</widget>>
 
+/* Helper widget for time skips - handles rent, worries, and day tracking */
+/* Usage: <<ProcessTimeSkip daysToSkip>> */
+<<widget "ProcessTimeSkip">>
+	<<set _daysSkipped = $args[0]>>
+	<<set _startDay = $day>>
+
+	/* Advance the day */
+	<<set $day += _daysSkipped>>
+
+	/* Initialize rent tracking if needed */
+	<<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
+
+	/* Calculate and deduct rent for time period */
+	<<if $hasHousing and $housingCost > 0>>
+		<<set _monthsInPeriod = Math.floor(_daysSkipped / 30)>>
+		<<if _monthsInPeriod > 0>>
+			<<set _rentDue = ($housingCost * _monthsInPeriod)>>
+			<<set $money -= _rentDue>>
+			<<set $lastRentPaidDay = $day>>
+			<<set _rentPaidDuringSkip = _rentDue>>
+		<</if>>
+	<</if>>
+
+	/* Generate worries proportional to time skipped (chance per week) */
+	<<set _weeksSkipped = Math.floor(_daysSkipped / 7)>>
+	<<set _worriesGenerated = 0>>
+	<<for _w = 0; _w < _weeksSkipped; _w++>>
+		<<if $worries.length < 3 and random(1, 100) <= 40>>
+			/* Filter worries based on player's current situation */
+			<<set _availableWorries = $possibleWorries.filter(function(worry) {
+				if (worry.type === "maintenance" && !$hasCar) {
+					return false;
+				}
+				return true;
+			})>>
+			<<if _availableWorries.length > 0>>
+				<<set _randomWorry = _availableWorries[random(0, _availableWorries.length - 1)]>>
+				<<set _newWorry = {
+					type: _randomWorry.type,
+					severity: _randomWorry.severity,
+					description: _randomWorry.description,
+					expiresIn: _randomWorry.expiresIn,
+					healthImpact: _randomWorry.healthImpact,
+					cost: _randomWorry.cost,
+					daysActive: 0
+				}>>
+				<<set $worries.push(_newWorry)>>
+				<<set _worriesGenerated += 1>>
+			<</if>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+/* Generate worries during time skip without modifying day/rent (for passages that handle those separately) */
+/* Usage: <<GenerateTimeSkipWorries daysSkipped>> */
+<<widget "GenerateTimeSkipWorries">>
+	<<set _daysSkipped = $args[0]>>
+	<<set _weeksSkipped = Math.floor(_daysSkipped / 7)>>
+	<<set _worriesGenerated = 0>>
+	<<for _w = 0; _w < _weeksSkipped; _w++>>
+		<<if $worries.length < 3 and random(1, 100) <= 40>>
+			<<set _availableWorries = $possibleWorries.filter(function(worry) {
+				if (worry.type === "maintenance" && !$hasCar) {
+					return false;
+				}
+				return true;
+			})>>
+			<<if _availableWorries.length > 0>>
+				<<set _randomWorry = _availableWorries[random(0, _availableWorries.length - 1)]>>
+				<<set _newWorry = {
+					type: _randomWorry.type,
+					severity: _randomWorry.severity,
+					description: _randomWorry.description,
+					expiresIn: _randomWorry.expiresIn,
+					healthImpact: _randomWorry.healthImpact,
+					cost: _randomWorry.cost,
+					daysActive: 0
+				}>>
+				<<set $worries.push(_newWorry)>>
+				<<set _worriesGenerated += 1>>
+			<</if>>
+		<</if>>
+	<</for>>
+<</widget>>
+
 /* Helper to check if current day is a business day (Monday-Friday) */
 <<widget "IsBusinessDay">>
 	<<if $currentDayOfWeek >= 0 and $currentDayOfWeek <= 4>>
