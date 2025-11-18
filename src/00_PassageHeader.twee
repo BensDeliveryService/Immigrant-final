@@ -13,37 +13,62 @@ constantly visible.
 ===============================================================================
 */
 :: PassageHeader
-<<if $gameStarted>>
 <<if $debugShowHeader is undefined>><<set $debugShowHeader = true>><</if>>
 <<if $debugShowHeader>>
 <div id="persistent-header" class="hud-bar" style="margin:0;padding:0;">
 	<span class="hud-item" title="Current day and days left">
 		<<set _daysRemaining = $gameTimelineMax - $day>>
-		📅 <<= $dayNames[$currentDayOfWeek]>>, Day <<= $day>>/<<= $gameTimelineMax>> (L:<<= _daysRemaining>>)
+		📅 Day/status: <<= $dayNames[$currentDayOfWeek]>>, Day <<= $day>>/<<= $gameTimelineMax>> (L:<<= _daysRemaining>>)
 	</span>
-	<span class="hud-item" title="Money">💰 $<<= $money>></span>
-	<span class="hud-item" title="Housing">
-		<<if $hasHousing>>🏠 <<= $housingType>><<elseif $housingApplicationPending>>🏠 Pending<<else>>🏠 None<</if>>
+
+	<span class="hud-item" title="Money available">
+		💰 Money available: $<<= $money>>
 	</span>
-	<span class="hud-item" title="Job">
-		<<if $job>>💼 <<= $jobName>> (<<= $workdays>>d)<<else>>💼 None<</if>>
+
+	<span class="hud-item" title="Housing status">
+		<<if $hasHousing>>
+			🏠 Housing: <<= $housingType>>
+		<<elseif $housingApplicationPending>>
+			🏠 Housing: Application pending
+		<<else>>
+			🏠 Housing: None
+		<</if>>
 	</span>
-	<span class="hud-item" title="Transit">
-		<<if $transitDays > 0>>🚇 <<= $transitDays>>d<<else>>🚇 None<</if>>
+
+	<span class="hud-item" title="Job status">
+		<<if $job>>
+			💼 Job: <<= $jobName>> (<<= $workdays>>d)
+		<<else>>
+			💼 Job: None
+		<</if>>
 	</span>
-	<span class="hud-item" title="Family / worries">
-		<<if $worries.length > 0>>⚠️ <<= $worries.length>><<else>>👨‍👩‍👧 <<= $familyHealth>>%<</if>>
+
+	<span class="hud-item" title="Transit pass">
+		<<if $transitDays > 0>>
+			🚇 Transit pass: <<= $transitDays>> days left
+		<<else>>
+			🚇 Transit pass: None
+		<</if>>
 	</span>
+
+	<span class="hud-item" title="Family health / worries">
+		<<if $worries.length > 0>>
+			⚠️ Worries: <<= $worries.length>>
+		<<else>>
+			👨‍👩‍👧 Family health: <<= $familyHealth>>%
+		<</if>>
+	</span>
+
 	<span class="hud-item" title="Debug menu">
-		<<link "🛠️" "DebugMenu">><</link>>
+		<<link "🛠️ Debug" "DebugMenu">><</link>>
 	</span>
+
 	<span class="hud-item hud-toggle">
-		<<link "×" `passage()`>><<set $debugShowHeader = false>><</link>>
+		<<link "× Hide HUD" `passage()`>><<set $debugShowHeader = false>><</link>>
 	</span>
 </div>
 <<else>>
 <div id="persistent-header-toggle" class="hud-toggle-bar" style="margin:0;padding:0;">
-	<<link "+ HUD" `passage()`>><<set $debugShowHeader = true>><</link>>
+	<<link "+ Show HUD" `passage()`>><<set $debugShowHeader = true>><</link>>
 </div>
-<</if>>
 <</if>>

@@ -1,0 +1,50 @@
+:: HousingStart
+<<set $step = 0>><<ShowInfo>>
+
+<!-- Top-level navigation shown first -->
+<div style="margin:0 0 6px 0;font-size:0.85em;">
+	<<link "◀ Back to day choice">><<goto "DayChoice">><</link>>
+</div>
+
+<<if $hasHousing>>
+	<h3 style="margin:0 0 4px 0;">Current Housing</h3>
+	<p style="margin:2px 0;">You already have housing.</p>
+	<p style="margin:2px 0;">Type: <strong><<= $housingType>> Apartment</strong><br>
+	Monthly Cost: <strong>$<<= $housingCost>></strong></p>
+	<<link "Return to day choice">><<goto "DayChoice">><</link>>
+
+<<elseif $housingApplicationPending>>
+	<h3 style="margin:0 0 4px 0;">Housing Application Status</h3>
+	<p style="margin:2px 0;">You have a pending application for the <strong><<= $pendingHousingType>> Apartment</strong>.</p>
+	<p style="margin:2px 0;">Estimated business days remaining: <strong>~<<= $housingApplicationDaysRemaining>></strong></p>
+
+	<<if $housingApplicationDaysRemaining <= 0>>
+		<p style="margin:4px 0;color:green;"><strong>Your application has been processed!</strong></p>
+		<<link "Check application result">><<goto "HousingApplicationResult">><</link>>
+	<<else>>
+		<<set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)>>
+		<<if _isWeekend>>
+			<p style="margin:4px 0;padding:6px;border-radius:4px;background:rgba(245,167,66,.08);border-left:3px solid rgba(245,167,66,.3);font-size:0.85em;">
+				📅 <em>It's the weekend — applications only process on weekdays.</em>
+			</p>
+		<</if>>
+		<p style="margin:4px 0;font-size:0.85em;"><em>Your application is still being reviewed. Check again tomorrow.</em></p>
+		<<link "Return to day choice">><<goto "DayChoice">><</link>>
+	<</if>>
+
+<<else>>
+	<h3 style="margin:0 0 4px 0;">Housing Search</h3>
+	<p style="margin:2px 0;">You don't have housing yet. Let's look for available options.</p>
+
+	<<if $housingRejectionCount > 0>>
+		<hr style="margin:6px 0;">
+		<p style="margin:2px 0;color:#b8860b;"><em>Previous rejections: <<= $housingRejectionCount>></em></p>
+		<<if $lastRejectionReason>>
+			<p style="margin:2px 0;font-size:0.85em;"><em>Last reason: <<= $lastRejectionReason>></em></p>
+		<</if>>
+		<p style="margin:2px 0;font-size:0.85em;"><em>Many migrants face several rejections before securing housing. Keep trying.</em></p>
+		<hr style="margin:6px 0;">
+	<</if>>
+
+	<<link "View available housing options">><<goto "HousingOptions">><</link>>
+<</if>>

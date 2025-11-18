@@ -1,0 +1,51 @@
+:: RideshareIntro
+<<set $step = 0>><<ShowInfo>>
+
+<h3>The Rideshare Strategy</h3>
+
+<div class="consequence-text">
+	<p>You decide to use rideshare services - Uber, Lyft, and local taxis - to get to your jobs. It's significantly more expensive than public transit, but it solves several problems:</p>
+	<ul style="margin:8px 0;">
+		<li>You can bring your full toolbox without worrying about transit police</li>
+		<li>You get dropped off exactly where you need to be - no walking with heavy tools</li>
+		<li>You look professional arriving in a car, which can help with clients</li>
+		<li>No risk of law enforcement encounters on public transit</li>
+	</ul>
+	<p>But the math is challenging. Each rideshare trip costs $15-25 depending on distance. If you're taking multiple trips per day, the costs add up fast. You could easily spend $400-600 per month on transportation alone.</p>
+	<p>You'll need to be strategic. The question is: how do you structure your work to make the rideshare costs worthwhile?</p>
+</div>
+
+<hr>
+
+<<link "Decide on your work strategy">><<goto "RideshareChoice">><</link>>
+
+:: RideshareChoice
+<<set $step = 0>><<ShowInfo>><<set $usingRideshare = true>>
+
+<h3>Rideshare Work Strategy</h3>
+
+<div class="consequence-text">
+	<p>Since you're spending significant money on rideshares, you need to be smart about how you use them. You have two main strategies:</p>
+</div>
+
+<hr>
+
+<h4>Choose your approach:</h4>
+
+<div class="housing-choice">
+	<<link "Plan jobs within one area to minimize rideshare costs">>
+		<<set $rideshareStrategy = "areaFocused">>
+		<<goto "AreaFocusedStrategy">>
+	<</link>>
+	<p><em>Take one rideshare to a neighborhood known for job opportunities, then plan all your jobs within walking distance of that area. You'll save money by not ridesharing between jobs, but your mobility is limited. You might have to turn down higher-paying jobs that are too far away. Monthly transport cost: ~$800-900.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+	<<link "Travel directly to individual homes for higher-paying jobs">>
+		<<set $rideshareStrategy = "directTravel">>
+		<<goto "DirectTravelStrategy">>
+	<</link>>
+	<p><em>Tell clients and employers you can travel directly to their homes or job sites. Take separate rideshares to each location. This is expensive, but you can take the higher-paying jobs that require direct service and get referred to other clients who value this convenience.</em></p>
+</div>

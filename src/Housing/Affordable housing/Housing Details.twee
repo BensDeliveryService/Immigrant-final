@@ -1,0 +1,291 @@
+:: CarSharingDoubleUpOffer
+<<set $step = 0>><<ShowInfo>><<set $day += 45>>
+
+<h3>A New Proposal</h3>
+<div class="consequence-text">
+	<p>Six weeks of sharing the car. It's been working remarkably well. You coordinate schedules, split gas costs, and help each other out when emergencies arise. The trust you've built is real.</p>
+	<p>One evening, the other family invites you over for dinner. After the meal, as your wives chat and the children play, the husband brings up something they've been discussing.</p>
+	<p>"The car-sharing has been great," he says. "We've been thinking... both our families are paying around $<<= $housingCost>> in rent each month. That's a lot of money."</p>
+	<p>He pauses, then continues: "What if we doubled up? Shared an apartment the way we share the car? We could each pay much less instead. Save hundreds every month."</p>
+	<p>Your wife is immediately hesitant. "We'd be living together? In one apartment?"</p>
+	<p>"It wouldn't be forever," the other wife says. "Just until we both save enough to get ahead. Maybe a year. We've proven we can work together with the car."</p>
+	<p>You do the math in your head: cutting rent in half could mean thousands of dollars saved in a year. That's significant money for emergencies, sending money back home, or saving for a better future.</p>
+	<p>But your wife is pregnant. She'll give birth in the next few weeks. Privacy during that time matters.</p>
+</div>
+<hr>
+
+<h4>What do you decide?</h4>
+<div class="housing-choice">
+	<<link "Accept the housing double-up offer">><<goto "AffordableDoubleUpHousing">><</link>>
+	<p><em>Share an apartment with the car-sharing family. Your rent drops significantly each month, saving real money. But you'll have less privacy, and your wife will be giving birth soon. The car-sharing has worked well - maybe this will too.</em></p>
+</div>
+<hr>
+<div class="housing-choice">
+	<<link "Decline - keep separate housing">><<goto "DeclineDoubleUp">><</link>>
+	<p><em>Thank them for the offer but maintain separate housing. You'll keep paying your current rent, but you'll have privacy for your growing family. The car-sharing arrangement can continue without the added complexity of living together.</em></p>
+</div>
+
+:: AffordableDoubleUpHousing
+<<set $step = 0>><<ShowInfo>>
+<<set _originalHousingCost = $housingCost>>
+<<set $housingCost = Math.floor($housingCost / 2)>>
+<<set $doubleUpLiving = true>>
+<<set $familyHealth -= 12>><<set $day += 14>>
+
+<h3>Doubled-Up Living</h3>
+<div class="consequence-text">
+	<p>You decide to accept. You move into the slightly larger of the two apartments - a two-bedroom that can fit both families if you're creative with space.</p>
+	<p>Your share of the rent is now $<<= $housingCost>> per month, down from $<<= _originalHousingCost>>. The savings are real and immediate.</p>
+	<p>But so are the challenges. Two families, one apartment. You share the kitchen, the bathroom, the living space. Your wives coordinate cooking schedules. The children share toys and create noise. Every decision requires communication and compromise.</p>
+	<p>Your wife is in her final weeks of pregnancy. She's anxious about giving birth with another family living just feet away. "Where will I recover?" she asks quietly one night. "How will we have any privacy?"</p>
+	<p>You share a car. Now you share a home. The trust is strong, but you're about to test it in ways you didn't anticipate.</p>
+</div>
+<hr>
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Monthly Rent (Your Share):</strong> $<<= $housingCost>> (down from $<<= _originalHousingCost>>)<br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (reduced due to privacy concerns)
+	</p>
+</div>
+<hr>
+<div class="warning-box">
+	<p style="color: orange;"><strong>Warning:</strong> Living together will test the relationship you've built. Your wife is about to give birth, which will add stress to an already crowded situation.</p>
+</div>
+<hr>
+<<link "Continue" "AffordableCSectionCrisis">><</link>>
+
+:: DeclineDoubleUp
+<<set $step = 0>><<ShowInfo>>
+
+<h3>Maintaining Boundaries</h3>
+<div class="consequence-text">
+	<p>You thank them for the offer, but explain that with the baby coming, you need to keep your own space. Your wife needs privacy for the birth and recovery.</p>
+	<p>"We understand," the other husband says. "The car-sharing is working great - let's keep that going. Maybe we can revisit the housing idea later, after your baby is born and things settle down."</p>
+	<p>Your wife is visibly relieved when you get home. "I was so worried you'd say yes," she admits. "Sharing the car is one thing. Sharing our home while I'm giving birth? That felt like too much."</p>
+	<p>You'll continue paying your current rent, but you'll have the privacy and space your family needs during this critical time. The car-sharing partnership continues strong, and your relationship with the other family remains positive.</p>
+	<p>Sometimes maintaining boundaries is the wisest choice.</p>
+</div>
+<hr>
+<div class="success-box">
+	<p style="color: green;"><strong>Outcome:</strong> You've preserved both your privacy and your relationship with the car-sharing family by setting clear boundaries. The partnership continues without the added stress of shared living.</p>
+</div>
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Monthly Rent:</strong> $<<= $housingCost>> (unchanged)<br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Car Sharing:</strong> Continues successfully<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (maintaining stability)
+	</p>
+</div>
+<hr>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+:: AffordableCSectionCrisis
+<<set $step = 0>><<ShowInfo>><<set $day += 21>>
+
+<h3>Emergency C-Section</h3>
+<div class="consequence-text">
+	<p>Three weeks into your doubled-up living arrangement, your wife goes into labor. Complications arise, and the doctors determine she needs an emergency C-section. The surgery goes well, and you have a healthy baby, but your wife's recovery will be more difficult than expected.</p>
+	<p>You bring her and the newborn home to the crowded apartment. The other family has tried to give you space, but there's only so much space to give. Every cry from the baby echoes through the apartment. Your wife needs help recovering from major surgery while living alongside another family.</p>
+	<p>The situation is becoming untenable.</p>
+</div>
+<hr>
+
+<h4>How will you handle this situation?</h4>
+<div class="housing-choice">
+	<<link "Ask about bringing in your wife's friend for help">><<goto "AffordableInviteFriendChoice">><</link>>
+	<p><em>Your wife's friend from the shelter has experience with C-section recovery. But the apartment is already crowded with two families. Do you bring her in despite the space issues?</em></p>
+</div>
+<hr>
+<div class="housing-choice">
+	<<link "Make adjustments yourselves">><<goto "AffordableWorkLessPayMore">><</link>>
+	<p><em>Work less to help your wife personally, or offer to pay more of the rent in exchange for the other wife helping with recovery?</em></p>
+</div>
+
+:: AffordableInviteFriendChoice
+<<set $step = 0>><<ShowInfo>>
+
+<h3>Your Wife's Friend</h3>
+<div class="consequence-text">
+	<p>You ask the other family if your wife's friend can stay to help with recovery and the newborn. They hesitate. The apartment is already crowded, and another person would push everyone to the breaking point.</p>
+	<p>"We need some time to think about it," they say. "It's a lot to process."</p>
+	<p>But your wife's friend is ready to come now. She has experience with C-section recovery and knows how to help. Your wife is in pain and overwhelmed. Every day matters.</p>
+</div>
+<hr>
+
+<h4>What do you do?</h4>
+<div class="housing-choice">
+	<<link "Bring the friend in anyway">><<goto "AffordableBringFriendIn">><</link>>
+	<p><em>Your wife needs help immediately. You'll deal with the consequences later.</em></p>
+</div>
+<hr>
+<div class="housing-choice">
+	<<link "Wait for their answer">><<goto "AffordableRespectPrivacy">><</link>>
+	<p><em>Respect the other family's need to decide. Find another way to manage for now.</em></p>
+</div>
+
+:: AffordableBringFriendIn
+<<set $step = 0>><<ShowInfo>><<set $day += 14>>
+
+<h3>Tension and Consequences</h3>
+<div class="consequence-text">
+	<p>You bring your wife's friend in to help. For the first few days, it's a relief. She knows what she's doing, and your wife is getting the care she needs.</p>
+	<p>But the apartment was already too small for two families. With an additional person, it's unbearable. The single bathroom becomes a nightmare. Kitchen space is impossible to share. The baby's crying at all hours wears everyone down.</p>
+	<p>Household responsibilities aren't shared evenly. Your wife's friend, focused entirely on helping with the baby, doesn't contribute to cleaning or cooking for everyone. The other family starts to feel taken advantage of.</p>
+	<p>After two weeks, the other family has had enough.</p>
+	<p>"We're leaving," they tell you. "We found our own place. We can't live like this anymore."</p>
+	<p>Then comes the blow you didn't expect: "We're taking the car," they say firmly. "We put in half the money, and we need it. You made this decision without us - we're making our own decisions now."</p>
+	<p>You try to negotiate, to offer to buy out their half, but the trust is broken. They take the car keys and leave.</p>
+</div>
+<hr>
+
+<<set $hasCar = false>><<set $carOwnership = "">>
+<<set $housingCost = $housingCost * 2>>
+<<set $familyHealth -= 15>>
+
+<div class="warning-box">
+	<p style="color: red;"><strong>Crisis:</strong> The other family has moved out. You've lost the shared car and your rent is back to full price. The car-sharing partnership and housing arrangement have both collapsed.</p>
+</div>
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Monthly Rent:</strong> $<<= $housingCost>><br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Car Status:</strong> Lost (taken by other family)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (decreased from conflict)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>Your wife's friend stays through the recovery period, then returns to the shelter. You're left alone, paying full rent again, without the car you worked so hard to get. The decision to prioritize immediate needs over the partnership has cost you dearly.</p>
+	<p>You're back where you started - but now with a newborn and no transportation.</p>
+</div>
+<hr>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+:: AffordableRespectPrivacy
+<<set $step = 0>><<ShowInfo>><<set $day += 14>>
+
+<h3>Respect and Cooperation</h3>
+<div class="consequence-text">
+	<p>You don't bring in your wife's friend out of respect for the other family. It's tough for the first two weeks. You're exhausted, trying to work while helping your wife recover, caring for the newborn, and managing the crowded household.</p>
+	<p>But something unexpected happens.</p>
+	<p>The wife of the other family sees how hard you're struggling. She's been through this herself. One morning, she knocks on your door.</p>
+	<p>"I can help," she says. "I know what it's like. Let me watch the baby for a few hours so you both can rest."</p>
+	<p>From that point on, both families begin working together. They help with the baby. You help with their kids. Cooking becomes shared. The apartment is still cramped, but it feels less like a desperate arrangement and more like a community.</p>
+	<p>Your wife recovers well. The baby is healthy. The other family appreciates that you respected their boundaries, and the trust between you has deepened.</p>
+</div>
+<hr>
+<div class="success-box">
+	<p style="color: green;"><strong>Success:</strong> By respecting the other family's boundaries, you've strengthened the partnership. The housing and car-sharing arrangements continue successfully.</p>
+</div>
+
+<<set $familyHealth += 15>>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Monthly Rent (Shared):</strong> $<<= $housingCost>><br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Car Status:</strong> Still shared with family<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (improved through community support)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>You've learned that strong partnerships require mutual respect and clear communication. The sacrifice of immediate help has paid off with a deeper, more sustainable relationship.</p>
+</div>
+<hr>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+:: AffordableWorkLessPayMore
+<<set $step = 0>><<ShowInfo>>
+
+<h3>Managing Recovery</h3>
+<div class="consequence-text">
+	<p>Your wife needs help to prevent post-partum medical issues. The C-section recovery is demanding, and without proper care, complications could arise.</p>
+	<p>You have two options.</p>
+</div>
+<hr>
+
+<h4>How will you handle your wife's recovery?</h4>
+<div class="housing-choice">
+	<<link "Offer to pay more rent in exchange for help">><<goto "AffordablePayMoreForHelp">><</link>>
+	<p><em>Negotiate with the other family to pay a larger share of the rent in exchange for the other wife helping your wife during recovery. This preserves your work schedule but increases financial burden.</em></p>
+</div>
+<hr>
+<div class="housing-choice">
+	<<link "Take fewer jobs to care for your wife yourself">><<goto "AffordableWorkLessHelpWife">><</link>>
+	<p><em>Reduce your work hours so you can be there for your wife during her recovery. You'll earn less money, but you'll provide the care she needs personally.</em></p>
+</div>
+
+:: AffordablePayMoreForHelp
+<<set $step = 0>><<ShowInfo>><<set $day += 14>>
+
+<h3>Financial Arrangement</h3>
+<div class="consequence-text">
+	<p>You approach the other family with a proposal: you'll pay a larger share of the rent if the other wife can help your wife during her recovery. After discussion, they agree. You'll now pay a significantly larger share while they pay less.</p>
+	<p>At first, it works. The other wife helps with the baby, prepares meals, and checks on your wife throughout the day.</p>
+	<p>But problems emerge quickly.</p>
+	<p>The two wives have fundamentally different approaches to childcare. Your wife believes in letting the baby cry briefly to develop independence. The other wife thinks babies should never be left to cry. Tensions build over parenting philosophies.</p>
+	<p>Then there's the question of responsibility. Did the agreement include doing your wife's laundry? Cleaning your side of the apartment? Where does "helping with recovery" end and "being a servant" begin?</p>
+	<p>Arguments start. Quiet at first, then loud enough that both families can hear through the thin walls. The atmosphere becomes toxic.</p>
+	<p>The conflict escalates until it affects everything you share, including the car. After a particularly heated argument, the other family announces they want to end both arrangements.</p>
+	<p>"We can't do this anymore," they say. "We're moving out, and we're taking the car. We need it more, and frankly, we can't stand being around you anymore."</p>
+	<p>You're too exhausted from the conflict to fight about it.</p>
+</div>
+<hr>
+
+<<set $hasCar = false>><<set $carOwnership = "">>
+<<set $housingCost = $housingCost * 2>>
+<<set $familyHealth -= 20>>
+<<set $money -= 200>>
+
+<div class="warning-box">
+	<p style="color: red;"><strong>Outcome:</strong> The financial arrangement destroyed the partnership. You've lost both the shared car and the housing arrangement. Your rent is back to full price.</p>
+</div>
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Monthly Rent:</strong> $<<= $housingCost>><br>
+		<strong>Current Balance:</strong> $<<= $money>> (lost money to conflict)<br>
+		<strong>Car Status:</strong> Lost (taken by other family)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (decreased due to conflict)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>Trying to solve one problem with money created a bigger problem. The partnership that started with such promise has ended in bitterness. You're back to paying full rent and have no car.</p>
+</div>
+<hr>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+:: AffordableWorkLessHelpWife
+<<set $step = 0>><<ShowInfo>><<set $day += 21>>
+
+<h3>Personal Care</h3>
+<div class="consequence-text">
+	<p>You decide to take fewer jobs so you can be there for your wife during her recovery. It means less money, but this is what she needs.</p>
+	<p>For the next three weeks, you're there. You wake up with the baby at night. You help your wife to the bathroom. You cook, clean, change diapers, and handle all the household tasks she can't manage while healing.</p>
+	<p>It's exhausting. The other family watches but doesn't interfere - this is clearly your choice.</p>
+	<p>But something remarkable happens. With proper rest and care, your wife recovers faster than expected. By the third week, she's on her feet and feeling strong.</p>
+	<p>"I want to help," she tells you. "You've been doing everything. Let me work while you take care of the baby. We'll take turns."</p>
+	<p>Together, you develop a system. She takes some of the jobs you would have turned down. You split childcare. The other family, seeing how well you've worked together, starts offering to watch the baby for an hour here and there so both of you can work.</p>
+	<p>The apartment feels less tense. The shared sacrifice has brought everyone closer together.</p>
+</div>
+<hr>
+<div class="success-box">
+	<p style="color: green;"><strong>Success:</strong> By prioritizing your wife's recovery personally, you've strengthened your family and built deeper trust with the car-sharing family. The partnerships continue successfully.</p>
+</div>
+
+<<set $familyHealth += 12>>
+<<set $money -= 150>>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Monthly Rent (Shared):</strong> $<<= $housingCost>><br>
+		<strong>Current Balance:</strong> $<<= $money>> (some income lost, but wife can now work)<br>
+		<strong>Car Status:</strong> Still shared with family<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (improved through care and cooperation)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>You've made it through one of the hardest challenges yet. The sacrifice was worth it. Your partnerships - in housing and car-sharing - have survived because you put people before profit.</p>
+</div>
+<hr>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>

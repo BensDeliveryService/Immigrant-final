@@ -9,6 +9,7 @@ This is where the project will start from when running.
 */
 
 :: Start
+<<set $gameStarted=true>>
 <<set $step = 0>>
 <<ShowInfo>>
 <<set _scene = [
@@ -19,25 +20,20 @@ This is where the project will start from when running.
   },
 
   {
-    "speaker": "Narrator",
     "side": "right",
     "text": "You have $900 in your bank account and need to find housing accommodations.<br>Painting and other odd jobs are your source of income to provide for you and your family.",
   },
   {
-    "speaker": ":Narrator",
     "side": "right",
     "text": "You can take public transit to the job site by buying a transit pass.<br>You could also walk, but you won't get as much work done that week.",
   }
 ]>>
-  
 <section id="dialogue-area"><<RenderScene _scene $step>></section>
 <section id="controls"><<NavControls _scene $step>></section>
 
 :: Choice Hub
 <<set $step = 0>>
-
-* [[Let's see what you do today! | Hub]]
+* [[Hub]]
 <<if !$gameStarted>>* [[Game Options | GameOptions]]<</if>>
-* [[Replay Intro|WorkStart]]
 
 

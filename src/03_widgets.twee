@@ -231,3 +231,31 @@ Keeping this widget as a no-op so existing passages that call it don't error.
 	</div>
 <</widget>>
 
+<<widget "WarnBox">>
+	<div class="warning-box"><strong>Warning:</strong> <<= _args[0]>></div>
+<</widget>>
+
+<<widget "InfoWarnBox">>
+	<div class="warning-box"><strong><<print _args[0]>></strong> <<= _args[1]>></div>
+<</widget>>
+
+<<widget "SuccessBox">>
+	<div class="success-box"><strong>Success:</strong> <<= _args[0]>></div>
+<</widget>>
+
+<<widget "FailureBox">>
+	<div class="failure-box"><strong>Game Over:</strong> <<= _args[0]>></div>
+<</widget>>
+
+<<widget "StatsBox">>
+	<div class="stats-box"><p><<print _args[0]>></p></div>
+<</widget>>
+
+<<widget "NavArrows">>
+	<div class="nav-arrows">
+		<<back "◀ Back">>
+		<<forward "Next ▶">>
+	</div>
+<</widget>>
+
+

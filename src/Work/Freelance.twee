@@ -1,0 +1,111 @@
+:: FreelanceStructure
+/* Higher risk, higher income path – eventual law enforcement encounter */
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $freelanceDaysWorked = 0>>
+<h3>Hustling Across the City</h3>
+<div class="consequence-text">
+	<p>You decide to maximize your income. Every day, you pack your full toolbox – everything you might need for any job. It's heavy, awkward to carry, and obvious. But it means you can take any opportunity that comes up.</p>
+	<p>Your days become a blur of movement: morning painting job in one neighborhood, noon repair in another, afternoon landscaping across town, maybe one more small job in the evening.</p>
+	<p>You're constantly on buses and trains, lugging your toolbox. Sometimes people stare. Sometimes transit workers eye you suspiciously. But so far, no one has stopped you.</p>
+	<p>The money is good – much better than the job-per-day approach. Some days you make $150, $200, even more. You're building up savings. You start to think: maybe in a few months, you could afford to move closer to the work. Maybe eventually you could even get a car.</p>
+	<p>But there's always a tension. Every time you step onto a bus with your toolbox, every time you transfer trains, you're rolling the dice. How long can you keep this up?</p>
+</div>
+
+<<link "Continue working this way">><<goto "FreelanceProgress">><</link>>
+<<NavArrows>>
+
+
+:: FreelanceProgress
+/* Track freelance work progression – leads to eventual encounter */
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $freelanceDaysWorked += 45>>
+<<set $day += 45>>
+<<GenerateTimeSkipWorries 45>>
+
+<h3>Six Weeks of Success</h3>
+<div class="consequence-text">
+	<p>Six weeks pass. You've gotten good at this. You know which train cars are less crowded, which times of day to avoid. You've learned to carry your toolbox in a way that looks less suspicious. You keep your head down, blend in as much as you can.</p>
+	<p>The money keeps coming. You've paid rent easily every month. You've even started saving – $<<= Math.floor($freelanceDaysWorked * 25)>> so far. At this rate, you could move to a better neighborhood in a few months.</p>
+	<p>Your wife is relieved to see money coming in. The stress on your family has decreased. Things are looking up.</p>
+	<p>But the risk is always there. You see transit police more often than you'd like. Sometimes they're checking fares. Sometimes they're looking for something else. You've watched them pull other workers aside, seen the fear in those workers' eyes.</p>
+	<p>You tell yourself you're being careful. You tell yourself you can keep this up just a little longer, until you've saved enough.</p>
+</div>
+
+/* Rent + earnings for this period */
+<<set _monthsInPeriod = Math.floor(45 / 30)>>
+<<set _rentPaid = $housingCost * _monthsInPeriod>>
+<<set $money -= _rentPaid>>
+<<set $money += $freelanceDaysWorked * 25>>
+<<set $familyHealth += 10>>
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $lastRentPaidDay = $day>>
+
+<<StatsBox
+<strong>Rent Paid (45 days):</strong> -$\" + _rentPaid +
+\"<br><strong>Earnings:</strong> +$\" + ($freelanceDaysWorked * 25) +
+\"<br><strong>Current Balance:</strong> $\" + $money +
+\"<br><strong>Family Health:</strong> \" + $familyHealth + \"% (improved from better income)\" +
+\"<br><strong>Days Freelanced:</strong> \" + $freelanceDaysWorked
+>>
+
+<<set _freelanceOutcome = random(1, 100)>>
+<<if _freelanceOutcome <= 50>>
+	<<link "Continue freelancing">><<goto "FreelanceEncounter">><</link>>
+<<else>>
+	<<link "Continue freelancing">><<goto "FreelanceSuccess">><</link>>
+<</if>>
+
+<<NavArrows>>
+
+:: FreelanceEncounter
+/* Inevitable law enforcement encounter – FAIL ending */
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 3>>
+
+<h3>The Day It Catches Up</h3>
+<div class="consequence-text">
+	<p>It happens on a Tuesday morning.</p>
+	<p>You're on the Red Line train, heading to a painting job on the north side. Your toolbox is at your feet. The train is crowded – rush hour. You're tired; you were up late last night with your son who couldn't sleep.</p>
+	<p>Two transit police officers board. They're doing a "routine safety check": fares and prohibited items. Your fare is fine – you paid – but your toolbox isn't small, and paint cans technically aren't allowed on transit.</p>
+	<p>They reach you and stop. "Sir, what's in the bag?"</p>
+	<p>You explain: work tools, you're heading to a job. They ask to see. You open it. Paint cans, brushes, a hammer, a small saw.</p>
+	<p>"You can't bring paint cans on the train. Safety hazard." Technically true – but dozens of workers do it every day. They're just not usually stopped.</p>
+	<p>"Step off at the next station, please. We need to verify some information."</p>
+	<p>Your heart sinks. You know what "verify information" means.</p>
+</div>
+
+<<link "Continue">><<goto "FreelanceDetained">><</link>>
+<<NavArrows>>
+
+:: FreelanceDetained
+/* Final outcome – detained and discovered */
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Detained</h3>
+<div class="consequence-text">
+	<p>At the station, they ask for identification. You show a Guatemalan ID card. Not enough. They want a driver's license, a state ID, proof of legal status.</p>
+	<p>You don't have it. You can't have it.</p>
+	<p>They call it in. Within twenty minutes, immigration enforcement is involved. Within an hour, you're in custody.</p>
+	<p>Your toolbox sits on the platform, unclaimed. The painting job you were heading to will go to someone else, if it happens at all. The client will never know why you didn't show up.</p>
+	<p>Your phone has three missed calls from your wife. By evening, she'll be panicked. By tomorrow, she'll understand what happened.</p>
+	<p>The attempt to maximize income, to save enough to move to a better situation, has ended in the worst possible outcome. You took the risk every day, and eventually, it caught up with you.</p>
+</div>
+
+<<FailureBox "You have been detained by immigration enforcement. The high-risk, high-reward strategy has led to the outcome you were trying to avoid. Your attempt to build a better life has ended in detention and likely deportation.">>
+
+<<StatsBox
+<strong>Final Balance:</strong> $\" + $money +
+\"<br><strong>Days Freelanced:</strong> \" + ($freelanceDaysWorked + 3) +
+\"<br><strong>Outcome:</strong> Detention"
+>>
+
+<div class="consequence-text">
+	<p>In the informal economy, the highest rewards come with the highest risks. Sometimes those risks have consequences you can't come back from.</p>
+</div>
+
+<<link "Game Over">><<goto "GameEnd">><</link>>
+<<NavArrows>>

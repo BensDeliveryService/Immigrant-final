@@ -1,0 +1,668 @@
+:: UnaffordableHousingConsequences
+/*Unaffordable housing consequences and choices*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Unaffordable Apartment - Situation</h3>
+
+<div class="housing-situation">
+<p>You have an apartment in a better area, but your landlord is suspicious of your family's status. You know that if you don't keep up with rent, she may report you to authorities.</p>
+
+<p>Despite a deep cultural upbringing of honor and duty, you don't know if you'll be able to make it month by month, and know you may need help.</p>
+</div>
+
+<hr>
+
+<h4>What will you do?</h4>
+
+<div class="housing-choice">
+<<link "Work 80-hour weeks to try to make ends meet">>
+    <<goto "Work80HourWeeks">>
+<</link>>
+<p><em>This will impact you and your family's health and spending time working over looking for new work opportunities.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Invite another family to double up">>
+    <<goto "DoubleUpHousing">>
+<</link>>
+<p><em>The rent will be significantly cheaper, about $800, but there are several caveats. Your wife will be giving birth in the next few weeks and is concerned about privacy during this critical period for her. You will have to lie to the landlord and will have to avoid being seen at all times, and will live in fear of not only lying and getting in legal trouble with the landlord, but also will be worried about getting deported.</em></p>
+</div>
+
+<hr>
+
+<div class="info-buttons">
+<h4>Resources & Information:</h4>
+<<link "Know your housing rights!">>
+    <<goto "HousingRightsInfo">>
+<</link>>
+<br><br>
+<<link "How you can help as an ally">>
+    <<goto "AllyDonationInfo">>
+<</link>>
+</div>
+
+<hr>
+
+<<link "Go back to housing options">> <<goto "HousingOptions">> <</link>>
+
+
+:: Work80HourWeeks
+/*Working excessive hours to make rent*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $workingExcessiveHours = true>>
+
+<h3>Working 80-Hour Weeks</h3>
+
+<div class="consequence-text">
+<p>You've decided to work 80-hour weeks to try to make ends meet. The toll on your body and mind is significant, and you have little time to spend with your family or search for better opportunities.</p>
+
+<p>Your health is suffering, your family's health is suffering, and you're constantly exhausted. But for now, you can afford the rent.</p>
+
+<p><strong>Monthly Rent:</strong> $<<= $housingCost>></p>
+<p><strong>Current Balance:</strong> $<<= $money>></p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="color: orange;"><strong>Warning:</strong> This schedule is unsustainable and may lead to serious health consequences and burnout. Consider exploring rental assistance or other resources.</p>
+</div>
+
+<hr>
+
+<<link "Return to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: DoubleUpHousing
+/*Sharing apartment with another family*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $housingCost = 800>> /* Reduce rent to $800/mo */
+<<set $doubleUpLiving = true>>
+<<set $familyHealth -= 15>> /* Privacy concerns and stress */
+
+<h3>Doubling Up - Shared Living</h3>
+
+<div class="consequence-text">
+<p>You've invited another family from the shelter to share the apartment with you. This brings the rent down to just $800 per month, which is much more manageable.</p>
+
+<p>However, the situation is far from ideal. Your wife will be giving birth in the next few weeks and she's deeply concerned about privacy during this critical and intimate time. The apartment feels crowded, and there's constant worry about the other family's children making too much noise.</p>
+
+<p>You've had to lie to your landlord about the arrangement. Every day brings the fear of being discovered - not just risking eviction and legal trouble with the landlord, but also the terrifying possibility of deportation if authorities get involved.</p>
+
+<p>You live in constant vigilance, coordinating schedules to avoid being seen together, keeping voices low, and living in fear. The cultural values of honor and honesty you were raised with clash painfully with the necessity of this deception.</p>
+</div>
+
+<hr>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent:</strong> $<<= $housingCost>> (down from $<<= 1450>>)<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (reduced due to stress and privacy concerns)
+</p>
+</div>
+
+<hr>
+
+<div class="warning-box">
+<p style="color: orange;"><strong>Warning:</strong> This living arrangement involves legal risks and significant stress for your family. The reduced rent comes at a high emotional and psychological cost.</p>
+</div>
+
+<hr>
+
+<<link "Continue to car decision" "UnaffordableCarSharingOffer">> <</link>>
+
+
+:: UnaffordableCarSharingOffer
+/*Family offers to share car cost*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Transportation Opportunity</h3>
+
+<div class="consequence-text">
+<p>A few days into the doubled-up living arrangement, the other family brings up an idea over dinner.</p>
+
+<p>"We've been thinking," the husband says. "Both our families need reliable transportation to get to better-paying jobs. Rideshares and buses are eating up our income. What if we pooled our money and bought a car together?"</p>
+
+<p>He's found a reliable used car for $1,600. If you split it, you'd each pay $800, plus about $75 each for insurance and $50 for registration fees. Total: $925 for each family.</p>
+
+<p>"We'd need to coordinate schedules," he continues. "Share the car for work, errands, everything. It won't always be convenient, but it would save us both money in the long run and open up job opportunities further from the bus routes."</p>
+
+<p>You have $<<= $money>> in savings. The car-sharing would cost $925 upfront.</p>
+</div>
+
+<hr>
+
+<h4>What do you want to do?</h4>
+
+<div class="housing-choice">
+<<if $money >= 925>>
+    <<link "Share the car with them ($925)">>
+        <<set $money -= 925>>
+        <<set $hasCar = true>>
+        <<set $carOwnership = "shared">>
+        <<set $familyHealth += 10>> /* Building trust through shared investment */
+        <<set $familyHealth = Math.min(100, $familyHealth)>>
+        <<goto "UnaffordableCarShared">>
+    <</link>>
+    <p><em>Split the cost and share the car. This builds trust and cooperation with the family you're living with.</em></p>
+<<else>>
+    <p style="color: gray;"><em>Share the car ($925) - You don't have enough money</em></p>
+<</if>>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Decline the offer">>
+    <<goto "UnaffordableCarDeclined">>
+<</link>>
+<p><em>Keep your savings and continue using public transportation or rideshares.</em></p>
+</div>
+
+
+:: UnaffordableCarShared
+/*Accepted car-sharing with doubled-up family*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Shared Investment</h3>
+
+<div class="consequence-text">
+<p>You agree to share the car. Both families pool $925 each, and together you purchase a reliable used sedan. It's not fancy, but it runs well and will serve both families.</p>
+
+<p>You work out a schedule: you'll have the car for work on certain days, they'll have it on others. For emergencies, you'll communicate and adjust. It requires coordination and trust, but it also brings you closer together.</p>
+
+<p>This shared investment is more than just transportation - it's a commitment to making this difficult living situation work through cooperation and mutual support.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Transportation Acquired:</strong> You now have shared access to a car, reducing transportation costs and opening up new job opportunities.</p>
+</div>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Car Status:</strong> Shared ownership with your housemates<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>%
+</p>
+</div>
+
+<hr>
+
+<<link "Continue" "CSectionCrisis">> <</link>>
+
+
+:: UnaffordableCarDeclined
+/*Declined car-sharing offer*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Keeping Independence</h3>
+
+<div class="consequence-text">
+<p>You thank them for the offer, but explain that you need to hold onto your savings for now. The living situation is already so intertwined - sharing an apartment, sharing space, sharing daily life. Adding a shared car feels like too much coordination on top of everything else.</p>
+
+<p>They're disappointed but understand. They decide to hold off on buying a car themselves as well, since they can't afford it alone either.</p>
+
+<p>You'll all continue relying on buses and rideshares for transportation.</p>
+</div>
+
+<hr>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Transportation:</strong> Public transit and rideshares
+</p>
+</div>
+
+<hr>
+
+<<link "Continue" "CSectionCrisis">> <</link>>
+
+
+:: CSectionCrisis
+/*C-section complication - choice between two paths*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Emergency C-Section</h3>
+
+<div class="consequence-text">
+<p>A few weeks into your doubled-up living arrangement, your wife goes into labor. Complications arise, and the doctors determine she needs an emergency C-section. The surgery goes well, and you have a healthy baby, but your wife's recovery will be more difficult than expected.</p>
+
+<p>She needs help - real help - for the next several weeks. The cramped apartment, the other family, the stress of hiding from the landlord... it's all weighing heavily on both of you.</p>
+</div>
+
+<hr>
+
+<h4>How will you handle this situation?</h4>
+
+<div class="housing-choice">
+<<link "Ask about bringing in your wife's friend for help">>
+    <<goto "InviteFriendChoice">>
+<</link>>
+<p><em>Your wife invited her friend from the shelter for additional help. You ask the family you are doubling up with if they would mind having an additional person in the house, but they are unsure and ask for time to decide. Do you bring the friend in despite not having an answer?</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Make adjustments yourselves">>
+    <<goto "WorkLessPayMore">>
+<</link>>
+<p><em>Your wife needs additional help to prevent post-partum medical issues, which would be highly expensive and put a strain on the family. Do you take less jobs to have additional time to help your wife, or offer to pay more of the rent in exchange for the wife of the other family helping her in your absence?</em></p>
+</div>
+
+
+:: InviteFriendChoice
+/*Choice: Bring friend in or respect other family's decision*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Your Wife's Friend</h3>
+
+<div class="consequence-text">
+<p>You ask the other family if your wife's friend can stay to help with recovery and the newborn. They hesitate. The apartment is already crowded, and another person would push everyone to the breaking point.</p>
+
+<p>"We need some time to think about it," they say. "It's a lot to process."</p>
+
+<p>But your wife's friend is ready to come now. She has experience with C-section recovery and knows how to help. Your wife is in pain and overwhelmed. Every day matters.</p>
+</div>
+
+<hr>
+
+<h4>What do you do?</h4>
+
+<div class="housing-choice">
+<<link "Bring the friend in anyway">>
+    <<goto "BringFriendIn">>
+<</link>>
+<p><em>Your wife needs help immediately. You'll deal with the consequences later.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Wait for their answer">>
+    <<goto "RespectPrivacy">>
+<</link>>
+<p><em>Respect the other family's need to decide. Find another way to manage for now.</em></p>
+</div>
+
+
+:: BringFriendIn
+/*Brought friend in without permission - leads to tension and other family leaving*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 7>>
+<<GenerateTimeSkipWorries 7>> /* Generate worries during time skip */
+
+<h3>Tension and Consequences</h3>
+
+<div class="consequence-text">
+<p>You bring your wife's friend in to help take care of the new baby. For the first few days, it's a relief. She knows what she's doing, and your wife is getting the care she needs.</p>
+
+<p>But the apartment was already too small for two families. With an additional person, it's unbearable. The bathroom schedule becomes a nightmare. Kitchen space is impossible to share. Noise from the crying baby at all hours wears everyone down.</p>
+
+<p>Worse, household responsibilities aren't shared evenly. Your wife's friend, focused entirely on helping with the baby, doesn't contribute to cleaning or cooking for everyone. The other family starts to feel like they're being taken advantage of.</p>
+
+<p>After two weeks, the other family has had enough.</p>
+
+<p>"We're leaving," they tell you. "We found another place. We can't live like this anymore."</p>
+
+<<if $carOwnership === "shared">>
+    <p>Then comes another blow: "We're taking the car," they say firmly. "We put in half the money, and we need it for our new place. You can't expect us to leave it with you after everything."</p>
+
+    <p>You try to negotiate, to offer to buy out their half, but they've made up their minds. The trust is broken. They take the car keys and leave.</p>
+
+    <<set $hasCar = false>>
+    <<set $carOwnership = "">>
+<</if>>
+</div>
+
+<hr>
+
+<<if $carOwnership === "" and $hasCar === false>>
+    <div class="warning-box">
+    <p style="color: red;"><strong>Crisis:</strong> The other family is moving out. You've lost the shared car and will have to pay the full rent of $1,450 per month on your own.</p>
+    </div>
+<<else>>
+    <div class="warning-box">
+    <p style="color: orange;"><strong>Crisis:</strong> The other family is moving out. You'll have to pay the full rent of $1,450 per month on your own.</p>
+    </div>
+<</if>>
+
+/* Check if player can afford full rent */
+<<if $money >= 1450>>
+    <div class="consequence-text">
+    <p>You check your savings. You have $<<= $money>>. You can cover the first month's rent at $1,450, though it will be tight moving forward. The cheaper arrangement is over, but at least you won't lose the apartment immediately.</p>
+
+    <p>Your wife's friend stays to help through the recovery period, then returns to the shelter. You're left alone with your family, paying full rent, with the knowledge that this could have gone differently.</p>
+    </div>
+
+    <<set $housingCost = 1450>> /* Rent returns to full price */
+    <<set $familyHealth -= 10>> /* Stress from situation */
+    <<set $money -= 1450>> /* Pay first month's rent */
+    <<set $lastRentPaidDay = $day>> /* Update rent tracking */
+
+    <hr>
+
+    <div class="stats-box">
+    <p style="margin:4px 0;font-size:0.9em;">
+        <strong>Monthly Rent:</strong> $<<= $housingCost>> (back to full price)<br>
+        <strong>Current Balance:</strong> $<<= $money>> (after paying rent)<br>
+        <strong>Family Health:</strong> <<= $familyHealth>>%
+    </p>
+    </div>
+
+    <<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+<<else>>
+    /* FAIL - Cannot afford rent */
+    <<set $housingCost = 1450>>
+
+    <div class="consequence-text">
+    <p>You check your savings. You have $<<= $money>>. The full rent is $1,450. You don't have enough.</p>
+
+    <p>You try to reason with the other family, to beg them to stay just a little longer, but they've made up their minds. You try to negotiate with the landlord, but she's suspicious already and refuses to work with you.</p>
+
+    <p>Within days, you're facing eviction. With a newborn, a wife recovering from surgery, and no place to go, you're forced back to the shelter.</p>
+
+    <p>The attempt to save money by doubling up has backfired catastrophically. You've lost your housing, spent your savings, and put your family in a more precarious position than before.</p>
+    </div>
+
+    <hr>
+
+    <<link "Game Over" "GameEnd">> <</link>>
+<</if>>
+
+
+:: RespectPrivacy
+/*Didn't bring friend in - other family helps, success*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 14>>
+<<GenerateTimeSkipWorries 14>> /* Generate worries during time skip */
+
+<h3>Respect and Cooperation</h3>
+
+<div class="consequence-text">
+<p>You don't bring in your wife's friend out of respect for the other family's privacy and their need to make the decision together. It's tough for the first two weeks. You're exhausted, trying to work while helping your wife recover, caring for the newborn, and managing the household.</p>
+
+<p>But something unexpected happens.</p>
+
+<p>The wife of the other family sees how hard you're struggling. She's been through this herself. One morning, she knocks on your door.</p>
+
+<p>"I can help," she says. "I know what it's like. Let me take care of the baby for a few hours so you can rest."</p>
+
+<p>From that point on, both families begin working together. They help with the baby. You help with their kids. Cooking becomes a shared effort. The apartment is still cramped, but it starts to feel less like a desperate arrangement and more like a community.</p>
+
+<p>Your wife recovers well. The baby is healthy. The other family appreciates that you respected their boundaries, and in return, they've become true allies in this difficult journey.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> By respecting the other family's privacy, you've built trust and created a healthier living environment for everyone.</p>
+</div>
+
+<<set $familyHealth += 15>> /* Positive outcome from cooperation */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent:</strong> $<<= $housingCost>> (still shared at $800)<br>
+    <strong>Current Balance:</strong> $<<= $money>><br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (improved through community support)
+</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: WorkLessPayMore
+/*Second C-section option - work less or pay more rent*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Managing Recovery</h3>
+
+<div class="consequence-text">
+<p>Your wife needs additional help to prevent post-partum medical issues, which would be highly expensive and put a significant strain on the family. The C-section recovery is more demanding than a typical birth, and without proper care, complications could arise.</p>
+
+<p>You have two options, each with its own challenges.</p>
+</div>
+
+<hr>
+
+<h4>How will you handle your wife's recovery?</h4>
+
+<div class="housing-choice">
+<<link "Offer to pay more rent in exchange for help">>
+    <<goto "PayMoreForHelp">>
+<</link>>
+<p><em>Negotiate with the other family to pay a larger share of the rent in exchange for the other wife helping your wife during recovery. This preserves your work schedule but increases financial burden.</em></p>
+</div>
+
+<hr>
+
+<div class="housing-choice">
+<<link "Take fewer jobs to care for your wife yourself">>
+    <<goto "WorkLessHelpWife">>
+<</link>>
+<p><em>Reduce your work hours so you can be there for your wife during her recovery. You'll earn less money, but you'll be able to provide the care she needs personally.</em></p>
+</div>
+
+
+:: PayMoreForHelp
+/*Pay more rent for other wife's help - leads to conflict*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 14>>
+<<GenerateTimeSkipWorries 14>> /* Generate worries during time skip */
+
+<h3>Financial Arrangement</h3>
+
+<div class="consequence-text">
+<p>You approach the other family with a proposal: you'll pay a larger share of the rent if the other wife can help your wife during her recovery. After some discussion, they agree. You'll now pay $550 per month instead of $400, while they pay $250.</p>
+
+<p>At first, it seems like a good arrangement. The other wife knows what she's doing and helps with the baby, prepares meals, and checks on your wife throughout the day.</p>
+
+<p>But problems quickly emerge.</p>
+
+<p>The two wives have fundamentally different approaches to childcare. Your wife believes in letting the baby cry for short periods to develop independence. The other wife thinks babies should never be left to cry. When your wife tries to explain her approach, the other wife feels criticized.</p>
+
+<p>Then there's the question of responsibility. The other wife agreed to help, but did that include doing all your wife's laundry? Cleaning your side of the apartment? Where does "helping with recovery" end and "being a servant" begin? These questions create tension.</p>
+
+<p>Arguments start. At first they're quiet and tense. Then they become loud enough that both families can hear through the thin walls. The atmosphere in the apartment becomes toxic.</p>
+
+<p>Your wife feels guilty and stressed. The other wife feels taken advantage of. Both families are miserable, and you're paying extra rent for the privilege of this conflict.</p>
+
+<<if $carOwnership === "shared">>
+    <p>The conflict escalates until it affects everything you share, including the car. After a particularly heated argument, the other family announces they want to end the car-sharing arrangement.</p>
+
+    <p>"We can't do this anymore," they say. "We'll buy you out of your half when we have the money, but for now, we're taking the car. We need it more - we have more kids to transport."</p>
+
+    <p>You're too exhausted from the conflict to fight about it. The car is gone, just another casualty of this failed arrangement.</p>
+
+    <<set $hasCar = false>>
+    <<set $carOwnership = "">>
+<</if>>
+</div>
+
+<hr>
+
+<<if $carOwnership === "" and $hasCar === false>>
+    <div class="warning-box">
+    <p style="color: red;"><strong>Outcome:</strong> The financial arrangement has created more problems than it solved. You've lost access to the shared car, and while your wife recovered medically, the emotional toll on both families has been significant.</p>
+    </div>
+<<else>>
+    <div class="warning-box">
+    <p style="color: orange;"><strong>Outcome:</strong> The financial arrangement has created more problems than it solved. While your wife recovered medically, the emotional toll on both families has been significant.</p>
+    </div>
+<</if>>
+
+<<set $housingCost = 550>> /* Now paying more rent */
+<<set $familyHealth -= 20>> /* Conflict and stress */
+<<set $money -= 300>> /* Additional costs from the arrangement */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent (Your Share):</strong> $<<= $housingCost>> (increased from $400)<br>
+    <strong>Current Balance:</strong> $<<= $money>> (lost money due to arrangement)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (decreased due to conflict)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>The arrangement continues, but it's strained. Money is even scarcer now, and the relationship between the two families is damaged. You wonder if there was a better way.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: WorkLessHelpWife
+/*Work less to help wife yourself - success*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 21>>
+<<GenerateTimeSkipWorries 21>> /* Generate worries during time skip */
+
+<h3>Personal Care</h3>
+
+<div class="consequence-text">
+<p>You decide to take fewer jobs so you can be there for your wife during her recovery. It means less money coming in, but you know this is what she needs.</p>
+
+<p>For the next three weeks, you're there. You wake up with the baby at night. You help your wife to the bathroom. You cook, clean, change diapers, and handle all the household tasks she can't manage while healing.</p>
+
+<p>It's exhausting. Some days you feel like you're running on empty. The other family watches you struggle but doesn't interfere - this is clearly your choice to make.</p>
+
+<p>But something remarkable happens.</p>
+
+<p>With proper rest and care, your wife recovers faster than expected. By the third week, she's on her feet and feeling strong. The doctor clears her to return to light work.</p>
+
+<p>"I want to help," she tells you. "You've been doing everything. Let me work while you take care of the baby. We'll take turns."</p>
+
+<p>Together, you develop a system. She takes some of the jobs you would have turned down. You split childcare duties. The other family, seeing how well you've worked together, starts offering to watch the baby for an hour here and there so both of you can work at the same time.</p>
+
+<p>The apartment feels less tense. The shared sacrifice has brought everyone closer together.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<p style="color: green;"><strong>Success:</strong> By prioritizing your wife's recovery personally, you've strengthened your family and built trust with the other family. Your wife can now contribute to working, increasing your household income potential.</p>
+</div>
+
+<<set $familyHealth += 10>> /* Positive outcome from personal care */
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $money -= 200>> /* Lost some income from fewer jobs */
+
+<div class="stats-box">
+<p style="margin:4px 0;font-size:0.9em;">
+    <strong>Monthly Rent (Shared):</strong> $<<= $housingCost>> (still $800 total, $400 each)<br>
+    <strong>Current Balance:</strong> $<<= $money>> (some income lost, but wife can now work)<br>
+    <strong>Family Health:</strong> <<= $familyHealth>>% (improved through care and cooperation)
+</p>
+</div>
+
+<div class="consequence-text">
+<p>You've made it through one of the hardest challenges yet. The sacrifice was worth it.</p>
+</div>
+
+<<link "Continue to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: RentalAssistancePrograms
+/*Searching for rental assistance*/
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $seekingRentalAssistance = true>>
+
+<h3>Rental Assistance Programs</h3>
+
+<div class="assistance-info">
+<p>You've decided to search for rental assistance programs. This may help with rent for some period of time, though not for the full duration of your lease.</p>
+
+<p>While you search for and apply to these programs, your ability to work excessive hours is limited. This means your other basic needs like food, hygiene products, and medical care will have limited access.</p>
+
+<p><strong>Monthly Rent:</strong> $<<= $housingCost>></p>
+<p><strong>Current Balance:</strong> $<<= $money>></p>
+</div>
+
+<hr>
+
+<div class="info-box">
+<p><strong>Note:</strong> Rental assistance programs often have waiting lists and specific eligibility requirements. The process can take weeks or months, and assistance is typically temporary.</p>
+</div>
+
+<hr>
+
+<<link "Return to day choice">> <<goto "DayChoice">> <</link>>
+
+
+:: HousingRightsInfo
+/*Information about housing rights*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Know Your Housing Rights!</h3>
+
+<div class="rights-info">
+<p>As a tenant, you have rights regardless of your immigration status. Here are some important resources:</p>
+
+<ul>
+<li>Landlords cannot discriminate based on national origin or immigration status</li>
+<li>You have the right to safe and habitable housing</li>
+<li>Landlords must follow proper eviction procedures</li>
+<li>You have privacy rights in your rental unit</li>
+</ul>
+
+<p><strong>For more information and legal assistance:</strong></p>
+<p><a href="https://www.tenantresourcecenter.org/" target="_blank">National Tenant Resource Center</a></p>
+<p><em>(Link opens in new window)</em></p>
+</div>
+
+<hr>
+
+<<link "Go back">> <<goto "UnaffordableHousingConsequences">> <</link>>
+
+
+:: AllyDonationInfo
+/*Information for allies on how to help*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>How You Can Help as an Ally</h3>
+
+<div class="ally-info">
+<p>If you want to support immigrant families facing housing insecurity, here are some ways you can help:</p>
+
+<ul>
+<li>Donate to immigrant support organizations</li>
+<li>Volunteer with tenant rights organizations</li>
+<li>Advocate for fair housing policies in your community</li>
+<li>Support rental assistance programs</li>
+<li>Educate yourself and others about the challenges immigrants face</li>
+</ul>
+
+<p><strong>Organizations that help:</strong></p>
+<p><a href="https://www.immigrantjustice.org/" target="_blank">National Immigrant Justice Center</a></p>
+<p><a href="https://www.nilc.org/" target="_blank">National Immigration Law Center</a></p>
+<p><em>(Links open in new windows)</em></p>
+
+<p><strong>Your support makes a real difference in families' lives.</strong></p>
+</div>
+
+<hr>
+
+<<link "Go back">> <<goto "UnaffordableHousingConsequences">> <</link>>

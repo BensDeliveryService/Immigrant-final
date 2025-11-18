@@ -23,32 +23,131 @@ Important for collaborators:
 */
 
 :: StoryInit
-<<set $jobtype = "Paint" >>
 <<set $jobs = [
-    {   name: "Painter",
-        pay: 700,
-        days: 14,
-        desc: "You take on a long interior painting contract, working in apartments and stairwells."},
-    {   name: "Painter",
-        pay: 220,
+    {
+        name: "Painter",
+        pay: 450,
+        days: 5,
+        desc: "You would be doing interior repainting, helping a small crew refresh a storefront."
+    },
+    {
+        name: "Painter",
+        pay: 320,
+        days: 4,
+        desc: "You would be doing hallway touch-ups and small patch work in an older apartment building."
+    },
+    {
+        name: "Construction",
+        pay: 800,
+        days: 10,
+        desc: "You would be doing material hauling, cleanup, and simple labor for a basement renovation."
+    },
+    {
+        name: "Construction",
+        pay: 420,
+        days: 3,
+        desc: "You would be doing debris removal, lifting, and assisting a crew repairing a shop front."
+    },
+    {
+        name: "Landscaping",
+        pay: 300,
+        days: 3,
+        desc: "You would be doing lawn mowing, hedge trimming, and basic yard cleanup."
+    },
+    {
+        name: "Landscaping",
+        pay: 520,
+        days: 6,
+        desc: "You would be doing planting and mulch work for a small business property."
+    },
+    {
+        name: "Mover",
+        pay: 180,
+        days: 1,
+        desc: "You would be doing heavy lifting and carrying boxes for a family moving across town."
+    },
+    {
+        name: "Mover",
+        pay: 450,
+        days: 3,
+        desc: "You would be doing office furniture relocation inside a downtown building."
+    },
+    {
+        name: "Carpentry Helper",
+        pay: 580,
         days: 7,
-        desc: "You do small paint touch-ups and hallway walls in a single building."},
-    {   name: "Construction",
-        pay: 1000,
-        days: 7,
-        desc: "You help a construction crew with lifting, debris removal, and basic site cleanup."}
+        desc: "You would be doing sanding, holding boards, and assisting a carpenter with shelf installation."
+    },
+    {
+        name: "Flooring Assistant",
+        pay: 900,
+        days: 12,
+        desc: "You would be doing laminate flooring installation support, measuring, and cleanup."
+    },
+    {
+        name: "Demolition",
+        pay: 350,
+        days: 2,
+        desc: "You would be doing cabinet removal, tile demolition, and clearing out construction debris."
+    },
+    {
+        name: "Roofing Helper",
+        pay: 480,
+        days: 3,
+        desc: "You would be doing shingle hauling, ladder support, and cleanup for a roofing crew."
+    },
+    {
+        name: "Snow Removal",
+        pay: 180,
+        days: 1,
+        desc: "You would be doing sidewalk and driveway shoveling after an overnight snowstorm."
+    },
+    {
+        name: "Restaurant Cleaner",
+        pay: 300,
+        days: 5,
+        desc: "You would be doing deep cleaning in a restaurant kitchen after closing hours."
+    },
+    {
+        name: "Warehouse Worker",
+        pay: 460,
+        days: 4,
+        desc: "You would be doing order packing and moving boxes in a small warehouse."
+    },
+    {
+        name: "Furniture Assembly",
+        pay: 260,
+        days: 2,
+        desc: "You would be doing simple assembly of chairs, desks, and shelves for a store reopening."
+    },
+    {
+        name: "Junk Removal",
+        pay: 200,
+        days: 1,
+        desc: "You would be doing apartment clean-outs and hauling discarded items to dumpsters."
+    },
+    {
+        name: "Plumbing Helper",
+        pay: 380,
+        days: 3,
+        desc: "You would be doing pipe handling, tool carrying, and cleaning work areas for a plumber."
+    },
+    {
+        name: "Electrical Helper",
+        pay: 420,
+        days: 3,
+        desc: "You would be doing wire pulling, fixture prep, and cleanup under close supervision."
+    },
+    {
+        name: "Commercial Cleaner",
+        pay: 520,
+        days: 6,
+        desc: "You would be doing after-hours office cleaning, trash removal, and vacuuming."
+    }
 ]>>
 
-
-
-
-/* --- job descriptions ---*/
-
-
-
-/* --- Player setup --- */
+/* --er setup --- */
 <<set $player_Name      = "Ben">>
-<<set $imageA = "C:\Users\benja\OneDrive\Desktop\TweeGo_projects\Student_Reference\assets\images\archivist.png">>
 /* --- Vars ---*/
 <<set $day = 1>>
 <<set $money=900>>
@@ -152,11 +251,7 @@ Important for collaborators:
 
 
 /* --- Character names --- */
-<<set $mentor_Name       = "Morgan">>
-<<set $visitor_Name      = "Avery">>
-<<set $archivist_Name    = "Jules">>
 
-/* --- Example topic variable --- */
 <<set $topic_Question = "How do archives shape the stories communities remember?" >>
 
 /* --- General state flags --- */
@@ -173,5 +268,55 @@ Important for collaborators:
 <<set $gameStarted       = false>> /* Tracks whether player has begun the experience (hides header on Landing/Options pages) */
 
 
-
-
+<<set $familyLines = [
+    "Juana rubs her stomach and says the baby has been kicking all day.",
+    "Marco shows you how fast he can push his toy train across the floor.",
+    "Juana sits down slowly and tells you she is feeling tired today.",
+    "Marco asks if the new baby will like the same cartoons he likes.",
+    "Juana wonders out loud what your daughter will look like.",
+    "Marco insists he wants to teach the baby how to play with his toy train.",
+    "Juana says she dreamed about the baby last night and woke up smiling.",
+    "Marco climbs onto your lap and says he wants to help take care of the baby.",
+    "Juana asks if you have thought about baby names again.",
+    "Marco asks if the baby can hear him when he talks to Juana’s stomach.",
+    "Juana says she feels nervous about the birth but happy at the same time.",
+    "Marco tells you he wants the baby to have a strong name.",
+    "Juana stretches her back and says everything feels heavier lately.",
+    "Marco asks if the baby will share his room someday.",
+    "Juana places your hand on her stomach so you can feel the baby moving.",
+    "Marco tells you he made a drawing for the baby at school.",
+    "Juana quietly asks if everything will be okay once the baby arrives.",
+    "Marco sits next to you and plays quietly with his toy train.",
+    "Juana says she can’t wait to introduce the baby to her family back home.",
+    "Marco asks if the baby will like the same food he likes.",
+    "Juana says she hopes the baby grows up feeling safe here.",
+    "Marco asks why babies sleep so much.",
+    "Juana laughs when the baby kicks and says she thinks the baby likes your voice.",
+    "Marco says he wants to teach the baby how to say his name first.",
+    "Juana asks if you remember what it felt like when Marco was born.",
+    "Marco pretends his toy train is bringing supplies for the baby.",
+    "Juana wonders if the baby will arrive early or late.",
+    "Marco asks if babies can play soccer.",
+    "Juana lets out a long breath and says she is trying to stay calm.",
+    "Marco brings Juana a pillow and tells her it will help the baby rest.",
+    "Juana says she is craving something sweet and asks if you want to go for a walk.",
+    "Marco asks if the baby will cry a lot.",
+    "Juana talks about how different Chicago is from home.",
+    "Marco asks if the baby will understand Spanish.",
+    "Juana smiles and says the baby moved when she heard Marco laughing.",
+    "Marco asks if he can help choose clothes for the baby.",
+    "Juana tells you she is grateful for everything you are doing.",
+    "Marco says he wants to show the baby how to draw.",
+    "Juana closes her eyes for a moment and says she just needs a little rest.",
+    "Marco holds your hand and tells you he misses how it was before the move.",
+    "Juana wonders if the baby will have your eyes.",
+    "Marco asks if being a big brother is hard.",
+    "Juana says she wants the baby to feel loved the moment she arrives.",
+    "Marco asks if the baby will like the color blue.",
+    "Juana says she felt a little scared today but is trying to stay positive.",
+    "Marco organizes his toy train pieces and tells you he is practicing for the baby.",
+    "Juana tells you she is counting down the days.",
+    "Marco asks if the baby can listen to music.",
+    "Juana rests her head on your shoulder and says she is glad you are home."
+]>>
+<<set $familyUsed = []>>

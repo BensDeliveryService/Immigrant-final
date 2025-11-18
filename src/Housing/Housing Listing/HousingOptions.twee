@@ -1,0 +1,75 @@
+:: HousingOptions
+<<set $step = 0>><<ShowInfo>> <<if $housingPage is undefined>><<set $housingPage = 1>><</if>><<set _maxHousingPage = 3>>
+
+<h3 style="margin:0;">Available Housing Options</h3>
+<p style="margin:0 0 2px 0;font-size:0.85em;color:var(--muted);">Page <<= $housingPage>> of <<= _maxHousingPage>></p>
+<p style="margin:2px 0;font-size:0.85em;">You have $<<= $money>> in your bank account. The minimum livable rent is around $1,100, but higher rent (≈$1,450) brings better work opportunities.</p>
+
+<<switch $housingPage>>
+	<<case 1>>
+	<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.3);font-size:0.85em;">
+		<h4 style="margin:0 0 2px 0;font-size:1em;">Affordable Apartment</h4>
+		<p style="margin:2px 0;">A basic studio or 1-bedroom in a working-class neighborhood. Older building, but livable and near transit.</p>
+		<p style="margin:2px 0;"><strong>Application Fee:</strong> $30<br><strong>Monthly Rent:</strong> $900<br><em>Landlords usually want 3× rent ($2,700/mo).</em></p>
+		<<if $money >= 30>>
+			<<link "Apply for Affordable Apartment">>
+				<<set $selectedHousingType = "Affordable">>
+				<<set $selectedApplicationFee = 30>>
+				<<set $selectedMonthlyCost = 900>>
+				<<goto "HousingApply">>
+			<</link>>
+		<<else>>
+			<p style="color:red;margin:2px 0;">Not enough for application fee.</p>
+		<</if>>
+	</div>
+	<<case 2>>
+	<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);font-size:0.85em;">
+		<h4 style="margin:0 0 2px 0;font-size:1em;">Standard Apartment</h4>
+		<p style="margin:2px 0;">A decent 1-bedroom in a mixed neighborhood with some amenities and more employment options.</p>
+		<p style="margin:2px 0;"><strong>Application Fee:</strong> $50<br><strong>Monthly Rent:</strong> $1,100<br><em>Requires 3× rent ($3,300/mo) and stricter documentation.</em></p>
+		<<if $money >= 50>>
+			<<link "Apply for Standard Apartment">>
+				<<set $selectedHousingType = "Standard">>
+				<<set $selectedApplicationFee = 50>>
+				<<set $selectedMonthlyCost = 1100>>
+				<<goto "HousingApply">>
+			<</link>>
+		<<else>>
+			<p style="color:red;margin:2px 0;">Not enough for application fee.</p>
+		<</if>>
+	</div>
+	<<case 3>>
+	<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(245,167,66,.08);border-left:3px solid rgba(245,167,66,.3);font-size:0.85em;">
+		<h4 style="margin:0 0 2px 0;font-size:1em;">Unaffordable Apartment in Better Area</h4>
+		<p style="margin:2px 0;">Modern 1–2 bedroom in a nicer area with more legal and under-the-table job options. Expect heavy documentation and long searches.</p>
+		<p style="margin:2px 0;"><strong>Application Fee:</strong> $75<br><strong>Monthly Rent:</strong> $1,450<br><em>Landlords want 3× rent ($4,350/mo), credit, job verification, often a co-signer.</em></p>
+		<<if $money >= 75>>
+			<<link "Apply for Unaffordable Apartment">>
+				<<set $selectedHousingType = "Unaffordable">>
+				<<set $selectedApplicationFee = 75>>
+				<<set $selectedMonthlyCost = 1450>>
+				<<goto "HousingApply">>
+			<</link>>
+		<<else>>
+			<p style="color:red;margin:2px 0;">Not enough for application fee.</p>
+		<</if>>
+	</div>
+
+<</switch>>
+
+<div style="display:flex;justify-content:space-between;font-size:0.8em;margin-top:4px;">
+	<span>
+		<<if $housingPage > 1>>
+			<<link "◀ Back">><<set $housingPage -= 1>><<goto "HousingOptions">><</link>>
+		<</if>>
+	</span>
+	<span>
+		<<if $housingPage < _maxHousingPage>>
+			<<link "Next ▶">><<set $housingPage += 1>><<goto "HousingOptions">><</link>>
+		<</if>>
+	</span>
+</div>
+
+<div style="margin-top:4px;font-size:0.8em;text-align:center;">
+	<<link "⬅ Go back to housing start">><<goto "HousingStart">><</link>>
+</div>

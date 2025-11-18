@@ -1,0 +1,146 @@
+:: JobPerDayStructure
+/* Lower risk, lower income path – leads to random outcome */
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 30>>
+<<GenerateTimeSkipWorries 30>>
+
+<h3>Steady, Careful Work</h3>
+<div class="consequence-text">
+	<p>You adopt a careful routine. Each morning, you check which jobs are available that day – usually through word of mouth or a community message board. You pick one, figure out what tools you'll need, and pack only those.</p>
+	<p>Instead of carrying your entire heavy toolbox, you might just bring a paint roller and tray, or just a saw and measuring tape. You look like any other commuter with a bag.</p>
+	<p>It works. You blend in. The authorities barely notice you.</p>
+	<p>The jobs themselves are fine – painting apartments, basic repairs, helping with moving jobs. Nothing glamorous, but honest work. You're home by evening, tired but safe.</p>
+	<p>A month passes this way. The routine becomes comfortable. You know which buses to take, which times to avoid, which job coordinators are reliable.</p>
+</div>
+
+<<set _outcomeRoll = random(1, 100)>>
+<<if _outcomeRoll <= 50>>
+	<<goto "JobPerDayFail">>
+<<else>>
+	<<goto "JobPerDaySuccess">>
+<</if>>
+
+<div class="nav-arrows">
+	<<back "◀ Back">>
+</div>
+
+
+
+:: JobPerDayFail
+/* Job falls through, can't make rent */
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>When Plans Fall Apart</h3>
+<div class="consequence-text">
+	<p>The second month starts normally. You've been working with a contractor who seems reliable – he's been giving you painting jobs three or four times a week. Today, he promised you a full week of work on a big project. You're counting on it. Rent is due in ten days, and you're exactly $<<= Math.max(0, $housingCost - $money)>> short.</p>
+	<p>You show up at the job site at 7 AM as instructed. The contractor isn't there.</p>
+	<p>You wait. 8 AM. 9 AM. You call the number he gave you. No answer.</p>
+	<p>By 10 AM, you realize the truth: he's not coming. The job isn't happening.</p>
+	<p>You try to find other work, but by this point in the morning, all the jobs are taken. You go home empty-handed.</p>
+	<p>You scramble for the next week, taking whatever jobs you can find, but they're not enough. Some days you can't find anything at all. The job-per-day structure that felt stable now feels precarious – you're too dependent on other people's reliability.</p>
+	<p>When rent day comes, you're $<<= Math.max(200, $housingCost - $money)>> short.</p>
+</div>
+
+<div class="warning-box">
+	<strong>Financial Crisis:</strong>
+	You cannot make rent this month. The landlord gives you a warning, but you know you're in trouble. You need to find a different approach or risk losing your housing.
+</div>
+
+<!-- 2 months of inconsistent job-per-day work -->
+<<set _monthsPassed = 2>>
+<<set _daysWorked = 28>>
+<<set _dailyEarnings = 110>>
+<<set _totalEarned = _daysWorked * _dailyEarnings>>
+<<set _totalRent = $housingCost * _monthsPassed>>
+<<set _transportCosts = 130 * _monthsPassed>>
+<<set _livingExpenses = 300 * _monthsPassed>>
+<<set _additionalSearchCosts = 100>>
+<<set _netChange = _totalEarned - _totalRent - _transportCosts - _livingExpenses - _additionalSearchCosts>>
+<<set $money += _netChange>>
+<<set $familyHealth -= 12>>
+<<set $lastRentPaidDay = $day>>
+
+<div class="stats-box">
+	<p>
+		<strong>Earnings (2 months):</strong> $<<= _totalEarned>><br>
+		<strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+		<strong>Transport &amp; Living:</strong> -$<<= _transportCosts + _livingExpenses>><br>
+		<strong>Job Search Costs:</strong> -$<<= _additionalSearchCosts>><br>
+		<strong>Net Loss:</strong> $<<= _netChange>><br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Rent Due Next Month:</strong> $<<= $housingCost>><br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (stress from financial crisis)
+	</p>
+</div>
+
+<div class="consequence-text">
+	<p>The reliability you thought you had built was an illusion. In the informal economy, there is no promise of income.</p>
+</div>
+
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+<div class="nav-arrows">
+	<<back "◀ Back">>
+</div>
+
+
+
+:: JobPerDaySuccess
+/* Become reliable and known, earn consistently */
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $day += 60>>
+<<GenerateTimeSkipWorries 60>>
+
+<h3>Building a Reputation</h3>
+<div class="consequence-text">
+	<p>Week after week, you show up on time.</p>
+	<p>The job coordinators start to remember you: "I know I can count on you."</p>
+	<p>It starts small – a coordinator calls you the night before to reserve you for a job. Then another coordinator starts doing the same. Then another.</p>
+	<p>Three months in, you have something remarkable: a routine. Not a formal job, but a network. You know who to call, and they know you. On Monday you might paint for one contractor. Wednesday and Thursday you do repairs for another. Friday you help with moving jobs.</p>
+	<p>There’s no contract, no paperwork, no guarantees. But there’s trust. You've proven yourself to be reliable.</p>
+	<p>The money is steady now – not great, but enough. You make rent every month. You have a little left over for food and small emergencies. Your wife feels more secure. Your family's health improves with the reduced stress.</p>
+	<p>One evening, one of the contractors tells you about a family looking for someone to do regular maintenance on their properties. "I told them about you," he says. "Good work, reliable, trustworthy. They want to meet you."</p>
+	<p>It's not a ticket to wealth, but it's stability. In the informal economy, that's worth its weight in gold.</p>
+</div>
+
+<div class="success-box">
+	<strong>Success:</strong> Through consistency and reliability, you've built a reputation and a support network. You have steady work and can support your family.
+</div>
+
+<!-- Earnings over 3 months of steady work -->
+<<set _monthsPassed = 3>>
+<<set _daysWorked = 66>>
+<<set _dailyEarnings = 110>>
+<<set _totalEarned = _daysWorked * _dailyEarnings>>
+<<set _totalRent = $housingCost * _monthsPassed>>
+<<set _transportCosts = 130 * _monthsPassed>>
+<<set _livingExpenses = 300 * _monthsPassed>>
+<<set _netSavings = _totalEarned - _totalRent - _transportCosts - _livingExpenses>>
+<<set $money += _netSavings>>
+<<set $familyHealth += 12>>
+<<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $lastRentPaidDay = $day>>
+
+<div class="stats-box">
+	<p>
+		<strong>Earnings (3 months):</strong> $<<= _totalEarned>><br>
+		<strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+		<strong>Transport &amp; Living:</strong> -$<<= _transportCosts + _livingExpenses>><br>
+		<strong>Net Savings:</strong> +$<<= _netSavings>><br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (improved from financial stability)
+	</p>
+</div>
+
+<div class="consequence-text">
+	<p>You've found a way to make it work. It's not the life you dreamed of, but it's secure. Your family is safe and housed. That's what matters.</p>
+</div>
+
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+<div class="nav-arrows">
+	<<back "◀ Back">>
+</div>

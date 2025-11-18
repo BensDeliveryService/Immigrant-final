@@ -1,10 +1,31 @@
 :: JobBoard
-<<if !$jobOrder>><<set $jobOrder = clone($jobs)>><<$jobOrder.shuffle()>><</if>> <<set _count = $jobOrder.length>>
-<<if $jobIndex is undefined>><<set $jobIndex = 0>><</if>> <<set _job = $jobOrder[$jobIndex]>>
-<p style="margin:0;font-size:0.9em;">Check out the jobs:</p>
-<<JobListing _job "Kiosk">>
-<div style="display:flex;justify-content:space-between;font-size:0.5em;margin-top:2px;">
-	<<link "◀">><<set $jobIndex = ($jobIndex - 1 + _count) % _count>><<goto "JobBoard">><</link>>
-	<span><<=$jobIndex + 1>>/<<=_count>></span>
-	<<link "▶">><<set $jobIndex = ($jobIndex + 1) % _count>><<goto "JobBoard">><</link>>
+<<set $step = 0>><<ShowInfo>>
+<<if (!$jobs or !$jobs.length)>><p style="margin:0;font-size:0.9em;">There are no jobs posted right now. Check back tomorrow.</p><<return>><</if>>
+<<nobr>><<if (!$jobTypeOrder)>>
+	<<set $jobTypeOrder = clone($jobs)>>
+	<<run
+		if (Array.isArray(State.variables.jobTypeOrder)) {
+			State.variables.jobTypeOrder.sort(function () {
+				return Math.random() - 0.5;
+			});
+			State.variables.jobTypeOrder = State.variables.jobTypeOrder.slice(0, 3);
+		}
+	>>
+	<<set $jobIndex = 0>>
+<</if>>
+<<set _total = $jobTypeOrder.length>>
+<<if _total == 0>><p style="margin:0;font-size:0.9em;">There are no jobs available right now.</p><<return>><</if>>
+<<if $jobIndex is undefined>><<set $jobIndex = 0>><</if>><<set _pageSize = 1>><<set _start = Math.max(0, $jobIndex)>><<if _start >= _total>><<set _start = 0>><<set $jobIndex = 0>><</if>>
+<<set _end = Math.min(_start + _pageSize, _total)>>
+<p style="margin:0 0 2px 0;font-size:0.9em;">Jobs you can take:</p>
+<</nobr>>
+<<for _i = _start; _i < _end; _i++>>
+	<<set _job = $jobTypeOrder[_i]>>
+	<<JobListing _job "Kiosk">>
+<</for>>
+<div style="display:flex;justify-content:space-between;font-size:0.75em;margin-bottom:2px;">
+	<<link "◀">>
+		<<set $jobIndex = ($jobIndex - 1 + _total) % _total>>
+		<<goto "JobBoard">>
+	<</link>> <span>Job <<= _start + 1>> of <<= _total>></span><<link "▶">><<set $jobIndex = ($jobIndex + 1) % _total>><<goto "JobBoard">><</link>>
 </div>

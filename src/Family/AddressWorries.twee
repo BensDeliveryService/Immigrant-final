@@ -1,141 +1,223 @@
 :: AddressWorries
-/*Allow player to address family worries - switcher interface*/
-<<set $step = 0>>
-<<ShowInfo>>
+<<set $step = 0>><<ShowInfo>>
 
-/* Initialize worry index if not set */
 <<if $currentWorryIndex is undefined or $currentWorryIndex >= $worries.length>>
 	<<set $currentWorryIndex = 0>>
 <</if>>
 
-<h2 style="margin:0;">Family Concerns</h2>
+<<run $("#modalbox").remove()>>
 
-<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);">
-<p style="margin:2px 0;font-size:0.9em;">
-	<strong>Balance:</strong> $<<= $money>> ·
-	<strong>Family Health:</strong> <<= $familyHealth>>% ·
-	<strong>Active Worries:</strong> <<= $worries.length>>
-</p>
-</div>
+<<run
+(function () {
+	if (typeof SugarCube === "undefined" || !SugarCube.State) {
+		console.error("SugarCube.State not available");
+		return;
+	}
 
-<hr>
+	const vars    = SugarCube.State.variables;
+	const worries = vars.worries || [];
+	let   idx     = vars.currentWorryIndex || 0;
+	const money   = vars.money || 0;
+	const health  = vars.familyHealth || 0;
 
-<<if $worries.length === 0>>
-	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.5);">
-	<p style="margin:2px 0;"><strong>✓ No current concerns</strong></p>
-	<p style="margin:4px 0;">Your family doesn't have any pressing worries right now. Things are going well!</p>
-	</div>
+	// Clamp index
+	if (idx < 0) idx = 0;
+	if (idx >= worries.length && worries.length > 0) idx = worries.length - 1;
+	vars.currentWorryIndex = idx;
 
-	<<link "Return to end of day" "EndOfDayHub">><</link>>
-<<else>>
-	/* Display current worry */
-	<<set _currentWorry = $worries[$currentWorryIndex]>>
-	<<set _timeLeft = _currentWorry.expiresIn - _currentWorry.daysActive>>
+	let html = `<div id='modalbox' style="
+		position:fixed;inset:0;z-index:999999;
+		background:rgba(0,0,0,.45);
+		display:flex;align-items:center;justify-content:center;">
+		<div style='background:#fff;color:#000;border-radius:6px;
+			min-width:260px;max-width:420px;max-height:80vh;
+			overflow:auto;padding:10px;box-shadow:0 4px 10px rgba(0,0,0,.4);
+			font-size:.85em;'>`;
 
-	<div style="margin:8px 0;padding:4px 8px;border-radius:4px;background:rgba(208,213,224,.1);text-align:center;">
-		<p style="margin:2px 0;font-size:0.85em;">Showing concern <<= $currentWorryIndex + 1>> of <<= $worries.length>></p>
-	</div>
-
-	<div style="margin:8px 0;padding:12px;border-radius:6px;background:rgba(240,173,78,.08);border-left:4px solid rgba(240,173,78,.6);">
-		<h3 style="margin:0 0 8px 0;font-size:1.1em;"><<= _currentWorry.description>></h3>
-
-		<p style="margin:4px 0;font-size:0.9em;">
-			<strong>Type:</strong> <<= _currentWorry.type.replace(/_/g, " ")>> ·
-			<strong>Severity:</strong> <<= _currentWorry.severity>>/5
-		</p>
-
-		<p style="margin:6px 0;font-size:0.9em;">
-			<strong>Time:</strong>
-			<<if _timeLeft <= 2>>
-				<span style="color:#d9534f;font-weight:bold;">⚠️ URGENT - Only <<= _timeLeft>> day<<if _timeLeft !== 1>>s<</if>> left!</span>
-			<<elseif _timeLeft <= 4>>
-				<span style="color:#f0ad4e;font-weight:bold;"><<= _timeLeft>> days left (moderate urgency)</span>
-			<<else>>
-				<span><<= _timeLeft>> days remaining</span>
-			<</if>>
-			<br><span style="font-size:0.85em;color:var(--muted);">Active: <<= _currentWorry.daysActive>>/<<= _currentWorry.expiresIn>> days</span>
-		</p>
-
-		<div style="margin:8px 0;padding:6px 8px;border-radius:4px;background:rgba(255,255,255,.3);">
-			<p style="margin:2px 0;font-size:0.9em;">
-				<strong>Cost to resolve:</strong> $<<= _currentWorry.cost>>
+	html += `<h2 style='margin:0 0 4px 0;'>Family Concerns</h2>
+		<div style="margin:3px 0;padding:3px 5px;border-radius:3px;
+		background:rgba(99,179,237,.08);border-left:2px solid rgba(99,179,237,.3);">
+			<p style="margin:1px 0;font-size:.8em;">
+				<nobr><strong>Balance:</strong> $${money}</nobr> ·
+				<nobr><strong>Health:</strong> ${health}%</nobr> ·
+				<nobr><strong>Worries:</strong> ${worries.length}</nobr>
 			</p>
-			<p style="margin:2px 0;font-size:0.9em;">
-				<strong>If ignored:</strong> -<<= _currentWorry.healthImpact>>% family health
+		</div><hr style="margin:3px 0;">`;
+
+	// No worries
+	if (worries.length === 0) {
+		html += `<div style="margin:3px 0;padding:5px;border-radius:3px;
+			background:rgba(92,184,92,.1);border-left:2px solid rgba(92,184,92,.5);">
+			<strong>✓ No concerns</strong><br>
+			<span style='font-size:.8em;'>Your family feels stable.</span></div>
+			<div style='margin-top:6px;text-align:right;'>
+				<a href='javascript:void(0)'
+				   style="color:#000;text-decoration:underline;"
+				   onclick='$("#modalbox").remove();SugarCube.Engine.play("Hub")'>
+					Close
+				</a>
+			</div>`;
+		html += `</div></div>`;
+		$("#story").append(html);
+		return;
+	}
+
+	// Active worry
+	const w    = worries[idx];
+	const left = w.expiresIn - w.daysActive;
+
+	const sevMap = {
+		1: "Low Severity",
+		2: "Medium Severity",
+		3: "Medium Severity",
+		4: "High Severity",
+		5: "High Severity"
+	};
+	const sevText = sevMap[w.severity] || "Unknown";
+
+	html += `<div style="margin:3px 0;padding:2px 4px;text-align:center;
+			font-size:.75em;background:rgba(208,213,224,.12);border-radius:3px;">
+			Concern ${idx+1} / ${worries.length}</div>
+
+		<div style="margin:3px 0;padding:6px;border-radius:4px;
+			background:rgba(240,173,78,.1);border-left:3px solid rgba(240,173,78,.5);">
+
+			<h3 style="margin:0 0 3px;font-size:1em;">${w.description}</h3>
+
+			<p style="margin:2px 0;font-size:.8em;">
+				<nobr><strong>Type:</strong> ${w.type.replace(/_/g," ")}</nobr> ·
+				<nobr><strong>Severity:</strong> ${sevText}</nobr>
+			</p>
+
+			<p style="margin:2px 0;font-size:.8em;">
+				<strong>Time:</strong>`;
+
+	if (left <= 2) {
+		html += `<span style='color:#d9534f;font-weight:bold;'> ⚠️ ${left} day(s) left</span>`;
+	} else if (left <= 4) {
+		html += `<span style='color:#f0ad4e;font-weight:bold;'> ${left} days left</span>`;
+	} else {
+		html += `${left} days remaining`;
+	}
+
+	html += `<br><span style="font-size:.75em;color:#666;">
+				Active: ${w.daysActive}/${w.expiresIn}
+			</span></p>
+
+			<div style="margin:3px 0;padding:3px 5px;border-radius:3px;background:rgba(255,255,255,.4);">
+				<p style="margin:1px 0;font-size:.8em;"><strong>Cost:</strong> $${w.cost}</p>
+				<p style="margin:1px 0;font-size:.8em;"><strong>Ignore penalty:</strong> -${w.healthImpact}%</p>
+			</div>`;
+
+	// BUTTON BAR – Prev / Resolve / Skip / Next
+	html += `<div style="margin:6px 0;display:flex;justify-content:center;gap:10px;font-size:.85em;flex-wrap:wrap;">`;
+
+	if (idx > 0) {
+		html += `<a href='javascript:void(0)'
+			style="color:#000;text-decoration:underline;"
+			onclick='$("#modalbox").remove();SugarCube.State.variables.currentWorryIndex--;SugarCube.Engine.play("AddressWorries")'>
+			◀ Prev
+		</a>`;
+	}
+
+	if (money >= w.cost) {
+		html += `<a href='javascript:void(0)'
+			style="color:#000;text-decoration:underline;"
+			onclick='
+				$("#modalbox").remove();
+				SugarCube.State.variables.money -= ${w.cost};
+				SugarCube.State.variables.familyHealth = Math.min(
+					100,
+					SugarCube.State.variables.familyHealth + Math.floor(${w.severity} * 2)
+				);
+				SugarCube.State.variables.worries.splice(${idx}, 1);
+				SugarCube.State.variables.currentWorryIndex = 0;
+				SugarCube.Engine.play("WorryResolved");
+			'>
+			Resolve ($${w.cost})
+		</a>`;
+	} else {
+		html += `<span style="color:#999;font-size:.8em;">
+			Resolve ($${w.cost}) – need $${w.cost - money} more
+		</span>`;
+	}
+
+	// ✅ FIXED: Skip now goes to "Hub"
+	html += `<a href='javascript:void(0)'
+		style="color:#000;text-decoration:underline;"
+		onclick='$("#modalbox").remove();SugarCube.State.variables.currentWorryIndex = 0;SugarCube.Engine.play("Hub")'>
+		Skip
+	</a>`;
+
+	if (idx < worries.length - 1) {
+		html += `<a href='javascript:void(0)'
+			style="color:#000;text-decoration:underline;"
+			onclick='$("#modalbox").remove();SugarCube.State.variables.currentWorryIndex++;SugarCube.Engine.play("AddressWorries")'>
+			Next ▶
+		</a>`;
+	}
+
+	html += `</div></div></div>`;
+	$("#story").append(html);
+})();
+>>
+
+:: WorryResolved
+<<set $step = 0>><<ShowInfo>>
+
+<<run $("#modalbox").remove()>>
+
+<<run
+(function () {
+	if (typeof SugarCube === "undefined" || !SugarCube.State) {
+		console.error("SugarCube.State not available");
+		return;
+	}
+
+	const vars   = SugarCube.State.variables;
+	const money  = vars.money || 0;
+	const health = vars.familyHealth || 0;
+	const left   = (vars.worries && vars.worries.length) || 0;
+
+	let html = `<div id='modalbox' style="
+		position:fixed;inset:0;background:rgba(0,0,0,.45);
+		display:flex;align-items:center;justify-content:center;
+		z-index:999999;">
+		<div style='background:#fff;color:#000;border-radius:6px;
+			min-width:240px;max-width:380px;max-height:70vh;
+			overflow:auto;padding:10px;
+			box-shadow:0 4px 10px rgba(0,0,0,.4);font-size:.85em;'>`;
+
+	html += `<h2 style='margin:0 0 4px 0;font-size:1.05em;'>Concern Addressed</h2>
+
+		<div style="margin:3px 0;padding:4px;border-radius:3px;
+			background:rgba(92,184,92,.15);border-left:2px solid rgba(92,184,92,.6);">
+			<p style="margin:1px 0;font-size:.85em;">
+				<strong style="color:#5cb85c;">✓ Resolved</strong>
+			</p>
+			<p style="margin:1px 0;font-size:.8em;">
+				Your family feels safer and supported.
 			</p>
 		</div>
 
-		<hr style="margin:8px 0;border:none;border-top:1px solid rgba(0,0,0,.1);">
+		<div style="margin:3px 0;padding:4px;border-radius:3px;
+			background:rgba(99,179,237,.1);border-left:2px solid rgba(99,179,237,.4);">
+			<ul style="margin:2px 0;padding-left:15px;font-size:.75em;">
+				<li>Balance: $${money}</li>
+				<li>Health: ${health}%</li>
+				<li>Remaining worries: ${left}</li>
+			</ul>
+		</div>
 
-		<<if $money >= _currentWorry.cost>>
-			<<link "Address this concern ($<<= _currentWorry.cost>>)">>
-				<<set $money -= _currentWorry.cost>>
-				<<set $familyHealth += Math.floor(_currentWorry.severity * 2)>>
-				<<set $familyHealth = Math.min(100, $familyHealth)>>
-				<<set $worries.splice($currentWorryIndex, 1)>>
-				<<set $currentWorryIndex = 0>>
-				<<goto "WorryResolved">>
-			<</link>>
-		<<else>>
-			<p style="margin:4px 0;color:#d9534f;font-weight:bold;">
-				⚠️ Cannot afford (need $<<= _currentWorry.cost - $money>> more)
-			</p>
-		<</if>>
-	</div>
+		<div style="margin-top:4px;text-align:right;font-size:.85em;">
+			<a href='javascript:void(0)'
+				style="color:#000;text-decoration:underline;"
+				onclick='$("#modalbox").remove();SugarCube.Engine.play("Hub")'>
+				Continue
+			</a>
+		</div>
+		</div></div>`;
 
-	/* Navigation buttons */
-	<div style="margin:8px 0;display:flex;justify-content:space-between;align-items:center;">
-		<span>
-			<<if $currentWorryIndex > 0>>
-				<<link "◀ Previous">>
-					<<set $currentWorryIndex -= 1>>
-					<<goto "AddressWorries">>
-				<</link>>
-			<<else>>
-				<span style="color:gray;">◀ Previous</span>
-			<</if>>
-		</span>
-		<span>
-			<<link "Skip for now">>
-				<<set $currentWorryIndex = 0>>
-				<<goto "EndOfDayHub">>
-			<</link>>
-		</span>
-		<span>
-			<<if $currentWorryIndex < $worries.length - 1>>
-				<<link "Next ▶">>
-					<<set $currentWorryIndex += 1>>
-					<<goto "AddressWorries">>
-				<</link>>
-			<<else>>
-				<span style="color:gray;">Next ▶</span>
-			<</if>>
-		</span>
-	</div>
-<</if>>
-
-
-:: WorryResolved
-/*Feedback after successfully resolving a worry*/
-<<set $step = 0>>
-<<ShowInfo>>
-
-<h2 style="margin:0;">Concern Addressed</h2>
-
-<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.12);border-left:3px solid rgba(92,184,92,.6);">
-<p style="margin:2px 0;"><strong style="color:#5cb85c;">✓ Family Worry Resolved</strong></p>
-<p style="margin:4px 0;">You've taken care of this concern. Your family feels more secure knowing you're looking out for them, even when money is tight.</p>
-
-<p style="margin:4px 0;">These small acts of care and attention matter deeply, especially when navigating the challenges of building a new life.</p>
-</div>
-
-<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);">
-<p style="margin:2px 0;"><strong>Current status:</strong></p>
-<ul style="margin:4px 0;padding-left:20px;font-size:0.9em;">
-	<li>Balance: $<<= $money>></li>
-	<li>Family Health: <<= $familyHealth>>%</li>
-	<li>Remaining Worries: <<= $worries.length>></li>
-</ul>
-</div>
-
-<<link "Continue to end of day" "EndOfDayHub">><</link>>
+	$("#story").append(html);
+})();
+>>

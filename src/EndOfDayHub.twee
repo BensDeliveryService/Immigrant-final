@@ -1,12 +1,10 @@
 :: EndOfDayHub
 <<silently>>
 <<set $step = 0>><<ShowInfo>>
-
-/* --- Monthly Rent Payment System --- */
-/* Initialize rent tracking variables if needed */
 <<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
-<<if $hasHousing and $housingCost > 0>>
-	/* Check if 30 days have passed since last rent payment */
+<<set _rentPaidToday = false>>
+
+<<if $hasHousing and $housingCost>>
 	<<if ($day - $lastRentPaidDay) >= 30>>
 		<<set $money -= $housingCost>>
 		<<set $lastRentPaidDay = $day>>
@@ -14,136 +12,140 @@
 	<</if>>
 <</if>>
 
-/* --- Worry Aging and Expiration System --- */
-<<if $worries.length > 0>>
+<<if $worries.length>>
 	<<set _expiredWorries = []>>
-	/* Age each worry and check for expiration */
 	<<for _i = 0; _i < $worries.length; _i++>>
 		<<set $worries[_i].daysActive += 1>>
-		/* Check if worry has expired */
 		<<if $worries[_i].daysActive >= $worries[_i].expiresIn>>
 			<<set _expiredWorries.push($worries[_i])>>
 		<</if>>
 	<</for>>
-	/* Apply penalties for expired worries and remove them */
-	<<if _expiredWorries.length > 0>>
+	<<if _expiredWorries.length>>
 		<<for _j = 0; _j < _expiredWorries.length; _j++>>
-			<<set _expired = _expiredWorries[_j]>>
-			<<set $familyHealth -= _expired.healthImpact>>
+			<<set _exp = _expiredWorries[_j]>>
+			<<set $familyHealth -= _exp.healthImpact>>
 			<<set $worriesIgnored += 1>>
 		<</for>>
-		/* Remove expired worries from array */
-		<<set $worries = $worries.filter(function(w) {
-			return w.daysActive < w.expiresIn;
-		})>>
+		<<set $worries = $worries.filter(function(w){ return w.daysActive < w.expiresIn })>>
 	<</if>>
 <</if>>
-/* --- Random Worry Generation --- */
-/* Generate worries based on game state - higher chance as time passes */
-<<set _worryChance = Math.min(30 + ($day * 0.5), 60)>> /* 30% base, increases 0.5% per day, caps at 60% */
-<<set _worryRoll = random(1, 100)>>
+
+<<set _worryChance = Math.min(30 + ($day * .5), 60)>>
+<<set _worryRoll = random(1,100)>>
 <<if _worryRoll <= _worryChance and $worries.length < 3>>
-	/* Filter worries based on player's current situation */
-	<<set _availableWorries = $possibleWorries.filter(function(worry) {
-		/* Exclude car-related worries if player doesn't have a car */
-		if (worry.type === "maintenance" && !$hasCar) {
-			return false;
-		}
+	<<set _availableWorries = $possibleWorries.filter(function(w){
+		if (w.type === "maintenance" && !$hasCar) return false;
 		return true;
 	})>>
-	/* Pick a random worry from available worries */
-	<<set _randomWorry = _availableWorries[random(0, _availableWorries.length - 1)]>>
-	/* Clone the worry object to avoid reference issues */
+	<<set _pick = _availableWorries[random(0,_availableWorries.length-1)]>>
 	<<set _newWorry = {
-		type: _randomWorry.type,
-		severity: _randomWorry.severity,
-		description: _randomWorry.description,
-		expiresIn: _randomWorry.expiresIn,
-		healthImpact: _randomWorry.healthImpact,
-		cost: _randomWorry.cost,
-		daysActive: 0
+		type:_pick.type, severity:_pick.severity,
+		description:_pick.description, expiresIn:_pick.expiresIn,
+		healthImpact:_pick.healthImpact, cost:_pick.cost,
+		daysActive:0
 	}>>
 	<<set $worries.push(_newWorry)>>
 <</if>>
-/* --- Housing Application Auto-Update --- */
-/* If housing application is ready, redirect to result */
+
 <<if $housingApplicationPending and $housingApplicationDaysRemaining <= 0>>
 	<<goto "HousingApplicationResult">>
 <</if>>
-/* Check for wife medical emergency trigger */
-/* Trigger if: family health low OR (Unaffordable housing + enough days passed) */
-<<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>> /* 15 days for Unaffordable, impossible otherwise */
+
+<<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>>
 <<if !$wifeMedicalEmergencyTriggered>>
 	<<if $familyHealth <= 60 or ($day >= _daysThreshold and $hasHousing and $housingType === "Unaffordable")>>
-		/* Only trigger if:
-		   - No overwork event ever happened, OR
-		   - Overwork event was triggered and already handled
-		   This ensures: "Wife event" OR "Overwork THEN Wife" but never "Wife THEN Overwork"
-		*/
 		<<if !$overworkSicknessTriggered or ($overworkSicknessTriggered and !$workingExcessiveHours)>>
 			<<set $wifeMedicalEmergencyTriggered = true>>
 			<<goto "WifeMedicalEmergency">>
 		<</if>>
 	<</if>>
 <</if>>
-<</silently>>\
+
+<<goto "EndOfDaySummary1">>
+<</silently>>
+
+:: EndOfDaySummary1
 <h2 style="margin:0;">End of Day</h2>
 
-<<if $pendingPayment > 0>>
-	<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(56,178,75,.08);border-left:3px solid rgba(56,178,75,.3);">
-		<strong>💰 Payment: $<<= $pendingPayment>></strong><br>
-		<<set $money += $pendingPayment>><<set $totalIncomeEarned += $pendingPayment>><<set $incomeHistory.push({amount:$pendingPayment,day:$day})>><<set $jobsCompleted += 1>>
-		Balance: $<<= $money>> · Total: $<<= $totalIncomeEarned>> · Jobs: <<= $jobsCompleted>><<set $pendingPayment = 0>>
-	</div>
+<<if $pendingPayment>>
+<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(56,178,75,.08);border-left:2px solid rgba(56,178,75,.3);font-size:.85em;">
+	<strong>💰 Payment: $<<= $pendingPayment>></strong><br>
+	<<set $money += $pendingPayment>><<set $totalIncomeEarned += $pendingPayment>>
+	<<set $incomeHistory.push({amount:$pendingPayment,day:$day})>><<set $jobsCompleted += 1>>
+	<nobr>Balance: $<<= $money>></nobr> ·
+	<nobr>Total: $<<= $totalIncomeEarned>></nobr> ·
+	<nobr>Jobs: <<= $jobsCompleted>></nobr>
+	<<set $pendingPayment = 0>>
+</div>
 <<else>>
-	<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);">
-		<strong>💰 No new payment today.</strong>
-	</div>
-<</if>>
-
-<<if _expiredWorries and _expiredWorries.length > 0>>
-	<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(217,83,79,.08);border-left:3px solid rgba(217,83,79,.3);">
-		<strong>⚠️ Unresolved Worries - Family Health Impact</strong><br>
-		<span style="font-size:0.9em;">You couldn't address <<= _expiredWorries.length>> concern<<if _expiredWorries.length > 1>>s<</if>> in time:</span>
-		<<for _k = 0; _k < _expiredWorries.length; _k++>>
-			<br><span style="font-size:0.85em;">• <<= _expiredWorries[_k].description>> (-<<= _expiredWorries[_k].healthImpact>>% health)</span>
-		<</for>>
-	</div>
+<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(99,179,237,.08);border-left:2px solid rgba(99,179,237,.3);font-size:.85em;">
+	<strong>💰 No new payment today.</strong>
+</div>
 <</if>>
 
 <<if _rentPaidToday>>
-	<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(217,83,79,.08);border-left:3px solid rgba(217,83,79,.3);">
-		<strong>🏠 Monthly Rent Paid: $<<= $housingCost>></strong><br>
-		<span style="font-size:0.9em;">New balance: $<<= $money>></span>
-	</div>
-<</if>>
-
-<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
-	<div style="margin:4px 0;padding:6px 8px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);">
-		<strong>🏠 Housing Application: <<= $pendingHousingType>></strong><br>
-		<span style="font-size:0.9em;">~<<= $housingApplicationDaysRemaining>> business days remaining</span>
-		<<set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)>>
-		<<if _isWeekend>><br><span style="font-size:0.8em;color:var(--muted);">📅 Weekend – no processing</span><</if>>
-	</div>
-<</if>>
-
-<<if $worries.length > 0>>
-	<div style="margin:4px 0;padding:6px 6px;border-radius:6px;background:rgba(236,201,75,.08);border-left:3px solid rgba(236,201,75,.3);">
-		<strong>⚠️ Active Worries:</strong>
-		<<for _i = 0; _i < $worries.length; _i++>>
-			<<set _w = $worries[_i]>><br>· Sev <<= _w.severity>>/5 – <<= _w.description>> (<<= _w.daysActive>>d)
-		<</for>>
-	</div>
-<<else>>
-	<div style="margin:4px 0;padding:6px 6px;border-radius:6px;background:rgba(236,201,75,.08);border-left:3px solid rgba(236,201,75,.3);">
-		✓ No current worries.
-	</div>
-<</if>>
-
-<div style="margin-top:4px;font-size:0.9em;">
-	<<if $worries.length > 0>>
-		<<link "Address family concerns">><<goto "AddressWorries">><</link>><br>
-	<</if>>
-	<<link "Continue to next day" "Hub">><</link>>
-	<<if !$gameStarted>><br><<link "Game options" "GameOptions">><</link>><</if>>
+<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(217,83,79,.08);border-left:2px solid rgba(217,83,79,.3);font-size:.85em;">
+	<strong>🏠 Rent paid: $<<= $housingCost>></strong><br>
+	<nobr>New balance: $<<= $money>></nobr>
 </div>
+<</if>>
+
+<<if $housingApplicationPending and $housingApplicationDaysRemaining>>
+<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(99,179,237,.08);border-left:2px solid rgba(99,179,237,.3);font-size:.85em;">
+	<strong>🏠 Housing application:</strong> <<= $pendingHousingType>><br>
+	<nobr>~<<= $housingApplicationDaysRemaining>> business days</nobr>
+	<<set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)>>
+	<<if _isWeekend>>
+		<br><span style="font-size:.75em;color:#666;">📅 Weekend – no processing</span>
+	<</if>>
+</div>
+<</if>>
+
+<div style="margin-top:4px;font-size:.85em;display:flex;justify-content:space-between;">
+	<span></span>
+	<span><<link "Next ▶">><<goto "EndOfDaySummary2">><</link>></span>
+</div>
+
+:: EndOfDaySummary2
+<h2 style="margin:0 0 4px 0;">End of Day – Family</h2>
+
+<<if _expiredWorries and _expiredWorries.length>>
+<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(217,83,79,.08);border-left:2px solid rgba(217,83,79,.3);font-size:.85em;">
+	<strong>⚠️ Unresolved worries</strong>
+	<div style="font-size:.8em;margin-top:2px;">You couldn’t address <<= _expiredWorries.length>> concern<<if _expiredWorries.length > 1>>s<</if>>:</div>
+	<<for _k = 0; _k < _expiredWorries.length; _k++>>
+		<<set _ew = _expiredWorries[_k]>>
+		<div style="margin-top:1px;">
+			• <<= _ew.description>> (<nobr>-<<= _ew.healthImpact>>%</nobr>)
+		</div>
+	<</for>>
+</div>
+<</if>>
+
+<<if $worries.length>>
+<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(236,201,75,.08);border-left:2px solid rgba(236,201,75,.3);font-size:.85em;">
+	<strong>⚠️ Active worries:</strong>
+	<<for _i = 0; _i < $worries.length; _i++>>
+		<<set _w = $worries[_i]>>
+		<<set _sevText = "Low">>
+		<<if _w.severity >= 2 and _w.severity <= 3>><<set _sevText = "Medium">>
+		<<elseif _w.severity >= 4>><<set _sevText = "High">><</if>>
+		<div style="margin-top:1px;">
+			<nobr>· Severity: <<= _sevText>> – <<= _w.description>> (<<= _w.daysActive>>d)</nobr>
+		</div>
+	<</for>>
+</div>
+<<else>>
+<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(236,201,75,.08);border-left:2px solid rgba(236,201,75,.3);font-size:.85em;">
+	✓ No current worries.
+</div>
+<</if>>
+
+<div style="margin-top:4px;font-size:.85em;display:flex;justify-content:space-between;">
+	<span><<link "◀ Back">><<goto "EndOfDaySummary1">><</link>></span>
+	<span><<link "Next ▶">><<goto "Hub">><</link>></span>
+</div>
+
+<<if $worries.length>>
+	<<include "AddressWorries">>
+<</if>>

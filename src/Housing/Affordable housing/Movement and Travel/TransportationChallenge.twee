@@ -1,0 +1,78 @@
+:: TransportationChallenge
+/* Choose transportation method for getting to work with tools */
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h3>Getting to Work</h3>
+<div class="consequence-text">
+	<p>Every morning, you face the same challenge: how to get yourself and your heavy toolbox across the city to where the jobs are.</p>
+	<p>You need a solution that's affordable enough to do daily, but also practical for carrying tools. A hammer, saw, paint cans, measuring tape, level – these aren't things you can easily hide or carry discreetly.</p>
+	<p>The question is: how will you transport yourself and your tools?</p>
+</div>
+
+<<link "Choose your transportation method>">> <<goto "P1">> <</link>>
+:: P1
+<div class="housing-choice">
+	<<link "Use public transportation">>
+		<<set $transportMethod = "publicTransit">>
+		<<goto "PublicTransitIntro">>
+	<</link>>
+	<p><em>Buses and trains are cheaper – around $2–3 per trip. But they won't get you exactly where you need to be. You'll have to walk the last part carrying your tools, and transit police sometimes question people with large bags or work equipment. The official reason is "safety concerns" but you know what they're really looking for. Monthly cost: ~$120–150.</em></p></div>
+	<<link "▶">> <<goto"R1">> <</link>>
+:: R1
+<div class="housing-choice">
+	<<link "Use rideshare services and taxis">>
+		<<set $transportMethod = "rideshare">>
+		<<goto "RideshareIntro">><</link>>
+	<p><em>Taxis and rideshare services like Uber or Lyft will take you directly to job sites. No walking with heavy tools. No transit police. But it's expensive – $15–25 per trip depending on distance. The monthly cost could be $400–600, almost as much as you're saving by not paying $1,600 in rent. You'll need to be strategic about how you use this option.</em></p>
+</div>
+<<link "◀">> <<goto "P1">><</link>>
+
+:: PublicTransitIntro
+/* Intro to public transit challenges before work structure choice */
+<<set $step = 0>>
+<<ShowInfo>>
+<h3>Public Transit Reality</h3>
+<div class="consequence-text">
+	<p>You commit to using public transportation. It's the most affordable option, and you'll make it work.</p>
+	<p>The bus and train system can get you close to the work sites, though not exactly where you need to be. You'll still have to walk the last bit, carrying everything.</p>
+	<p>It's cheaper than alternatives, but there are risks. Transit police sometimes question people carrying large bags or work equipment. The official reason is "safety concerns" but you know what they're really looking for.</p>
+</div>
+<div class="consequence-text">
+	<p>Now you need to decide how you'll structure your work once you get to the job areas:</p>
+</div>
+
+<<link "Continue">><<goto "PublicTransitChoice">><</link>>
+
+:: PublicTransitChoice
+/* Choose between job-per-day structure or freelance approach */
+<<set $step = 0>>
+<<ShowInfo>>
+<<set $usingPublicTransit = true>>
+
+<h3>How Will You Work?</h3>
+<div class="consequence-text">
+	<p>You're committed to using public transit to get to the job sites each day. Now you need to decide how you'll structure your work.</p>
+</div>
+<<link "One Location">><<goto "Loc1">> <</link>> Or <<link "Freelance Work">><<goto "F1">> <</link>>
+
+:: Loc1
+<div class="housing-choice">
+	<<link "Job-per-day structure: One location, stable and safe">>
+		<<set $workStructure = "jobPerDay">>
+		<<goto "JobPerDayStructure">>
+	<</link>>
+	<p><em>Find one job each day at a specific location. Once you're there, you stay put – no moving around the city. You'll only bring the specific tools needed for that job, reducing your profile. Less risk of law enforcement encounters, but also less income opportunity. You'll make enough to survive, but barely.</em></p>
+</div>
+	<<link "Check out freelance work">><<goto "F1">> <</link>>
+:: F1
+<div class="housing-choice">
+	<<link "Freelance approach: Multiple jobs, higher risk and reward">>
+		<<set $workStructure = "freelance">>
+		<<goto "FreelanceStructure">>
+	<</link>>
+	<p><em>Take multiple jobs throughout the day, moving from site to site across the city. You'll carry your full toolbox everywhere, making yourself more visible to law enforcement. Higher risk of being stopped and questioned, but significantly better income. If you can avoid trouble, you might earn enough to eventually move to a better neighborhood.</em></p>
+</div>
+	<<link "Check out stationary work">><<goto "F1">> <</link>>
+
+

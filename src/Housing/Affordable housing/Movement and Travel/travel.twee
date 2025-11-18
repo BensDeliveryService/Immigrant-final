@@ -1,0 +1,220 @@
+
+:: DirectTravelStrategy
+<<set $step = 0>><<ShowInfo>><<set $day += 45>><<GenerateTimeSkipWorries 45>>
+
+<h3>The Direct Service Model</h3>
+<div class="consequence-text">
+	<p>You make a decision: you'll position yourself as someone who provides direct, professional service. When clients call, you tell them: "I can come directly to your home. I'll bring all my tools. You won't have to worry about picking me up or coordinating."</p>
+	<p>This differentiates you. Many informal workers can't offer this - they rely on clients picking them up, or they're limited by public transit. But you're willing to rideshare directly to each job.</p>
+	<p>It's expensive. Most days you're taking 3-4 separate rideshares - to the first job, to the second, to the third, then home. At $18-25 per ride, that's $70-100 per day in transportation alone. Some days you spend $500+ per week just getting around.</p>
+	<p>But the strategy has an advantage: clients who value convenience will pay more. And they refer you to other clients who value the same thing.</p>
+	<p>"I know someone who needs painting done," a satisfied client tells their neighbor. "This guy will come directly to you. Very professional."</p>
+	<p>You start getting called for jobs you wouldn't have access to otherwise. Homeowners who don't want to coordinate transportation. Small business owners who need someone reliable. People who are willing to pay extra for convenience.</p>
+	<p>The question is: can you earn enough to make the rideshare costs worthwhile?</p>
+</div> <hr>
+<<link "See how it plays out">><<goto "DirectTravelProgress">><</link>>
+
+:: DirectTravelProgress
+<<set $step = 0>><<ShowInfo>><<set $day += 30>><<GenerateTimeSkipWorries 30>>
+
+<h3>Two Months Later</h3>
+<div class="consequence-text">
+	<p>You've been running the direct travel model for two and a half months now. Every morning, you check your phone for job requests. You plan your route. You rideshare from job to job, carrying your toolbox, presenting yourself professionally.</p>
+	<p>The costs have been significant. You're spending $400-600 per month on rideshares, just as you predicted. Some weeks it feels unsustainable.</p>
+	<p>But the work has been good. You're getting referrals. Clients like that you show up on time, at their location, ready to work. Your phone rings more often than it used to.</p>
+	<p>The question is whether the higher-paying jobs and referrals will offset the transportation costs - or whether you're just running in place, earning more but spending more, with no net progress.</p>
+</div>
+<hr>
+<<set _directOutcome = random(1, 100)>>
+<<if _directOutcome <= 50>>
+	<<goto "DirectTravelFail">>
+<<else>>
+	<<goto "DirectTravelSuccess">>
+<</if>>
+
+:: DirectTravelFail
+<<set $step = 0>><<ShowInfo>><<set $day += 30>><<GenerateTimeSkipWorries 30>>
+
+<h3>Unsustainable Economics</h3>
+<div class="consequence-text">
+	<p>Three months in, you have to face the math.</p>
+	<p>You're getting jobs. You're getting referrals. Clients are happy with your work. On the surface, the business model is working.</p>
+	<p>But when you sit down and actually calculate the numbers, the reality is harsh:</p>
+	<ul style="margin:8px 0;">
+		<li>Average daily earnings: $180</li>
+		<li>Average daily rideshare costs: $85</li>
+		<li>Net daily income: $95</li>
+		<li>Working 22 days per month: $2,090</li>
+		<li>After rent ($<<= $housingCost>>): $<<= 2090 - $housingCost>> remaining</li>
+	</ul>
+	<p>That $<<= 2090 - $housingCost>> has to cover food for your family, unexpected expenses, everything else. There's no buffer. No savings. No progress toward a better situation.</p>
+	<p>In fact, you realize you were doing better when you weren't spending so much on transportation. The higher-paying jobs and referrals sounded good, but they're not paying enough to offset the massive transportation costs.</p>
+	<p>You're working just as hard as before, maybe harder, but you're not actually getting ahead. The rideshare companies are taking too much of your earnings.</p>
+	<p>Worse, you're now dependent on this model. Your clients expect you to come directly to them. If you stop offering that service, you'll lose them. You're trapped in an expensive business model that isn't profitable.</p>
+</div>
+<hr>
+<div class="warning-box">
+	<p style="margin:4px 0;color: orange;"><strong>Outcome:</strong> The direct travel model isn't economically viable. Your transportation costs are eating most of the extra money you're earning. You're working hard but not getting ahead.</p>
+</div>
+
+<<set _daysWorked = 66>> <<set _dailyGross = 180>> <<set _dailyTransport = 85>> <<set _totalEarned = _daysWorked * _dailyGross>>
+<<set _totalTransport = _daysWorked * _dailyTransport>>
+<<set _monthsPassed = 3>>
+<<set _totalRent = $housingCost * _monthsPassed>>
+<<set _livingExpenses = 300 * _monthsPassed>>
+<<set _netChange = _totalEarned - _totalTransport - _totalRent - _livingExpenses>>
+<<set $money += _netChange>>
+<<set $familyHealth -= 15>>
+<<set $lastRentPaidDay = $day>>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Earnings (3 months):</strong> $<<= _totalEarned>><br>
+		<strong>Transport Costs:</strong> -$<<= _totalTransport>> (unsustainable)<br>
+		<strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+		<strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+		<strong>Net Change:</strong> $<<= Math.floor(_netChange)>><br>
+		<strong>Current Balance:</strong> $<<= $money>> (barely above survival level)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (stress from working hard without progress)<br>
+		<strong>Monthly Transport Cost:</strong> ~$1,870 (unsustainable)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>You're caught in a trap: working hard, earning more gross income, but spending so much on transportation that your net income is barely higher than before. The "professional" direct service model sounded good, but the economics don't work. You need to find a different approach or accept that you're stuck on this expensive treadmill.</p>
+</div>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+:: DirectTravelSuccess
+<<set $step = 0>><<ShowInfo>><<set $day += 60>><<GenerateTimeSkipWorries 60>>
+
+<h3>Premium Service, Real Results</h3>
+<div class="consequence-text">
+	<p>Five months of direct travel service. Five months of ridesharing across the city. Five months of significant transportation costs.</p>
+	<p>But it's paying off.</p>
+	<p>The referrals haven't just continued - they've accelerated. Satisfied clients tell their friends, family, neighbors. "I know someone," they say. "Professional, reliable, comes right to you."</p>
+	<p>And crucially, you've learned to charge appropriately. Early on, you were charging the same rates as workers who couldn't travel. Now you know your service is worth more, and you've adjusted your prices:</p>
+	<ul style="margin:8px 0;">
+		<li>Basic repair job: $120 (was $80)</li>
+		<li>Full day painting: $250 (was $180)</li>
+		<li>Complex carpentry: $300+ (was $220)</li>
+	</ul>
+	<p>Clients accept these rates because of the convenience. They're not paying for just labor - they're paying for the fact that you show up at their door, professionally, with all tools, ready to work. No coordination needed on their part.</p>
+	<p>Your daily earnings have increased to $220-280, even after rideshare costs of $80-100. You're netting $140-180 per day instead of the $95 you feared.</p>
+	<p>More importantly, you've built a client base. People call you directly now, not through job coordinators. You have regulars who use you for all their home maintenance. They tip generously. They feed you lunch. They recommend you to everyone they know.</p>
+	<p>After five months, you count your savings and realize you have enough for a car - and then some. A decent used vehicle costs around $1,600.</p>
+</div>
+<hr>
+
+<<set _daysWorked = 110>>
+<<set _dailyGross = 250>>
+<<set _dailyTransport = 85>>
+<<set _totalEarned = _daysWorked * _dailyGross>>
+<<set _totalTransport = _daysWorked * _dailyTransport>>
+<<set _monthsPassed = 5>>
+<<set _totalRent = $housingCost * _monthsPassed>>
+<<set _livingExpenses = 300 * _monthsPassed>>
+<<set _savings = _totalEarned - _totalTransport - _totalRent - _livingExpenses>>
+<<set $money += _savings>>
+<<set $lastRentPaidDay = $day>>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Total Earned (5 months):</strong> $<<= _totalEarned>><br>
+		<strong>Transport Costs:</strong> -$<<= _totalTransport>><br>
+		<strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+		<strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+		<strong>Net Savings:</strong> +$<<= Math.floor(_savings)>><br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Car Cost:</strong> $1,600 (or $800 if shared)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>%
+	</p>
+</div>
+
+<h4>How will you get a car?</h4>
+<div class="housing-choice">
+	<<link "Buy a car on your own">><<goto "DirectTravelBuyAlone">><</link>>
+	<p><em>Purchase a used car for $1,600. Given your higher-earning client base, you can easily afford this. You'll have full control and won't need to coordinate with anyone.</em></p>
+</div>
+<hr>
+<div class="housing-choice">
+	<<link "Find another family to share the cost">><<goto "DirectTravelCarShare">><</link>>
+	<p><em>Even though you can afford to buy alone, you could split the $1,600 cost with another family from the shelter. You'd each pay $800, leaving you with significant savings to reinvest in your business while helping another family.</em></p>
+</div>
+
+:: DirectTravelBuyAlone
+<<set $step = 0>><<ShowInfo>>
+
+<h3>Solo Purchase</h3>
+<div class="consequence-text">
+	<p>You decide to buy the car on your own. With your successful premium service business, you can afford it comfortably.</p>
+	<p>You find a 2010 Toyota Corolla with 145,000 miles. It's in good condition - well-maintained, clean interior, reliable engine. The seller wants $1,600 cash.</p>
+	<p>You pay $1,600 for the car, another $150 for insurance, and $100 for registration. Even after these expenses, you still have money left over from your hard work.</p>
+	<p>When you drive it to your first client job, they're impressed. "You have your own car now," one says. "You're really building something."</p>
+	<p>And they're right. Your professional image just got even better. No more showing up in rideshares. You arrive in your own vehicle, tools in the trunk, ready to work.</p>
+	<p>Your business has gone from informal day labor to a legitimate professional service. The car is the final piece.</p>
+</div>
+<hr>
+<div class="success-box">
+	<p style="color: green;"><strong>Success:</strong> You own a car outright and have established a premium direct-service business. Your transportation costs will drop while you keep full control of your schedule.</p>
+</div>
+
+<<set $money -= 1600>><<set $money -= 150>><<set $money -= 100>>
+<<set $familyHealth += 18>><<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>><<set $carOwnership = "sole">>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Car Purchase:</strong> -$1,600<br>
+		<strong>Insurance & Registration:</strong> -$250<br>
+		<strong>Current Balance:</strong> $<<= $money>> (still strong)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (major achievement)<br>
+		<strong>Asset Acquired:</strong> 2010 Toyota Corolla (145k miles)<br>
+		<strong>Ownership:</strong> Sole owner<br>
+		<strong>Business Status:</strong> Established premium direct service<br>
+		<strong>Future Monthly Transport:</strong> ~$120 (gas + insurance vs $1,870 rideshare)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>The gamble paid off. You spent heavily on transportation to build a premium business, and now you own the means to continue that business without the same costs. Your future looks very bright.</p>
+</div>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+:: DirectTravelCarShare
+<<set $step = 0>><<ShowInfo>>
+
+<h3>Shared Opportunity</h3>
+<div class="consequence-text">
+	<p>You could easily afford to buy the car alone, but something makes you pause. You remember how hard it was to get here. How many times you almost gave up. How much you relied on the support of others.</p>
+	<p>You reach out to your network from the shelter. There's another family - from Honduras this time - who's been struggling with the same transportation challenges. They've been saving but haven't reached $1,600 yet. They have about $800.</p>
+	<p>You meet them at a restaurant. "I have a proposal," you tell them. "Let's buy a car together. We split the cost, split the usage. You get transportation now instead of waiting months. I get to keep more of my savings for my business."</p>
+	<p>The husband is skeptical at first. "Why would you do this? You can afford your own car."</p>
+	<p>"Because someone helped me when I needed it," you say. "Now I can help you."</p>
+	<p>You work out the details: schedules, maintenance, insurance. It's more complicated than owning alone, but it's worth it. Together, you buy a 2010 Toyota Corolla for $1,600. You each pay $800, plus half the insurance and registration.</p>
+	<p>Your wife understands immediately when you tell her. "This is how we survived," she says. "By helping each other."</p>
+	<p>The other family becomes more than car co-owners. They become trusted friends, part of your support network. When you need help, they're there. When they need help, you're there.</p>
+</div>
+<hr>
+<div class="success-box">
+	<p style="color: green;"><strong>Success:</strong> You co-own a car while maintaining significant savings for your business. You've built a strong community connection and helped another family access opportunity they couldn't reach alone.</p>
+</div>
+
+<<set $money -= 800>><<set $money -= 75>><<set $money -= 50>>
+<<set $familyHealth += 22>><<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>><<set $carOwnership = "shared">>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Your Share (Car):</strong> -$800<br>
+		<strong>Your Share (Insurance & Registration):</strong> -$125<br>
+		<strong>Current Balance:</strong> $<<= $money>> (strong savings retained)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (achievement + community)<br>
+		<strong>Asset Acquired:</strong> 2010 Toyota Corolla (145k miles) - Shared<br>
+		<strong>Ownership:</strong> Co-owned with Honduran family<br>
+		<strong>Business Status:</strong> Established premium service with capital reserves<br>
+		<strong>Future Monthly Transport:</strong> ~$60 (gas + insurance split vs $1,870 rideshare)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>You've achieved success, but you haven't forgotten where you came from. The shared car works perfectly for both families. Your clients don't care that you share ownership - they care that you show up professionally with your tools, ready to work. And you still have significant savings to grow your business or handle emergencies. This is what community looks like.</p>
+</div>
+<<link "Continue">><<goto "CarSharingDoubleUpOffer">><</link>>
