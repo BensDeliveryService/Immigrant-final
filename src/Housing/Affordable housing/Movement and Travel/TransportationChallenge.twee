@@ -11,6 +11,8 @@
 </div>
 
 <<link "Choose your transportation method>">> <<goto "P1">> <</link>>
+
+
 :: P1
 <div class="housing-choice">
 	<<link "Use public transportation">>
@@ -30,10 +32,8 @@
 
 :: PublicTransitIntro
 /* Intro to public transit challenges before work structure choice */
-<<set $step = 0>>
-<<ShowInfo>>
-<h3>Public Transit Reality</h3>
-<div class="consequence-text">
+<<set $step = 0>><<ShowInfo>>
+<h3>Public Transit Reality</h3><div class="consequence-text">
 	<p>You commit to using public transportation. It's the most affordable option, and you'll make it work.</p>
 	<p>The bus and train system can get you close to the work sites, though not exactly where you need to be. You'll still have to walk the last bit, carrying everything.</p>
 	<p>It's cheaper than alternatives, but there are risks. Transit police sometimes question people carrying large bags or work equipment. The official reason is "safety concerns" but you know what they're really looking for.</p>
@@ -46,10 +46,7 @@
 
 :: PublicTransitChoice
 /* Choose between job-per-day structure or freelance approach */
-<<set $step = 0>>
-<<ShowInfo>>
-<<set $usingPublicTransit = true>>
-
+<<set $step = 0>><<ShowInfo>><<set $usingPublicTransit = true>>
 <h3>How Will You Work?</h3>
 <div class="consequence-text">
 	<p>You're committed to using public transit to get to the job sites each day. Now you need to decide how you'll structure your work.</p>
@@ -73,6 +70,6 @@
 	<</link>>
 	<p><em>Take multiple jobs throughout the day, moving from site to site across the city. You'll carry your full toolbox everywhere, making yourself more visible to law enforcement. Higher risk of being stopped and questioned, but significantly better income. If you can avoid trouble, you might earn enough to eventually move to a better neighborhood.</em></p>
 </div>
-	<<link "Check out stationary work">><<goto "F1">> <</link>>
+	<<link "Check out stationary work">><<goto "Loc1">> <</link>>
 
 

@@ -1,68 +1,106 @@
 :: EndOfDayHub
 <<silently>>
 <<set $step = 0>><<ShowInfo>>
+------------------------------------------------------------------
+/% 
+   1. Ensure rent tracking variable exists
+------------------------------------------------------------------ %/
 <<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
-<<set _rentPaidToday = false>>
 
-<<if $hasHousing and $housingCost>>
-	<<if ($day - $lastRentPaidDay) >= 30>>
-		<<set $money -= $housingCost>>
-		<<set $lastRentPaidDay = $day>>
-		<<set _rentPaidToday = true>>
-	<</if>>
+/% ------------------------------------------------------------------
+   2. Rent handling – charge rent once every 30 days
+------------------------------------------------------------------ %/
+<<set _rentPaidToday = false>>
+<<if $hasHousing and $housingCost and ($day - $lastRentPaidDay) >= 30>>
+	<<set $money -= $housingCost>>
+	<<set $lastRentPaidDay = $day>>
+	<<set _rentPaidToday = true>>
 <</if>>
 
+/% ------------------------------------------------------------------
+   3. Worries: age them, collect expired ones, apply penalties
+------------------------------------------------------------------ %/
+<<set _expiredWorries = []>>
 <<if $worries.length>>
-	<<set _expiredWorries = []>>
 	<<for _i = 0; _i < $worries.length; _i++>>
-		<<set $worries[_i].daysActive += 1>>
+		/* advance each worry by one day */
+		<<set $worries[_i].daysActive++>>
+		/* mark worries that expired today */
 		<<if $worries[_i].daysActive >= $worries[_i].expiresIn>>
 			<<set _expiredWorries.push($worries[_i])>>
 		<</if>>
 	<</for>>
+
+	/* apply health penalties for expired worries and count them */
 	<<if _expiredWorries.length>>
 		<<for _j = 0; _j < _expiredWorries.length; _j++>>
 			<<set _exp = _expiredWorries[_j]>>
 			<<set $familyHealth -= _exp.healthImpact>>
-			<<set $worriesIgnored += 1>>
+			<<set $worriesIgnored++>>
 		<</for>>
-		<<set $worries = $worries.filter(function(w){ return w.daysActive < w.expiresIn })>>
+		/* keep only worries that are still active */
+		<<set $worries = $worries.filter(function (w) {
+			return w.daysActive < w.expiresIn;
+		})>>
 	<</if>>
 <</if>>
 
-<<set _worryChance = Math.min(30 + ($day * .5), 60)>>
-<<set _worryRoll = random(1,100)>>
-<<if _worryRoll <= _worryChance and $worries.length < 3>>
-	<<set _availableWorries = $possibleWorries.filter(function(w){
-		if (w.type === "maintenance" && !$hasCar) return false;
-		return true;
-	})>>
-	<<set _pick = _availableWorries[random(0,_availableWorries.length-1)]>>
-	<<set _newWorry = {
-		type:_pick.type, severity:_pick.severity,
-		description:_pick.description, expiresIn:_pick.expiresIn,
-		healthImpact:_pick.healthImpact, cost:_pick.cost,
-		daysActive:0
-	}>>
-	<<set $worries.push(_newWorry)>>
+/% ------------------------------------------------------------------
+   4. Chance to add a new worry (capped at 3 active worries)
+------------------------------------------------------------------ %/
+<<if $worries.length < 3>>
+	<<set _worryChance = Math.min(30 + ($day * 0.5), 60)>>
+	<<set _worryRoll = random(1, 100)>>
+	<<if _worryRoll <= _worryChance>>
+		/* filter out car-maintenance worries if there is no car */
+		<<set _availableWorries = $possibleWorries.filter(function (w) {
+			if (w.type === "maintenance" && !$hasCar) return false;
+			return true;
+		})>>
+		/* pick a random worry template and instantiate it */
+		<<set _pick = _availableWorries[random(0, _availableWorries.length - 1)]>>
+		<<set _newWorry = {
+			type        : _pick.type,
+			severity    : _pick.severity,
+			description : _pick.description,
+			expiresIn   : _pick.expiresIn,
+			healthImpact: _pick.healthImpact,
+			cost        : _pick.cost,
+			daysActive  : 0
+		}>>
+		<<set $worries.push(_newWorry)>>
+	<</if>>
 <</if>>
 
+/% ------------------------------------------------------------------
+   5. If a housing application just finished, branch to its result
+------------------------------------------------------------------ %/
 <<if $housingApplicationPending and $housingApplicationDaysRemaining <= 0>>
 	<<goto "HousingApplicationResult">>
 <</if>>
 
+/% ------------------------------------------------------------------
+   6. Check if wife medical emergency should trigger
+      - triggered by low family health
+      - OR too many days with unaffordable housing
+      - also respects overwork sickness flag
+------------------------------------------------------------------ %/
 <<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>>
-<<if !$wifeMedicalEmergencyTriggered>>
+<<if not $wifeMedicalEmergencyTriggered>>
 	<<if $familyHealth <= 60 or ($day >= _daysThreshold and $hasHousing and $housingType === "Unaffordable")>>
-		<<if !$overworkSicknessTriggered or ($overworkSicknessTriggered and !$workingExcessiveHours)>>
+		<<if (not $overworkSicknessTriggered) or ($overworkSicknessTriggered and not $workingExcessiveHours)>>
 			<<set $wifeMedicalEmergencyTriggered = true>>
 			<<goto "WifeMedicalEmergency">>
 		<</if>>
 	<</if>>
 <</if>>
 
+/% ------------------------------------------------------------------
+   7. If nothing else diverted us, go to end-of-day summaries
+------------------------------------------------------------------ %/
 <<goto "EndOfDaySummary1">>
 <</silently>>
+
 
 :: EndOfDaySummary1
 <h2 style="margin:0;">End of Day</h2>
@@ -108,7 +146,6 @@
 
 :: EndOfDaySummary2
 <h2 style="margin:0 0 4px 0;">End of Day – Family</h2>
-
 <<if _expiredWorries and _expiredWorries.length>>
 <div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(217,83,79,.08);border-left:2px solid rgba(217,83,79,.3);font-size:.85em;">
 	<strong>⚠️ Unresolved worries</strong>
@@ -121,7 +158,6 @@
 	<</for>>
 </div>
 <</if>>
-
 <<if $worries.length>>
 <div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(236,201,75,.08);border-left:2px solid rgba(236,201,75,.3);font-size:.85em;">
 	<strong>⚠️ Active worries:</strong>

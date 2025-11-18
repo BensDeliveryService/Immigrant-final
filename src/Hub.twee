@@ -13,7 +13,6 @@
 :: Hub2
 <p>You unlock the door and step inside. The noise of the city fades behind you. Home is not perfect, but it is where Juana and Marco are, and that makes it feel steady.</p>
 <<= $line>>
-</div>
 <p>After a little time together, you start thinking about what tomorrow needs to look like.</p>
 <div style="margin-top:8px;">
 	<<link "Plan for tomorrow">><<goto "DayChoice">><</link>>
