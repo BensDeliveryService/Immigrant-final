@@ -1,7 +1,7 @@
 :: PublicTransitIntro
 <<set $step=0>><<ShowInfo>>
 <h3>Public Transit Reality</h3>
-<div class="consequence-text"><p>You commit to using public transportation. It's the most affordable option, and you'll make it work.</p><p>The bus and train system can get you close to the work sites, though not exactly where you need to be. You'll still have to walk the last bit, carrying everything.</p><p>It's cheaper than alternatives, but there are risks. Transit police sometimes question people carrying large bags or work equipment. The official reason is "safety concerns" but you know what they're really looking for.</p></div>
+<div class="consequence-text"><p>You commit to using public transportation. It's the most affordable option to get you to work.</p><p>The bus and train system can get you close to the work sites, though not exactly where you need to be. You'll still have to walk the last bit, carrying your tools with you.</p><p>It's cheaper than the alternatives, but there are risks. For example, the Chicago Police Department might question people carrying large bags or work equipment.</p></div>
 <hr>
 <div class="consequence-text"><p>Now you need to decide how you'll structure your work once you get to the job areas:</p></div>
 <<link "Continue">><<goto "PublicTransitChoice">><</link>>
@@ -9,13 +9,13 @@
 :: PublicTransitChoice
 <<set $step=0>><<ShowInfo>><<set $usingPublicTransit=true>>
 <h3>How Will You Work?</h3>
-<div class="consequence-text"><p>You're committed to using public transit to get to the job sites each day. Now you need to decide how you'll structure your work.</p></div>
+<div class="consequence-text"><p>After committing to using public transit to get to your job, you now need to decide how you'll structure your work.</p></div>
 <hr>
 <h4>Choose your approach:</h4>
 
 <div class="housing-choice">
 <<link "Job-per-day structure: One location, stable and safe">><<set $workStructure="jobPerDay">><<goto "JobPerDayStructure">><</link>>
-<p><em>Find one job each day at a specific location. Once you're there, you stay put — no moving around. You bring only the tools needed, reducing your profile. Less risk, but less income.</em></p>
+<p><em>Find a job each day at a specific location. Once you're there, you stay put — no moving around. You bring only the tools you will need, reducing your profile. Less risk, but less income.</em></p>
 </div>
 
 <hr>
