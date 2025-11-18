@@ -4,10 +4,10 @@
 <<ShowInfo>>
 <h3>Welcome to Your New Neighborhood</h3>
 <idv class="consequence-text">
-	<p>You signed a lease on an apartment! Your rent is $<<= $housingCost>> per month. It's a relief to have a place to call home.</p>
-	<p>As you settle in, you realize the neighborhood is predominantly Guatemalan. You hear Spanish and K'iche' on the streets, and there are familiar faces from your community. That's comforting. You feel safe here.</p>
-	<p>However, the informal employment opportunities you rely on for income are scarce in this area. The construction sites, landscaping jobs, day labor pickup spots are all in other parts of the city, sometimes 45 minutes to an hour away.</p>
-	<p>You have tool, including a toolbox with basic carpentry equipment, painting supplies, landscaping equipment. They're essential for getting hired for the better-paying jobs. But transporting them across the city? That's going to be a challenge.</p>
+	<p>You've secured housing at $<<= $housingCost>> per month. It's a relief to have a place to call home.</p>
+	<p>But as you settle in, you start to realize the challenges of your location. This neighborhood is predominantly Guatemalan – you hear Spanish and K'iche' on the streets, and there are familiar faces from your community. That's comforting. You feel safer here.</p>
+	<p>However, the informal employment opportunities you rely on are scarce in this area. The construction sites, landscaping jobs, day labor pickup spots – they're all in other parts of the city, sometimes 45 minutes to an hour away.</p>
+	<p>You have tools – a toolbox with basic carpentry equipment, painting supplies, landscaping tools. They're essential for getting hired for the better-paying jobs. But transporting them across the city? That's going to be a daily challenge.</p>
 </div>
 <<link "▶">><<goto "ASC2">><</link>>
 
@@ -15,9 +15,9 @@
 <div class="warning-box">
 	<strong>Reality of your situation:</strong>
 	<ul>
-		<li>Your rent is $<<= $housingCost>> per month. Remember you need to save money rent, food, transportation, and other emergencies.</li>
+		<li>Your rent is $<<= $housingCost>> per month – you need to earn at least that much, plus money for food, transportation, and emergencies.</li>
 		<li>Most informal work opportunities are far from your neighborhood.</li>
-		<li>You will need to bring your tools with you to get hired for better-paying jobs.</li>
-		<li>And you wil be working 10–12 hour days once you factor in travel time.</li>
-	</ul></div> <div class="consequence-text"> <p>The question now is: how do you get yourself and your tools to work?</p></div>
+		<li>You'll need to bring your tools with you to get hired for better-paying jobs.</li>
+		<li>You'll be working 10–12 hour days once you factor in travel time.</li>
+	</ul></div> <div class="consequence-text"> <p>The question now is: how do you get yourself and your tools to where the work is?</p></div>
 <<link "Figure out transportation">><<goto "TransportationChallenge">><</link>>

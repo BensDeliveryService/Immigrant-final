@@ -1,105 +1,12 @@
 :: EndOfDayHub
 <<silently>>
 <<set $step = 0>><<ShowInfo>>
-------------------------------------------------------------------
-/% 
-   1. Ensure rent tracking variable exists
------------------------------------------------------------------- %/
-<<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
-
-/% ------------------------------------------------------------------
-   2. Rent handling – charge rent once every 30 days
------------------------------------------------------------------- %/
-<<set _rentPaidToday = false>>
-<<if $hasHousing and $housingCost and ($day - $lastRentPaidDay) >= 30>>
-	<<set $money -= $housingCost>>
-	<<set $lastRentPaidDay = $day>>
-	<<set _rentPaidToday = true>>
-<</if>>
-
-/% ------------------------------------------------------------------
-   3. Worries: age them, collect expired ones, apply penalties
------------------------------------------------------------------- %/
-<<set _expiredWorries = []>>
-<<if $worries.length>>
-	<<for _i = 0; _i < $worries.length; _i++>>
-		/* advance each worry by one day */
-		<<set $worries[_i].daysActive++>>
-		/* mark worries that expired today */
-		<<if $worries[_i].daysActive >= $worries[_i].expiresIn>>
-			<<set _expiredWorries.push($worries[_i])>>
-		<</if>>
-	<</for>>
-
-	/* apply health penalties for expired worries and count them */
-	<<if _expiredWorries.length>>
-		<<for _j = 0; _j < _expiredWorries.length; _j++>>
-			<<set _exp = _expiredWorries[_j]>>
-			<<set $familyHealth -= _exp.healthImpact>>
-			<<set $worriesIgnored++>>
-		<</for>>
-		/* keep only worries that are still active */
-		<<set $worries = $worries.filter(function (w) {
-			return w.daysActive < w.expiresIn;
-		})>>
-	<</if>>
-<</if>>
-
-/% ------------------------------------------------------------------
-   4. Chance to add a new worry (capped at 3 active worries)
------------------------------------------------------------------- %/
-<<if $worries.length < 3>>
-	<<set _worryChance = Math.min(30 + ($day * 0.5), 60)>>
-	<<set _worryRoll = random(1, 100)>>
-	<<if _worryRoll <= _worryChance>>
-		/* filter out car-maintenance worries if there is no car */
-		<<set _availableWorries = $possibleWorries.filter(function (w) {
-			if (w.type === "maintenance" && !$hasCar) return false;
-			return true;
-		})>>
-		/* pick a random worry template and instantiate it */
-		<<set _pick = _availableWorries[random(0, _availableWorries.length - 1)]>>
-		<<set _newWorry = {
-			type        : _pick.type,
-			severity    : _pick.severity,
-			description : _pick.description,
-			expiresIn   : _pick.expiresIn,
-			healthImpact: _pick.healthImpact,
-			cost        : _pick.cost,
-			daysActive  : 0
-		}>>
-		<<set $worries.push(_newWorry)>>
-	<</if>>
-<</if>>
-
-/% ------------------------------------------------------------------
-   5. If a housing application just finished, branch to its result
------------------------------------------------------------------- %/
-<<if $housingApplicationPending and $housingApplicationDaysRemaining <= 0>>
-	<<goto "HousingApplicationResult">>
-<</if>>
-
-/% ------------------------------------------------------------------
-   6. Check if wife medical emergency should trigger
-      - triggered by low family health
-      - OR too many days with unaffordable housing
-      - also respects overwork sickness flag
------------------------------------------------------------------- %/
-<<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>>
-<<if not $wifeMedicalEmergencyTriggered>>
-	<<if $familyHealth <= 60 or ($day >= _daysThreshold and $hasHousing and $housingType === "Unaffordable")>>
-		<<if (not $overworkSicknessTriggered) or ($overworkSicknessTriggered and not $workingExcessiveHours)>>
-			<<set $wifeMedicalEmergencyTriggered = true>>
-			<<goto "WifeMedicalEmergency">>
-		<</if>>
-	<</if>>
-<</if>>
-
-/% ------------------------------------------------------------------
-   7. If nothing else diverted us, go to end-of-day summaries
------------------------------------------------------------------- %/
+<<set $simulatingFastForward = false>>
+<<ProcessEndOfDayCore>>
 <<goto "EndOfDaySummary1">>
 <</silently>>
+
+
 
 
 :: EndOfDaySummary1

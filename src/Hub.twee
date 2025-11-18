@@ -17,6 +17,8 @@
 <div style="margin-top:8px;">
 	<<link "Plan for tomorrow">><<goto "DayChoice">><</link>>
 </div>
+
+
 :: DayChoice
 <<set $step = 0>><<ShowInfo>>
 
@@ -27,4 +29,5 @@
 	<li><<link "Look for housing options">><<goto "HousingStart">><</link>></li>
 	<li><<link "Go out and look for work">><<goto "WorkStart">><</link>></li>
 	<li><<link "Go back Home">><<goto "Hub">><</link>></li>
+	<li><<link "Fast forward a few days">> <<goto "FastForwardDays">><</link>></li>
 </ul>

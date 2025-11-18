@@ -259,3 +259,187 @@ Keeping this widget as a no-op so existing passages that call it don't error.
 <</widget>>
 
 
+<<widget "ProcessRent">>
+	/* Ensure last rent day exists */
+	<<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
+	<<set _rentPaidToday = false>>
+
+	/* Charge rent once every 30 days if housed */
+	<<if $hasHousing and $housingCost and ($day - $lastRentPaidDay) >= 30>>
+		<<set $money -= $housingCost>>
+		<<set $lastRentPaidDay = $day>>
+		<<set _rentPaidToday = true>>
+	<</if>>
+<</widget>>
+
+<<widget "ProcessWorries">>
+	/* Default holder for worries that expire today */
+	<<set _expiredWorries = []>>
+
+	<<if $worries and $worries.length>>
+		/* Age worries and collect expired ones */
+		<<for _i = 0; _i < $worries.length; _i++>>
+			<<set $worries[_i].daysActive++>>
+			<<if $worries[_i].daysActive >= $worries[_i].expiresIn>>
+				<<set _expiredWorries.push($worries[_i])>>
+			<</if>>
+		<</for>>
+
+		/* Apply health penalties for expired worries */
+		<<if _expiredWorries.length>>
+			<<for _j = 0; _j < _expiredWorries.length; _j++>>
+				<<set _exp = _expiredWorries[_j]>>
+				<<set $familyHealth -= _exp.healthImpact>>
+				<<set $worriesIgnored++>>
+			<</for>>
+
+			/* Keep only worries that are still active */
+			<<set $worries = $worries.filter(function (w) {
+				return w.daysActive < w.expiresIn;
+			})>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "MaybeAddNewWorry">>
+	/* Do not add if already at max */
+	<<if !$possibleWorries or $worries.length >= 3>><<return>><</if>>
+
+	<<set _worryChance = Math.min(30 + ($day * 0.5), 60)>>
+	<<set _worryRoll = random(1, 100)>>
+
+	<<if _worryRoll <= _worryChance>>
+		/* Filter out car maintenance worries if no car yet */
+		<<set _availableWorries = $possibleWorries.filter(function (w) {
+			if (w.type === "maintenance" && !$hasCar) {
+				return false;
+			}
+			return true;
+		})>>
+
+		/* Safety check */
+		<<if !_availableWorries.length>><<return>><</if>>
+
+		<<set _pick = _availableWorries[random(0, _availableWorries.length - 1)]>>
+		<<set _newWorry = {
+			type        : _pick.type,
+			severity    : _pick.severity,
+			description : _pick.description,
+			expiresIn   : _pick.expiresIn,
+			healthImpact: _pick.healthImpact,
+			cost        : _pick.cost,
+			daysActive  : 0
+		}>>
+		<<set $worries.push(_newWorry)>>
+	<</if>>
+<</widget>>
+
+<<widget "CheckHousingApplication">>
+	/* If a housing application is pending and time is up, signal a branch */
+	<<if $housingApplicationPending and $housingApplicationDaysRemaining <= 0>>
+		<<set $ffBreakReason = "housingResult">>
+	<</if>>
+<</widget>>
+
+<<widget "CheckWifeMedicalEmergency">>
+	/* Only check if not already triggered */
+	<<if $wifeMedicalEmergencyTriggered>><<return>><</if>>
+
+	<<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>>
+
+	<<if $familyHealth <= 60 or ($day >= _daysThreshold and $hasHousing and $housingType === "Unaffordable")>>
+		<<if (!$overworkSicknessTriggered) or ($overworkSicknessTriggered and !$workingExcessiveHours)>>
+			<<set $wifeMedicalEmergencyTriggered = true>>
+			<<set $ffBreakReason = "wifeEmergency">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+
+<<widget "ProcessEndOfDayCore">>
+	/* Ensure last rent day has a value */
+	<<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
+	<<set _rentPaidToday = false>>
+
+	/* Rent payment check */
+	<<if $hasHousing and $housingCost>>
+		<<if ($day - $lastRentPaidDay) >= 30>>
+			<<set $money -= $housingCost>>
+			<<set $lastRentPaidDay = $day>>
+			<<set _rentPaidToday = true>>
+		<</if>>
+	<</if>>
+
+	/* Worry ticking + expiry */
+	<<if $worries.length>>
+		<<set _expiredWorries = []>>
+		<<for _i = 0; _i < $worries.length; _i++>>
+			<<set $worries[_i].daysActive += 1>>
+			<<if $worries[_i].daysActive >= $worries[_i].expiresIn>>
+				<<set _expiredWorries.push($worries[_i])>>
+			<</if>>
+		<</for>>
+
+		<<if _expiredWorries.length>>
+			<<for _j = 0; _j < _expiredWorries.length; _j++>>
+				<<set _exp = _expiredWorries[_j]>>
+				<<set $familyHealth -= _exp.healthImpact>>
+				<<set $worriesIgnored += 1>>
+			<</for>>
+			<<set $worries = $worries.filter(function(w){ return w.daysActive < w.expiresIn })>>
+		<</if>>
+	<</if>>
+
+	/* Chance to spawn a new worry */
+	<<set _worryChance = Math.min(30 + ($day * .5), 60)>>
+	<<set _worryRoll = random(1,100)>>
+	<<if _worryRoll <= _worryChance and $worries.length < 3>>
+		<<set _availableWorries = $possibleWorries.filter(function(w){
+			if (w.type === "maintenance" && !$hasCar) return false;
+			return true;
+		})>>
+		<<set _pick = _availableWorries[random(0,_availableWorries.length-1)]>>
+		<<set _newWorry = {
+			type:_pick.type,
+			severity:_pick.severity,
+			description:_pick.description,
+			expiresIn:_pick.expiresIn,
+			healthImpact:_pick.healthImpact,
+			cost:_pick.cost,
+			daysActive:0
+		}>>
+		<<set $worries.push(_newWorry)>>
+	<</if>>
+
+	/* Housing application result */
+	<<if $housingApplicationPending and $housingApplicationDaysRemaining <= 0>>
+		<<if $simulatingFastForward>>
+			<<set $ffBreakReason = "housingResult">>
+		<<else>>
+			<<goto "HousingApplicationResult">>
+		<</if>>
+	<</if>>
+
+	/* Wife medical emergency trigger */
+	<<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>>
+	<<if !$wifeMedicalEmergencyTriggered>>
+		<<if $familyHealth <= 60 or ($day >= _daysThreshold and $hasHousing and $housingType === "Unaffordable")>>
+			<<if !$overworkSicknessTriggered or ($overworkSicknessTriggered and !$workingExcessiveHours)>>
+				<<if $simulatingFastForward>>
+					<<set $wifeMedicalEmergencyTriggered = true>>
+					<<set $ffBreakReason = "wifeEmergency">>
+				<<else>>
+					<<set $wifeMedicalEmergencyTriggered = true>>
+					<<goto "WifeMedicalEmergency">>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+
+	/* Run the usual end-of-day logic, but without navigation */
+	<<ProcessJobFastForward>>
+
+	/* Turn off simulation flag (not strictly required, but clean) */
+	<<set $simulatingFastForward = false>>

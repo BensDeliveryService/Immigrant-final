@@ -988,7 +988,193 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 		&lt;&lt;back &quot;◀ Back&quot;&gt;&gt;
 		&lt;&lt;forward &quot;Next ▶&quot;&gt;&gt;
 	&lt;/div&gt;
-&lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="DebugMenu" tags="" position="850,100" size="100,100">/*Debug menu for testing all implemented features*/
+&lt;&lt;/widget&gt;&gt;
+
+
+&lt;&lt;widget &quot;ProcessRent&quot;&gt;&gt;
+	/* Ensure last rent day exists */
+	&lt;&lt;if $lastRentPaidDay is undefined&gt;&gt;&lt;&lt;set $lastRentPaidDay = 0&gt;&gt;&lt;&lt;/if&gt;&gt;
+	&lt;&lt;set _rentPaidToday = false&gt;&gt;
+
+	/* Charge rent once every 30 days if housed */
+	&lt;&lt;if $hasHousing and $housingCost and ($day - $lastRentPaidDay) &gt;= 30&gt;&gt;
+		&lt;&lt;set $money -= $housingCost&gt;&gt;
+		&lt;&lt;set $lastRentPaidDay = $day&gt;&gt;
+		&lt;&lt;set _rentPaidToday = true&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+&lt;&lt;widget &quot;ProcessWorries&quot;&gt;&gt;
+	/* Default holder for worries that expire today */
+	&lt;&lt;set _expiredWorries = []&gt;&gt;
+
+	&lt;&lt;if $worries and $worries.length&gt;&gt;
+		/* Age worries and collect expired ones */
+		&lt;&lt;for _i = 0; _i &lt; $worries.length; _i++&gt;&gt;
+			&lt;&lt;set $worries[_i].daysActive++&gt;&gt;
+			&lt;&lt;if $worries[_i].daysActive &gt;= $worries[_i].expiresIn&gt;&gt;
+				&lt;&lt;set _expiredWorries.push($worries[_i])&gt;&gt;
+			&lt;&lt;/if&gt;&gt;
+		&lt;&lt;/for&gt;&gt;
+
+		/* Apply health penalties for expired worries */
+		&lt;&lt;if _expiredWorries.length&gt;&gt;
+			&lt;&lt;for _j = 0; _j &lt; _expiredWorries.length; _j++&gt;&gt;
+				&lt;&lt;set _exp = _expiredWorries[_j]&gt;&gt;
+				&lt;&lt;set $familyHealth -= _exp.healthImpact&gt;&gt;
+				&lt;&lt;set $worriesIgnored++&gt;&gt;
+			&lt;&lt;/for&gt;&gt;
+
+			/* Keep only worries that are still active */
+			&lt;&lt;set $worries = $worries.filter(function (w) {
+				return w.daysActive &lt; w.expiresIn;
+			})&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+&lt;&lt;widget &quot;MaybeAddNewWorry&quot;&gt;&gt;
+	/* Do not add if already at max */
+	&lt;&lt;if !$possibleWorries or $worries.length &gt;= 3&gt;&gt;&lt;&lt;return&gt;&gt;&lt;&lt;/if&gt;&gt;
+
+	&lt;&lt;set _worryChance = Math.min(30 + ($day * 0.5), 60)&gt;&gt;
+	&lt;&lt;set _worryRoll = random(1, 100)&gt;&gt;
+
+	&lt;&lt;if _worryRoll &lt;= _worryChance&gt;&gt;
+		/* Filter out car maintenance worries if no car yet */
+		&lt;&lt;set _availableWorries = $possibleWorries.filter(function (w) {
+			if (w.type === &quot;maintenance&quot; &amp;&amp; !$hasCar) {
+				return false;
+			}
+			return true;
+		})&gt;&gt;
+
+		/* Safety check */
+		&lt;&lt;if !_availableWorries.length&gt;&gt;&lt;&lt;return&gt;&gt;&lt;&lt;/if&gt;&gt;
+
+		&lt;&lt;set _pick = _availableWorries[random(0, _availableWorries.length - 1)]&gt;&gt;
+		&lt;&lt;set _newWorry = {
+			type        : _pick.type,
+			severity    : _pick.severity,
+			description : _pick.description,
+			expiresIn   : _pick.expiresIn,
+			healthImpact: _pick.healthImpact,
+			cost        : _pick.cost,
+			daysActive  : 0
+		}&gt;&gt;
+		&lt;&lt;set $worries.push(_newWorry)&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+&lt;&lt;widget &quot;CheckHousingApplication&quot;&gt;&gt;
+	/* If a housing application is pending and time is up, signal a branch */
+	&lt;&lt;if $housingApplicationPending and $housingApplicationDaysRemaining &lt;= 0&gt;&gt;
+		&lt;&lt;set $ffBreakReason = &quot;housingResult&quot;&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+&lt;&lt;widget &quot;CheckWifeMedicalEmergency&quot;&gt;&gt;
+	/* Only check if not already triggered */
+	&lt;&lt;if $wifeMedicalEmergencyTriggered&gt;&gt;&lt;&lt;return&gt;&gt;&lt;&lt;/if&gt;&gt;
+
+	&lt;&lt;set _daysThreshold = ($hasHousing and $housingType === &quot;Unaffordable&quot;) ? 15 : 999&gt;&gt;
+
+	&lt;&lt;if $familyHealth &lt;= 60 or ($day &gt;= _daysThreshold and $hasHousing and $housingType === &quot;Unaffordable&quot;)&gt;&gt;
+		&lt;&lt;if (!$overworkSicknessTriggered) or ($overworkSicknessTriggered and !$workingExcessiveHours)&gt;&gt;
+			&lt;&lt;set $wifeMedicalEmergencyTriggered = true&gt;&gt;
+			&lt;&lt;set $ffBreakReason = &quot;wifeEmergency&quot;&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+
+&lt;&lt;widget &quot;ProcessEndOfDayCore&quot;&gt;&gt;
+	/* Ensure last rent day has a value */
+	&lt;&lt;if $lastRentPaidDay is undefined&gt;&gt;&lt;&lt;set $lastRentPaidDay = 0&gt;&gt;&lt;&lt;/if&gt;&gt;
+	&lt;&lt;set _rentPaidToday = false&gt;&gt;
+
+	/* Rent payment check */
+	&lt;&lt;if $hasHousing and $housingCost&gt;&gt;
+		&lt;&lt;if ($day - $lastRentPaidDay) &gt;= 30&gt;&gt;
+			&lt;&lt;set $money -= $housingCost&gt;&gt;
+			&lt;&lt;set $lastRentPaidDay = $day&gt;&gt;
+			&lt;&lt;set _rentPaidToday = true&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+
+	/* Worry ticking + expiry */
+	&lt;&lt;if $worries.length&gt;&gt;
+		&lt;&lt;set _expiredWorries = []&gt;&gt;
+		&lt;&lt;for _i = 0; _i &lt; $worries.length; _i++&gt;&gt;
+			&lt;&lt;set $worries[_i].daysActive += 1&gt;&gt;
+			&lt;&lt;if $worries[_i].daysActive &gt;= $worries[_i].expiresIn&gt;&gt;
+				&lt;&lt;set _expiredWorries.push($worries[_i])&gt;&gt;
+			&lt;&lt;/if&gt;&gt;
+		&lt;&lt;/for&gt;&gt;
+
+		&lt;&lt;if _expiredWorries.length&gt;&gt;
+			&lt;&lt;for _j = 0; _j &lt; _expiredWorries.length; _j++&gt;&gt;
+				&lt;&lt;set _exp = _expiredWorries[_j]&gt;&gt;
+				&lt;&lt;set $familyHealth -= _exp.healthImpact&gt;&gt;
+				&lt;&lt;set $worriesIgnored += 1&gt;&gt;
+			&lt;&lt;/for&gt;&gt;
+			&lt;&lt;set $worries = $worries.filter(function(w){ return w.daysActive &lt; w.expiresIn })&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+
+	/* Chance to spawn a new worry */
+	&lt;&lt;set _worryChance = Math.min(30 + ($day * .5), 60)&gt;&gt;
+	&lt;&lt;set _worryRoll = random(1,100)&gt;&gt;
+	&lt;&lt;if _worryRoll &lt;= _worryChance and $worries.length &lt; 3&gt;&gt;
+		&lt;&lt;set _availableWorries = $possibleWorries.filter(function(w){
+			if (w.type === &quot;maintenance&quot; &amp;&amp; !$hasCar) return false;
+			return true;
+		})&gt;&gt;
+		&lt;&lt;set _pick = _availableWorries[random(0,_availableWorries.length-1)]&gt;&gt;
+		&lt;&lt;set _newWorry = {
+			type:_pick.type,
+			severity:_pick.severity,
+			description:_pick.description,
+			expiresIn:_pick.expiresIn,
+			healthImpact:_pick.healthImpact,
+			cost:_pick.cost,
+			daysActive:0
+		}&gt;&gt;
+		&lt;&lt;set $worries.push(_newWorry)&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+
+	/* Housing application result */
+	&lt;&lt;if $housingApplicationPending and $housingApplicationDaysRemaining &lt;= 0&gt;&gt;
+		&lt;&lt;if $simulatingFastForward&gt;&gt;
+			&lt;&lt;set $ffBreakReason = &quot;housingResult&quot;&gt;&gt;
+		&lt;&lt;else&gt;&gt;
+			&lt;&lt;goto &quot;HousingApplicationResult&quot;&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+
+	/* Wife medical emergency trigger */
+	&lt;&lt;set _daysThreshold = ($hasHousing and $housingType === &quot;Unaffordable&quot;) ? 15 : 999&gt;&gt;
+	&lt;&lt;if !$wifeMedicalEmergencyTriggered&gt;&gt;
+		&lt;&lt;if $familyHealth &lt;= 60 or ($day &gt;= _daysThreshold and $hasHousing and $housingType === &quot;Unaffordable&quot;)&gt;&gt;
+			&lt;&lt;if !$overworkSicknessTriggered or ($overworkSicknessTriggered and !$workingExcessiveHours)&gt;&gt;
+				&lt;&lt;if $simulatingFastForward&gt;&gt;
+					&lt;&lt;set $wifeMedicalEmergencyTriggered = true&gt;&gt;
+					&lt;&lt;set $ffBreakReason = &quot;wifeEmergency&quot;&gt;&gt;
+				&lt;&lt;else&gt;&gt;
+					&lt;&lt;set $wifeMedicalEmergencyTriggered = true&gt;&gt;
+					&lt;&lt;goto &quot;WifeMedicalEmergency&quot;&gt;&gt;
+				&lt;&lt;/if&gt;&gt;
+			&lt;&lt;/if&gt;&gt;
+		&lt;&lt;/if&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+
+	/* Run the usual end-of-day logic, but without navigation */
+	&lt;&lt;ProcessJobFastForward&gt;&gt;
+
+	/* Turn off simulation flag (not strictly required, but clean) */
+	&lt;&lt;set $simulatingFastForward = false&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="DebugMenu" tags="" position="850,100" size="100,100">/*Debug menu for testing all implemented features*/
 &lt;&lt;set $step = 0&gt;&gt;
 &lt;&lt;ShowInfo&gt;&gt;
 
@@ -1208,66 +1394,8 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 	&lt;&lt;link &quot;Game Options&quot;&gt;&gt;&lt;&lt;goto &quot;GameOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="EndOfDayHub" tags="" position="975,100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
-&lt;&lt;if $lastRentPaidDay is undefined&gt;&gt;&lt;&lt;set $lastRentPaidDay = 0&gt;&gt;&lt;&lt;/if&gt;&gt;
-&lt;&lt;set _rentPaidToday = false&gt;&gt;
-
-&lt;&lt;if $hasHousing and $housingCost&gt;&gt;
-	&lt;&lt;if ($day - $lastRentPaidDay) &gt;= 30&gt;&gt;
-		&lt;&lt;set $money -= $housingCost&gt;&gt;
-		&lt;&lt;set $lastRentPaidDay = $day&gt;&gt;
-		&lt;&lt;set _rentPaidToday = true&gt;&gt;
-	&lt;&lt;/if&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;&lt;if $worries.length&gt;&gt;
-	&lt;&lt;set _expiredWorries = []&gt;&gt;
-	&lt;&lt;for _i = 0; _i &lt; $worries.length; _i++&gt;&gt;
-		&lt;&lt;set $worries[_i].daysActive += 1&gt;&gt;
-		&lt;&lt;if $worries[_i].daysActive &gt;= $worries[_i].expiresIn&gt;&gt;
-			&lt;&lt;set _expiredWorries.push($worries[_i])&gt;&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;&lt;/for&gt;&gt;
-	&lt;&lt;if _expiredWorries.length&gt;&gt;
-		&lt;&lt;for _j = 0; _j &lt; _expiredWorries.length; _j++&gt;&gt;
-			&lt;&lt;set _exp = _expiredWorries[_j]&gt;&gt;
-			&lt;&lt;set $familyHealth -= _exp.healthImpact&gt;&gt;
-			&lt;&lt;set $worriesIgnored += 1&gt;&gt;
-		&lt;&lt;/for&gt;&gt;
-		&lt;&lt;set $worries = $worries.filter(function(w){ return w.daysActive &lt; w.expiresIn })&gt;&gt;
-	&lt;&lt;/if&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;&lt;set _worryChance = Math.min(30 + ($day * .5), 60)&gt;&gt;
-&lt;&lt;set _worryRoll = random(1,100)&gt;&gt;
-&lt;&lt;if _worryRoll &lt;= _worryChance and $worries.length &lt; 3&gt;&gt;
-	&lt;&lt;set _availableWorries = $possibleWorries.filter(function(w){
-		if (w.type === &quot;maintenance&quot; &amp;&amp; !$hasCar) return false;
-		return true;
-	})&gt;&gt;
-	&lt;&lt;set _pick = _availableWorries[random(0,_availableWorries.length-1)]&gt;&gt;
-	&lt;&lt;set _newWorry = {
-		type:_pick.type, severity:_pick.severity,
-		description:_pick.description, expiresIn:_pick.expiresIn,
-		healthImpact:_pick.healthImpact, cost:_pick.cost,
-		daysActive:0
-	}&gt;&gt;
-	&lt;&lt;set $worries.push(_newWorry)&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;&lt;if $housingApplicationPending and $housingApplicationDaysRemaining &lt;= 0&gt;&gt;
-	&lt;&lt;goto &quot;HousingApplicationResult&quot;&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;&lt;set _daysThreshold = ($hasHousing and $housingType === &quot;Unaffordable&quot;) ? 15 : 999&gt;&gt;
-&lt;&lt;if !$wifeMedicalEmergencyTriggered&gt;&gt;
-	&lt;&lt;if $familyHealth &lt;= 60 or ($day &gt;= _daysThreshold and $hasHousing and $housingType === &quot;Unaffordable&quot;)&gt;&gt;
-		&lt;&lt;if !$overworkSicknessTriggered or ($overworkSicknessTriggered and !$workingExcessiveHours)&gt;&gt;
-			&lt;&lt;set $wifeMedicalEmergencyTriggered = true&gt;&gt;
-			&lt;&lt;goto &quot;WifeMedicalEmergency&quot;&gt;&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;&lt;/if&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-
+&lt;&lt;set $simulatingFastForward = false&gt;&gt;
+&lt;&lt;ProcessEndOfDayCore&gt;&gt;
 &lt;&lt;goto &quot;EndOfDaySummary1&quot;&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="EndOfDaySummary1" tags="" position="1100,100" size="100,100">&lt;h2 style=&quot;margin:0;&quot;&gt;End of Day&lt;/h2&gt;
 
@@ -1309,7 +1437,6 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 	&lt;span&gt;&lt;/span&gt;
 	&lt;span&gt;&lt;&lt;link &quot;Next ▶&quot;&gt;&gt;&lt;&lt;goto &quot;EndOfDaySummary2&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/span&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="EndOfDaySummary2" tags="" position="1225,100" size="100,100">&lt;h2 style=&quot;margin:0 0 4px 0;&quot;&gt;End of Day – Family&lt;/h2&gt;
-
 &lt;&lt;if _expiredWorries and _expiredWorries.length&gt;&gt;
 &lt;div style=&quot;margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(217,83,79,.08);border-left:2px solid rgba(217,83,79,.3);font-size:.85em;&quot;&gt;
 	&lt;strong&gt;⚠️ Unresolved worries&lt;/strong&gt;
@@ -1322,7 +1449,6 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 	&lt;&lt;/for&gt;&gt;
 &lt;/div&gt;
 &lt;&lt;/if&gt;&gt;
-
 &lt;&lt;if $worries.length&gt;&gt;
 &lt;div style=&quot;margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(236,201,75,.08);border-left:2px solid rgba(236,201,75,.3);font-size:.85em;&quot;&gt;
 	&lt;strong&gt;⚠️ Active worries:&lt;/strong&gt;
@@ -2353,10 +2479,8 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 &lt;div class=&quot;nav-arrows&quot;&gt;
 	&lt;&lt;back &quot;◀ Back&quot;&gt;&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="37" name="PublicTransitIntro" tags="" position="850,475" size="100,100">/* Intro to public transit challenges before work structure choice */
-&lt;&lt;set $step = 0&gt;&gt;
-&lt;&lt;ShowInfo&gt;&gt;
-&lt;h3&gt;Public Transit Reality&lt;/h3&gt;
-&lt;div class=&quot;consequence-text&quot;&gt;
+&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
+&lt;h3&gt;Public Transit Reality&lt;/h3&gt;&lt;div class=&quot;consequence-text&quot;&gt;
 	&lt;p&gt;You commit to using public transportation. It&#39;s the most affordable option, and you&#39;ll make it work.&lt;/p&gt;
 	&lt;p&gt;The bus and train system can get you close to the work sites, though not exactly where you need to be. You&#39;ll still have to walk the last bit, carrying everything.&lt;/p&gt;
 	&lt;p&gt;It&#39;s cheaper than alternatives, but there are risks. Transit police sometimes question people carrying large bags or work equipment. The official reason is &quot;safety concerns&quot; but you know what they&#39;re really looking for.&lt;/p&gt;
@@ -2366,10 +2490,7 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 &lt;/div&gt;
 
 &lt;&lt;link &quot;Continue&quot;&gt;&gt;&lt;&lt;goto &quot;PublicTransitChoice&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="38" name="PublicTransitChoice" tags="" position="975,475" size="100,100">/* Choose between job-per-day structure or freelance approach */
-&lt;&lt;set $step = 0&gt;&gt;
-&lt;&lt;ShowInfo&gt;&gt;
-&lt;&lt;set $usingPublicTransit = true&gt;&gt;
-
+&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;&lt;&lt;set $usingPublicTransit = true&gt;&gt;
 &lt;h3&gt;How Will You Work?&lt;/h3&gt;
 &lt;div class=&quot;consequence-text&quot;&gt;
 	&lt;p&gt;You&#39;re committed to using public transit to get to the job sites each day. Now you need to decide how you&#39;ll structure your work.&lt;/p&gt;
@@ -2411,7 +2532,7 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 	&lt;&lt;/link&gt;&gt;
 	&lt;p&gt;&lt;em&gt;Take multiple jobs throughout the day, moving from site to site across the city. You&#39;ll carry your full toolbox everywhere, making yourself more visible to law enforcement. Higher risk of being stopped and questioned, but significantly better income. If you can avoid trouble, you might earn enough to eventually move to a better neighborhood.&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
-	&lt;&lt;link &quot;Check out stationary work&quot;&gt;&gt;&lt;&lt;goto &quot;F1&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="44" name="RideshareIntro" tags="" position="475,600" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
+	&lt;&lt;link &quot;Check out stationary work&quot;&gt;&gt;&lt;&lt;goto &quot;Loc1&quot;&gt;&gt; &lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="44" name="RideshareIntro" tags="" position="475,600" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
 
 &lt;h3&gt;The Rideshare Strategy&lt;/h3&gt;
 
@@ -2838,44 +2959,21 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 	&lt;p&gt;The other family becomes part of your support network. When one family has an emergency, the other helps. When schedules conflict, you work it out. It&#39;s not always easy, but it&#39;s better than being alone.&lt;/p&gt;
 &lt;/div&gt;
 &lt;&lt;link &quot;Continue&quot;&gt;&gt;&lt;&lt;goto &quot;CarSharingDoubleUpOffer&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="58" name="HousingOptions" tags="" position="975,725" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt; &lt;&lt;if $housingPage is undefined&gt;&gt;&lt;&lt;set $housingPage = 1&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;set _maxHousingPage = 3&gt;&gt;
-
-&lt;h3 style=&quot;margin:0;&quot;&gt;Available Housing Options&lt;/h3&gt;
-&lt;p style=&quot;margin:0 0 2px 0;font-size:0.85em;color:var(--muted);&quot;&gt;Page &lt;&lt;= $housingPage&gt;&gt; of &lt;&lt;= _maxHousingPage&gt;&gt;&lt;/p&gt;
-&lt;p style=&quot;margin:2px 0;font-size:0.85em;&quot;&gt;You have $&lt;&lt;= $money&gt;&gt; in your bank account. The minimum livable rent is around $1,100, but higher rent (≈$1,450) brings better work opportunities.&lt;/p&gt;
-
-&lt;&lt;switch $housingPage&gt;&gt;
-	&lt;&lt;case 1&gt;&gt;
-	&lt;div style=&quot;margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.3);font-size:0.85em;&quot;&gt;
-		&lt;h4 style=&quot;margin:0 0 2px 0;font-size:1em;&quot;&gt;Affordable Apartment&lt;/h4&gt;
-		&lt;p style=&quot;margin:2px 0;&quot;&gt;A basic studio or 1-bedroom in a working-class neighborhood. Older building, but livable and near transit.&lt;/p&gt;
+&lt;h3 style=&quot;margin:0;&quot;&gt;Available Housing Options&lt;/h3&gt;&lt;p style=&quot;margin:0 0 2px 0;font-size:0.85em;color:var(--muted);&quot;&gt;Page &lt;&lt;= $housingPage&gt;&gt; of &lt;&lt;= _maxHousingPage&gt;&gt;&lt;/p&gt;&lt;p style=&quot;margin:2px 0;font-size:0.85em;&quot;&gt;You have $&lt;&lt;= $money&gt;&gt; in your bank account. The minimum livable rent is around $1,100, but higher rent (≈$1,450) brings better work opportunities.&lt;/p&gt;
+	&lt;&lt;link &quot;⬅ Do something wifeMedicalEmergencyResolved&quot;&gt;&gt;&lt;&lt;goto &quot;HousingStart&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;&lt;switch $housingPage&gt;&gt; &lt;&lt;case 1&gt;&gt;&lt;div style=&quot;margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.3);font-size:0.85em;&quot;&gt;
+		&lt;h4 style=&quot;margin:0 0 2px 0;font-size:1em;&quot;&gt;Affordable Apartment&lt;/h4&gt;&lt;p style=&quot;margin:2px 0;&quot;&gt;A basic studio or 1-bedroom in a working-class neighborhood. Older building, but livable and near transit.&lt;/p&gt;
 		&lt;p style=&quot;margin:2px 0;&quot;&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $30&lt;br&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $900&lt;br&gt;&lt;em&gt;Landlords usually want 3× rent ($2,700/mo).&lt;/em&gt;&lt;/p&gt;
 		&lt;&lt;if $money &gt;= 30&gt;&gt;
-			&lt;&lt;link &quot;Apply for Affordable Apartment&quot;&gt;&gt;
-				&lt;&lt;set $selectedHousingType = &quot;Affordable&quot;&gt;&gt;
-				&lt;&lt;set $selectedApplicationFee = 30&gt;&gt;
-				&lt;&lt;set $selectedMonthlyCost = 900&gt;&gt;
-				&lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
-			&lt;&lt;/link&gt;&gt;
-		&lt;&lt;else&gt;&gt;
+			&lt;&lt;link &quot;Apply for Affordable Apartment&quot;&gt;&gt;&lt;&lt;set $selectedHousingType = &quot;Affordable&quot;&gt;&gt;&lt;&lt;set $selectedApplicationFee = 30&gt;&gt;&lt;&lt;set $selectedMonthlyCost = 900&gt;&gt;&lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;else&gt;&gt;
 			&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-	&lt;&lt;case 2&gt;&gt;
-	&lt;div style=&quot;margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);font-size:0.85em;&quot;&gt;
+		&lt;&lt;/if&gt;&gt;&lt;/div&gt;
+	&lt;&lt;case 2&gt;&gt;&lt;div style=&quot;margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);font-size:0.85em;&quot;&gt;
 		&lt;h4 style=&quot;margin:0 0 2px 0;font-size:1em;&quot;&gt;Standard Apartment&lt;/h4&gt;
 		&lt;p style=&quot;margin:2px 0;&quot;&gt;A decent 1-bedroom in a mixed neighborhood with some amenities and more employment options.&lt;/p&gt;
 		&lt;p style=&quot;margin:2px 0;&quot;&gt;&lt;strong&gt;Application Fee:&lt;/strong&gt; $50&lt;br&gt;&lt;strong&gt;Monthly Rent:&lt;/strong&gt; $1,100&lt;br&gt;&lt;em&gt;Requires 3× rent ($3,300/mo) and stricter documentation.&lt;/em&gt;&lt;/p&gt;
-		&lt;&lt;if $money &gt;= 50&gt;&gt;
-			&lt;&lt;link &quot;Apply for Standard Apartment&quot;&gt;&gt;
-				&lt;&lt;set $selectedHousingType = &quot;Standard&quot;&gt;&gt;
-				&lt;&lt;set $selectedApplicationFee = 50&gt;&gt;
-				&lt;&lt;set $selectedMonthlyCost = 1100&gt;&gt;
-				&lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
-			&lt;&lt;/link&gt;&gt;
-		&lt;&lt;else&gt;&gt;
-			&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
+		&lt;&lt;if $money &gt;= 50&gt;&gt;&lt;&lt;link &quot;Apply for Standard Apartment&quot;&gt;&gt;&lt;&lt;set $selectedHousingType = &quot;Standard&quot;&gt;&gt;&lt;&lt;set $selectedApplicationFee = 50&gt;&gt;&lt;&lt;set $selectedMonthlyCost = 1100&gt;&gt;&lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
+			&lt;&lt;/link&gt;&gt;&lt;&lt;else&gt;&gt;&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;&lt;&lt;/if&gt;&gt;&lt;/div&gt;
 	&lt;&lt;case 3&gt;&gt;
 	&lt;div style=&quot;margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(245,167,66,.08);border-left:3px solid rgba(245,167,66,.3);font-size:0.85em;&quot;&gt;
 		&lt;h4 style=&quot;margin:0 0 2px 0;font-size:1em;&quot;&gt;Unaffordable Apartment in Better Area&lt;/h4&gt;
@@ -2887,30 +2985,12 @@ Keeping this widget as a no-op so existing passages that call it don&#39;t error
 				&lt;&lt;set $selectedApplicationFee = 75&gt;&gt;
 				&lt;&lt;set $selectedMonthlyCost = 1450&gt;&gt;
 				&lt;&lt;goto &quot;HousingApply&quot;&gt;&gt;
-			&lt;&lt;/link&gt;&gt;
-		&lt;&lt;else&gt;&gt;
-			&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/div&gt;
-
-&lt;&lt;/switch&gt;&gt;
-
-&lt;div style=&quot;display:flex;justify-content:space-between;font-size:0.8em;margin-top:4px;&quot;&gt;
-	&lt;span&gt;
-		&lt;&lt;if $housingPage &gt; 1&gt;&gt;
-			&lt;&lt;link &quot;◀ Back&quot;&gt;&gt;&lt;&lt;set $housingPage -= 1&gt;&gt;&lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/span&gt;
-	&lt;span&gt;
+			&lt;&lt;/link&gt;&gt;&lt;&lt;else&gt;&gt;&lt;p style=&quot;color:red;margin:2px 0;&quot;&gt;Not enough for application fee.&lt;/p&gt;&lt;&lt;/if&gt;&gt;&lt;/div&gt;&lt;&lt;/switch&gt;&gt;
+&lt;div style=&quot;display:flex;justify-content:space-between;font-size:0.8em;margin-top:4px;&quot;&gt;	&lt;span&gt;
+		&lt;&lt;if $housingPage &gt; 1&gt;&gt;&lt;&lt;link &quot;◀ Back&quot;&gt;&gt;&lt;&lt;set $housingPage -= 1&gt;&gt;&lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;/span&gt;&lt;span&gt;
 		&lt;&lt;if $housingPage &lt; _maxHousingPage&gt;&gt;
-			&lt;&lt;link &quot;Next ▶&quot;&gt;&gt;&lt;&lt;set $housingPage += 1&gt;&gt;&lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-		&lt;&lt;/if&gt;&gt;
-	&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;div style=&quot;margin-top:4px;font-size:0.8em;text-align:center;&quot;&gt;
-	&lt;&lt;link &quot;⬅ Go back to housing start&quot;&gt;&gt;&lt;&lt;goto &quot;HousingStart&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="59" name="HousingStart" tags="" position="1100,725" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
+			&lt;&lt;link &quot;Next ▶&quot;&gt;&gt;&lt;&lt;set $housingPage += 1&gt;&gt;&lt;&lt;goto &quot;HousingOptions&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;/if&gt;&gt;
+	&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;margin-top:4px;font-size:0.8em;text-align:center;&quot;&gt;</tw-passagedata><tw-passagedata pid="59" name="HousingStart" tags="" position="1100,725" size="100,100">&lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
 
 &lt;!-- Top-level navigation shown first --&gt;
 &lt;div style=&quot;margin:0 0 6px 0;font-size:0.85em;&quot;&gt;
@@ -4056,6 +4136,7 @@ You are applying for the &lt;strong&gt;&lt;&lt;= $selectedHousingType&gt;&gt; Ap
 	&lt;li&gt;&lt;&lt;link &quot;Look for housing options&quot;&gt;&gt;&lt;&lt;goto &quot;HousingStart&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/li&gt;
 	&lt;li&gt;&lt;&lt;link &quot;Go out and look for work&quot;&gt;&gt;&lt;&lt;goto &quot;WorkStart&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/li&gt;
 	&lt;li&gt;&lt;&lt;link &quot;Go back Home&quot;&gt;&gt;&lt;&lt;goto &quot;Hub&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;&lt;link &quot;Fast forward a few days&quot;&gt;&gt; &lt;&lt;goto &quot;FastForwardDays&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/li&gt;
 &lt;/ul&gt;</tw-passagedata><tw-passagedata pid="89" name="TimeSkipWorries" tags="" position="1100,1100" size="100,100">/*Shows worries accumulated during time skip and allows addressing them*/
 &lt;&lt;set $step = 0&gt;&gt;&lt;&lt;ShowInfo&gt;&gt;
 
