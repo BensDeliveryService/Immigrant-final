@@ -39,7 +39,7 @@
 <h3 style="margin:8px 0 4px 0;">Where will you take her for care?</h3>
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(217,83,79,.05);border-left:3px solid rgba(217,83,79,.3);">
-	<h4 style="margin:0;">Take her to the Emergency Room</h4>
+	<h4 style="margin:0;">Take her to the emergency room</h4>
 	<p style="margin:4px 0;font-size:0.9em;">The emergency room is the fastest option and they must provide emergency care regardless of your ability to pay or immigration status. However, you're worried about what might happen there.</p>
 	<p style="margin:4px 0;font-size:0.85em;color:var(--muted);"><em>Warning: There's a risk of encountering Immigration and Customs Enforcement. at hospitals in some areas.</em></p>
 	<<link "Go to the Emergency Room">>
@@ -50,9 +50,9 @@
 <hr>
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.05);border-left:3px solid rgba(92,184,92,.3);">
-	<h4 style="margin:0;">Contact ICIRR for healthcare resources</h4>
+	<h4 style="margin:0;">Contact The Illinois Coalition for Immigrant and Refugee Rights (ICIRR) for healthcare resources</h4>
 	<p style="margin:4px 0;font-size:0.9em;">The Illinois Coalition for Immigrant and Refugee Rights (ICIRR) provides resources for immigrant families, including connections to healthcare providers who serve undocumented communities safely.</p>
-	<p style="margin:4px 0;font-size:0.85em;color:var(--muted);"><em>This is safer but may take a bit longer to arrange.</em></p>
+	<p style="margin:4px 0;font-size:0.85em;color:var(--muted);"><em>This is the safer option but may take a bit longer to arrange.</em></p>
 	<<link "Contact ICIRR for help">>
 		<<goto "ContactICIRR">>
 	<</link>>
@@ -67,7 +67,7 @@
 <h2 style="margin:0;">Emergency Room</h2>
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.5);">
-<p style="margin:2px 0;">You rush your wife to the nearest emergency room. The medical staff immediately takes her in for treatment. They're professional and focused on her care, not asking questions about your immigration status.</p>
+<p style="margin:2px 0;">You rush your wife to the nearest emergency room. The medical staff immediately take her in for treatment. They're professional and focused on her care, not asking questions about your immigration status.</p>
 
 <p style="margin:4px 0;">The doctors diagnose a serious postpartum infection and begin administering antibiotics and fluids. Your wife will need to stay overnight for observation.</p>
 </div>
@@ -87,7 +87,7 @@
 	/* ICE ENCOUNTER - Bad outcome */
 	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(217,83,79,.12);border-left:3px solid rgba(217,83,79,.6);">
 	<p style="margin:2px 0;"><strong style="color:#d9534f;">ICE Agents Present</strong></p>
-	<p style="margin:4px 0;">You notice ICE agents in the hospital. They're checking IDs and questioning people who look like they might be undocumented. Your heart races as they approach you.</p>
+	<p style="margin:4px 0;">You notice Immigration and Customs Enforcement (ICE) agents in the hospital. They're checking IDs and questioning people who look like they might be undocumented. Your heart races as they approach you.</p>
 
 	<p style="margin:4px 0;">You're detained and separated from your wife while she's still receiving treatment. This is your worst nightmare coming true.</p>
 	</div>
@@ -101,8 +101,8 @@
 <<else>>
 	/* NO ICE - Success */
 	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.12);border-left:3px solid rgba(92,184,92,.6);">
-	<p style="margin:2px 0;"><strong style="color:#5cb85c;">No ICE Present - You're Safe</strong></p>
-	<p style="margin:4px 0;">Fortunately, there are no ICE agents at the hospital today. Your wife receives treatment safely, and after an overnight stay, she's cleared to go home with antibiotics and follow-up care instructions.</p>
+	<p style="margin:2px 0;"><strong style="color:#5cb85c;">No Immigration and Customs Enforcement (ICE) Present - You're Safe</strong></p>
+	<p style="margin:4px 0;">Fortunately, there are no Immigration and Customs Enforcement (ICE) agents at the hospital today. Your wife receives treatment safely, and after an overnight stay, she's cleared to go home with antibiotics and follow-up care instructions.</p>
 
 	<p style="margin:4px 0;">You dodged a bullet this time. You've heard horror stories of families being separated at hospitals, but today you were lucky.</p>
 	</div>
@@ -120,8 +120,8 @@
 	<p style="margin:2px 0;"><strong>Result:</strong></p>
 	<ul style="margin:4px 0;padding-left:20px;font-size:0.9em;">
 		<li>Wife's infection treated successfully</li>
-		<li>No ICE encounter - your family is safe</li>
-		<li>Hospital bill: ~$15,000 (you'll address this later)</li>
+		<li>No Immigration and Customs Enforcement (ICE) encounter - your family is safe</li>
+		<li>Hospital bill: ~$15,000 (you'll need address this later, you're just happy to be home with your family.)</li>
 		<li>Family Health: <<= $familyHealth>>%</li>
 	</ul>
 	</div>
@@ -137,10 +137,10 @@
 <<set $step = 0>>
 <<ShowInfo>>
 
-<h2 style="margin:0;color:#d9534f;">Detained by ICE</h2>
+<h2 style="margin:0;color:#d9534f;">Detained by Immigration and Customs Enforcement (ICE)</h2>
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(217,83,79,.12);border-left:3px solid rgba(217,83,79,.6);">
-<p style="margin:2px 0;">You're taken into ICE custody. Your wife is still in the hospital recovering, and you don't know who's taking care of your children.</p>
+<p style="margin:2px 0;">You're taken into Immigration and Customs Enforcement (ICE) custody. Your wife is still in the hospital recovering, and you don't know who's taking care of your children.</p>
 
 <p style="margin:4px 0;">You're held for 24 hours before being released with a notice to appear in immigration court. The agents say they'll "be watching you."</p>
 </div>
@@ -192,14 +192,14 @@
 <h2 style="margin:0;">Illinois Coalition for Immigrant and Refugee Rights</h2>
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.5);">
-<p style="margin:2px 0;">You reach out to ICIRR, and they immediately connect you with a healthcare provider who specifically serves immigrant families. They work with community health centers that don't report to ICE.</p>
+<p style="margin:2px 0;">You reach out to Illinois Coalition for Immigrant and Refugee Rights (ICIRR), and they immediately connect you with a healthcare provider who specifically serves immigrant families. They work with community health centers that don't report to Immigration and Customs Enforcement (ICE).</p>
 
 <p style="margin:4px 0;">Within hours, your wife is receiving proper medical care in a safe environment. The clinic treats her postpartum infection and provides follow-up care instructions. No one asks about immigration status.</p>
 </div>
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.12);border-left:3px solid rgba(92,184,92,.6);">
 <p style="margin:2px 0;"><strong style="color:#5cb85c;">Safe Medical Care - SUCCESS</strong></p>
-<p style="margin:4px 0;">Your wife receives excellent treatment without the fear of ICE. The community health center operates on a sliding scale fee, making it affordable. They also connect you with resources for postpartum care and family support.</p>
+<p style="margin:4px 0;">Your wife receives excellent treatment without the fear of Immigration and Customs Enforcement (ICE). The community health center operates on a sliding scale fee, making it affordable. They also connect you with resources for postpartum care and family support.</p>
 
 <p style="margin:4px 0;">ICIRR provides additional support: legal consultations, know-your-rights workshops, and connection to other immigrant families facing similar challenges.</p>
 </div>
@@ -218,7 +218,7 @@
 <p style="margin:2px 0;"><strong>Result:</strong></p>
 <ul style="margin:4px 0;padding-left:20px;font-size:0.9em;">
 	<li>Wife's infection treated successfully at community health center</li>
-	<li>No ICE risk - your family is completely safe</li>
+	<li>No Immigration and Customs Enforcement (ICE) risk - your family is completely safe</li>
 	<li>Affordable sliding-scale fees (~$200 vs $15,000 ER bill)</li>
 	<li>Connected to ongoing support resources and immigrant community</li>
 	<li>Legal consultation provided for immigration court (if needed)</li>
@@ -230,7 +230,7 @@
 <p style="margin:2px 0;"><strong>Learn More:</strong></p>
 <p style="margin:4px 0;font-size:0.9em;">Organizations like ICIRR provide critical support to immigrant families. They offer:</p>
 <ul style="margin:4px 0;padding-left:20px;font-size:0.85em;">
-	<li>Safe healthcare access without ICE risk</li>
+	<li>Safe healthcare access without Immigration and Customs Enforcement (ICE) risk</li>
 	<li>Legal support and know-your-rights training</li>
 	<li>Community resources and mutual aid networks</li>
 	<li>Advocacy for immigrant rights and protections</li>
