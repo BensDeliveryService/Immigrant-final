@@ -18,8 +18,8 @@
 <h2 style="margin:0;color:#d9534f;">Medical Emergency</h2>
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(217,83,79,.08);border-left:3px solid rgba(217,83,79,.5);">
-<p style="margin:2px 0;">After long and tiring weeks, you've finally made just enough money for rent. But when you get home, something is wrong.</p>
-<p style="margin:4px 0;">Your wife gave birth recently and now she's experiencing complications. She has a high fever, intense pain, and is growing weaker by the hour. She needs immediate medical attention.</p>
+<p style="margin:2px 0;">After long and tiring weeks, you have finally enough money for rent. But when you get home, something is wrong, very wrong.</p>
+<p style="margin:4px 0;">Your wife gave birth recently and now she's experiencing postpartum complications. She has a high fever, intense pain, and is growing weaker by the hour. She needs immediate medical attention.</p>
 
 <p style="margin:4px 0;"><strong>You need to act now.</strong></p>
 </div>
@@ -40,8 +40,8 @@
 
 <div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(217,83,79,.05);border-left:3px solid rgba(217,83,79,.3);">
 	<h4 style="margin:0;">Take her to the Emergency Room</h4>
-	<p style="margin:4px 0;font-size:0.9em;">The ER is the fastest option and they must provide emergency care regardless of your ability to pay or immigration status. However, you're worried about what might happen there.</p>
-	<p style="margin:4px 0;font-size:0.85em;color:var(--muted);"><em>Warning: There's a risk of encountering ICE at hospitals in some areas.</em></p>
+	<p style="margin:4px 0;font-size:0.9em;">The emergency room is the fastest option and they must provide emergency care regardless of your ability to pay or immigration status. However, you're worried about what might happen there.</p>
+	<p style="margin:4px 0;font-size:0.85em;color:var(--muted);"><em>Warning: There's a risk of encountering Immigration and Customs Enforcement. at hospitals in some areas.</em></p>
 	<<link "Go to the Emergency Room">>
 		<<goto "GoToER">>
 	<</link>>
