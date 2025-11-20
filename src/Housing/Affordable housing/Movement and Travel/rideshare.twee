@@ -45,5 +45,5 @@
 		<<set $rideshareStrategy = "directTravel">>
 		<<goto "DirectTravelStrategy">>
 	<</link>>
-	<p><em>Tell clients and employers you can travel directly to their homes or job sites. Take separate rideshares to each location. This is expensive, but you can take the higher-paying jobs that require direct service and get referred to other clients who value this convenience.</em></p>
+	<p><em>Tell clients and employers you can travel directly to their homes or job sites. This means you will take separate rideshares to each location. This is expensive, but you can take the higher-paying jobs that require direct service and get referred to other clients who value this convenience.</em></p>
 </div>
