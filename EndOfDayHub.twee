@@ -1,0 +1,56 @@
+:: EndOfDayHub
+<<set $step = 0>><<ShowInfo>>
+<<set $simulatingFastForward = false>>
+<<goto "EndOfDaySummary1">>
+:: EndOfDaySummary1
+<h2 style="margin:0;">End of Day</h2>
+<<if $pendingPayment>>
+	<<set $money += $pendingPayment>>
+	<<set $totalIncomeEarned += $pendingPayment>>
+	<<set $incomeHistory.push({amount:$pendingPayment, day:$day})>>
+	<<set $jobsCompleted += 1>>
+	<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(56,178,75,.08);border-left:2px solid rgba(56,178,75,.3);font-size:.85em;">
+		<strong>💰 Payment: $<<= $pendingPayment>></strong><br>
+		Balance: $<<= $money>> · Total: $<<= $totalIncomeEarned>> · Jobs: <<= $jobsCompleted>>
+	</div>
+	<<set $pendingPayment = 0>>
+<<else>>
+	<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(99,179,237,.08);border-left:2px solid rgba(99,179,237,.3);font-size:.85em;">
+		<strong>💰 No new payment today.</strong>
+	</div> <</if>>
+<<if _rentPaidToday>>
+	<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(217,83,79,.08);border-left:2px solid rgba(217,83,79,.3);font-size:.85em;">
+		<strong>🏠 Rent paid: $<<= $housingCost>></strong><br>
+		New balance: $<<= $money>>
+	</div> <</if>>
+<<if $housingApplicationPending and $housingApplicationDaysRemaining>>
+	<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(99,179,237,.08);border-left:2px solid rgba(99,179,237,.3);font-size:.85em;">
+		<strong>🏠 Housing application:</strong> <<= $pendingHousingType>><br>
+		≈ <<= $housingApplicationDaysRemaining>> business days
+		<<set _isWeekend = ($currentDayOfWeek == 5 or $currentDayOfWeek == 6)>>
+		<<if _isWeekend>>
+			<br><span style="font-size:.75em;color:#666;">📅 Weekend – no processing</span>
+		<</if>>
+	</div>
+<</if>>
+
+<div style="margin-top:4px;font-size:.85em;display:flex;justify-content:space-between;">
+	<span></span>
+	<span>
+		<<link "Next ▶">>
+			/* 1-in-6 chance of a worry today */
+			<<set _roll = random(1, 6)>>
+
+			<<if _roll == 1 and $worryPool.length > 0>>
+				/* pick a random worry from the pool */
+				<<set _idx = random(0, $worryPool.length - 1)>>
+				<<set $activeWorry = clone($worryPool[_idx])>>
+				/* optional: remove it so it doesn’t repeat */
+				<<set $worryPool.splice(_idx, 1)>>
+				<<goto "AddressWorry">>
+			<<else>>
+				<<goto "Hub">>
+			<</if>>
+		<</link>>
+	</span>
+</div>

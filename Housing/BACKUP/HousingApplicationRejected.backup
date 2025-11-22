@@ -1,0 +1,50 @@
+:: HousingApplicationRejected
+<<set $step = 0>><<ShowInfo>>
+
+''Housing Application Denied''
+
+''Unfortunately, your application has been rejected.''
+
+You applied for the '''<<= $pendingHousingType>> Apartment''', but the landlord has declined your application.
+
+''Reason for rejection:''  
+//<<= $lastRejectionReason>>//
+
+<<link "Next ▶">><<goto "HousingApplicationRejected_Reflection">><</link>> | 
+<<link "Skip to choices">><<goto "HousingApplicationRejected_Choices">><</link>>
+:: HousingApplicationRejected_Reflection
+<<set $step = 0>><<ShowInfo>>
+
+''Housing Search Reflections''
+
+<<if $housingRejectionCount == 1>>
+	This is your first rejection. As a migrant, finding housing can be challenging. Don't give up.
+<<elseif $housingRejectionCount == 2>>
+	This is your second rejection. The housing search is difficult, but persistence is key.
+<<else>>
+	You've been rejected <<= $housingRejectionCount>> times. Finding housing as a migrant requires patience and determination.
+<</if>>
+
+<<link "◀ Back">><<goto "HousingApplicationRejected">><</link>> | 
+<<link "Next ▶ Choices">><<goto "HousingApplicationRejected_Choices">><</link>>
+
+:: HousingApplicationRejected_Choices
+<<set $step = 0>><<ShowInfo>>
+
+''What would you like to do?''
+
+<<link "Try applying again (return to housing options)">>
+	<<set $housingApplicationPending = false>>
+	<<set $housingApplicationDaysRemaining = 0>>
+	<<set $pendingHousingType = "">>
+	<<set $pendingHousingCost = 0>>
+	<<goto "HousingOptions">>
+<</link>>
+
+<<link "Give up for now (return to day choice)">>
+	<<set $housingApplicationPending = false>>
+	<<set $housingApplicationDaysRemaining = 0>>
+	<<set $pendingHousingType = "">>
+	<<set $pendingHousingCost = 0>>
+	<<goto "DayChoice">>
+<</link>>

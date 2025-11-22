@@ -1,0 +1,439 @@
+/* 
+===============================================================================
+  03_widgets.twee — Widgets & Macros
+===============================================================================
+
+This file defines *widget passages* (SugarCube macros) that encapsulate small,
+reusable UI behaviors and rendering snippets. Widgets keep passages clean,
+promote consistency, and make common tasks (buttons, dialogue lines, menus,
+formatting, ARIA announcements) easy to reuse across the story.
+
+The warning: "Unrecognized macro/widget! 'RenderScene' has not been defined in config files!"
+can be ignored. It's just SugarCube telling you that the widget is defined in a passage, not
+in a config file.
+
+What it contains:
+- :: [widget] passages created with <<widget>> … <</widget>>
+- Small, composable building blocks (e.g., buttons, text formatters, stat chips)
+- UI helpers that can be safely invoked from StoryHeader/StoryFooter and content
+
+Important for collaborators:
+- Keep widgets **pure and focused**: input via `$args`, output via markup.
+- If a widget relies on `setup.*` helpers (e.g., `setup.stripHTML`, `setup.announce`,
+  `setup.lines`), document those dependencies near the widget.
+- Name widgets **kebabCase** or **dot.notation** to reflect scope (e.g., `ui.button`,
+  `format.smallcaps`, `dialogue.say`).
+
+Conventions:
+- Arguments: Access with `$args` (e.g., `$args[0]` is the first argument).
+
+
+===============================================================================
+*/
+
+:: Widgets [widget]
+	<<widget "RenderScene">>
+		<<set _scene = $args[0]>>
+		<<set _i = $args[1]>>
+		<<set _line = _scene[_i]>>
+
+		<div class="vn-stage <<= _line.side >>" data-step="<<=_i>>">
+			<!-- <div class="avatar">
+				<<= '<img src="' + _line.avatar + '" alt="' + _line.speaker + ' portrait">' >>
+			</div>
+			-->
+			<div class="bubble">
+				<div class="name"><<=_line.speaker>></div>
+				<p><<=_line.text>></p>
+				<div class="small">Line <<= _i + 1 >> / <<= _scene.length >></div>
+			</div>
+		</div>
+<</widget>>
+
+/* Job listing widget (name, pay, days, next passage) */
+<<widget "JobListing">>
+	<<set _job = $args[0]>>
+	<<set _goto = $args.length > 1 ? $args[1] : "Kiosk">>
+	<<capture _job _goto>>
+		<div class="job-card"><<nobr>>
+			<strong><<= _job.name >></strong><br>
+			Pay: $<<= _job.pay >> / week<br>
+			Days: <<= _job.days >><br>
+			<em><<= _job.desc >></em><br><</nobr>>
+			<<link "Take this job">>
+				<<set $job = true>><<nobr>>
+				<<set $jobName = _job.name>><<set $jobPay = _job.pay>><<set $workdays = _job.days>>
+				<<set $jobDesc = _job.desc>><</nobr>>
+				<<if _job.name == "Construction">>
+					<<goto "ConstructionCheck">>
+				<<else>>
+					<<goto _goto>>
+				<</if>>
+			<</link>>
+		</div>
+	<</capture>>
+<</widget>>
+
+
+
+/* Small helper to display current job info */
+/* Small helper to display current job info */
+<<widget "JobSummary">>
+	<<if $job>>Current job: <strong><<= $jobName >></strong> Pay: $<<= $jobPay >> per week 
+		Workdays: <<= $workdays >>
+		 <<if $jobDesc>>Description: <em><<= $jobDesc >></em><</if>>
+	<<else>>You don't have a job yet.<</if>>
+<</widget>>
+
+/*
+ShowInfo widget is now deprecated - all information is shown in the persistent StoryCaption header.
+Keeping this widget as a no-op so existing passages that call it don't error.
+*/
+<<widget "ShowInfo">><</widget>>
+
+/* Helper widget to advance the day and update day of week */
+<<widget "AdvanceDay">>
+	<<set $day += 1>>
+	<<set $currentDayOfWeek = ($currentDayOfWeek + 1) % 7>>
+<</widget>>
+
+/* Helper widget for time skips - handles rent, worries, and day tracking */
+/* Usage: <<ProcessTimeSkip daysToSkip>> */
+<<widget "ProcessTimeSkip">>
+	<<set _daysSkipped = $args[0]>>
+	<<set _startDay = $day>>
+
+	/* Advance the day */
+	<<set $day += _daysSkipped>>
+
+	/* Initialize rent tracking if needed */
+	<<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
+
+	/* Calculate and deduct rent for time period */
+	<<if $hasHousing and $housingCost > 0>>
+		<<set _monthsInPeriod = Math.floor(_daysSkipped / 30)>>
+		<<if _monthsInPeriod > 0>>
+			<<set _rentDue = ($housingCost * _monthsInPeriod)>>
+			<<set $money -= _rentDue>>
+			<<set $lastRentPaidDay = $day>>
+			<<set _rentPaidDuringSkip = _rentDue>>
+		<</if>>
+	<</if>>
+
+	/* Generate worries proportional to time skipped (chance per week) */
+	<<set _weeksSkipped = Math.floor(_daysSkipped / 7)>>
+	<<set _worriesGenerated = 0>>
+	<<for _w = 0; _w < _weeksSkipped; _w++>>
+		<<if $worries.length < 3 and random(1, 100) <= 40>>
+			/* Filter worries based on player's current situation */
+			<<set _availableWorries = $possibleWorries.filter(function(worry) {
+				if (worry.type === "maintenance" && !$hasCar) {
+					return false;
+				}
+				return true;
+			})>>
+			<<if _availableWorries.length > 0>>
+				<<set _randomWorry = _availableWorries[random(0, _availableWorries.length - 1)]>>
+				<<set _newWorry = {
+					type: _randomWorry.type,
+					severity: _randomWorry.severity,
+					description: _randomWorry.description,
+					expiresIn: _randomWorry.expiresIn,
+					healthImpact: _randomWorry.healthImpact,
+					cost: _randomWorry.cost,
+					daysActive: 0
+				}>>
+				<<set $worries.push(_newWorry)>>
+				<<set _worriesGenerated += 1>>
+			<</if>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+/* Generate worries during time skip without modifying day/rent (for passages that handle those separately) */
+/* Usage: <<GenerateTimeSkipWorries daysSkipped>> */
+<<widget "GenerateTimeSkipWorries">>
+	<<set _daysSkipped = $args[0]>>
+	<<set _weeksSkipped = Math.floor(_daysSkipped / 7)>>
+	<<set _worriesGenerated = 0>>
+	<<for _w = 0; _w < _weeksSkipped; _w++>>
+		<<if $worries.length < 3 and random(1, 100) <= 40>>
+			<<set _availableWorries = $possibleWorries.filter(function(worry) {
+				if (worry.type === "maintenance" && !$hasCar) {
+					return false;
+				}
+				return true;
+			})>>
+			<<if _availableWorries.length > 0>>
+				<<set _randomWorry = _availableWorries[random(0, _availableWorries.length - 1)]>>
+				<<set _newWorry = {
+					type: _randomWorry.type,
+					severity: _randomWorry.severity,
+					description: _randomWorry.description,
+					expiresIn: _randomWorry.expiresIn,
+					healthImpact: _randomWorry.healthImpact,
+					cost: _randomWorry.cost,
+					daysActive: 0
+				}>>
+				<<set $worries.push(_newWorry)>>
+				<<set _worriesGenerated += 1>>
+			<</if>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+/* Helper to check if current day is a business day (Monday-Friday) */
+<<widget "IsBusinessDay">>
+	<<if $currentDayOfWeek >= 0 and $currentDayOfWeek <= 4>>
+		<<= true>>
+	<<else>>
+		<<= false>>
+	<</if>>
+<</widget>>
+
+/* Get current day name */
+<<widget "GetDayName">>
+	<<= $dayNames[$currentDayOfWeek]>>
+<</widget>>
+
+
+<<widget "NavControls">>
+	<<set _scene = $args[0]>>
+	<<set _i = $args[1]>>
+
+	<div class="controls">
+		<!-- Back -->
+		<<if _i > 0>>
+			<<link "← Back">>
+				<<addclass "#controls .link-internal:last" "btn btn--ghost">>
+				<<set $step -= 1>>
+				<<replace "#dialogue-area">><<RenderScene _scene $step>><</replace>>
+				<<replace "#controls">><<NavControls _scene $step>><</replace>>
+			<</link>>
+		<<else>>
+			<span class="btn btn--ghost" aria-disabled="true">← Back</span>
+		<</if>>
+
+		<!-- Next / Continue -->
+		<<if _i < _scene.length - 1>>
+			<<link "Next →">>
+				<<addclass "#controls .link-internal:last" "btn btn--primary">>
+				<<set $step += 1>>
+				<<replace "#dialogue-area">><<RenderScene _scene $step>><</replace>>
+				<<replace "#controls">><<NavControls _scene $step>><</replace>>
+			<</link>>
+		<<else>>
+			<<link "Continue →">>
+				<<addclass "#controls .link-internal:last" "btn btn--primary">>
+				<<goto "Hub">>
+			<</link>>
+		<</if>>
+	</div>
+<</widget>>
+
+<<widget "WarnBox">>
+	<div class="warning-box"><strong>Warning:</strong> <<= _args[0]>></div>
+<</widget>>
+
+<<widget "InfoWarnBox">>
+	<div class="warning-box"><strong><<print _args[0]>></strong> <<= _args[1]>></div>
+<</widget>>
+
+<<widget "SuccessBox">>
+	<div class="success-box"><strong>Success:</strong> <<= _args[0]>></div>
+<</widget>>
+
+<<widget "FailureBox">>
+	<div class="failure-box"><strong>Game Over:</strong> <<= _args[0]>></div>
+<</widget>>
+
+<<widget "StatsBox">>
+	<div class="stats-box"><p><<print _args[0]>></p></div>
+<</widget>>
+
+<<widget "NavArrows">>
+	<div class="nav-arrows">
+		<<back "◀ Back">>
+		<<forward "Next ▶">>
+	</div>
+<</widget>>
+
+
+<<widget "ProcessRent">>
+	/* Ensure last rent day exists */
+	<<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
+	<<set _rentPaidToday = false>>
+
+	/* Charge rent once every 30 days if housed */
+	<<if $hasHousing and $housingCost and ($day - $lastRentPaidDay) >= 30>>
+		<<set $money -= $housingCost>>
+		<<set $lastRentPaidDay = $day>>
+		<<set _rentPaidToday = true>>
+	<</if>>
+<</widget>>
+
+<<widget "ProcessWorries">>
+	/* Default holder for worries that expire today */
+	<<set _expiredWorries = []>>
+
+	<<if $worries and $worries.length>>
+		/* Age worries and collect expired ones */
+		<<for _i = 0; _i < $worries.length; _i++>>
+			<<set $worries[_i].daysActive++>>
+			<<if $worries[_i].daysActive >= $worries[_i].expiresIn>>
+				<<set _expiredWorries.push($worries[_i])>>
+			<</if>>
+		<</for>>
+
+		/* Apply health penalties for expired worries */
+		<<if _expiredWorries.length>>
+			<<for _j = 0; _j < _expiredWorries.length; _j++>>
+				<<set _exp = _expiredWorries[_j]>>
+				<<set $familyHealth -= _exp.healthImpact>>
+				<<set $worriesIgnored++>>
+			<</for>>
+
+			/* Keep only worries that are still active */
+			<<set $worries = $worries.filter(function (w) {
+				return w.daysActive < w.expiresIn;
+			})>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "MaybeAddNewWorry">>
+	/* Do not add if already at max */
+	<<if !$possibleWorries or $worries.length >= 3>><<return>><</if>>
+
+	<<set _worryChance = Math.min(30 + ($day * 0.5), 60)>>
+	<<set _worryRoll = random(1, 100)>>
+
+	<<if _worryRoll <= _worryChance>>
+		/* Filter out car maintenance worries if no car yet */
+		<<set _availableWorries = $possibleWorries.filter(function (w) {
+			if (w.type === "maintenance" && !$hasCar) {
+				return false;
+			}
+			return true;
+		})>>
+
+		/* Safety check */
+		<<if !_availableWorries.length>><<return>><</if>>
+
+		<<set _pick = _availableWorries[random(0, _availableWorries.length - 1)]>>
+		<<set _newWorry = {
+			type        : _pick.type,
+			severity    : _pick.severity,
+			description : _pick.description,
+			expiresIn   : _pick.expiresIn,
+			healthImpact: _pick.healthImpact,
+			cost        : _pick.cost,
+			daysActive  : 0
+		}>>
+		<<set $worries.push(_newWorry)>>
+	<</if>>
+<</widget>>
+
+<<widget "CheckHousingApplication">>
+	/* If a housing application is pending and time is up, signal a branch */
+	<<if $housingApplicationPending and $housingApplicationDaysRemaining <= 0>>
+		<<set $ffBreakReason = "housingResult">>
+	<</if>>
+<</widget>>
+
+<<widget "CheckWifeMedicalEmergency">>
+	/* Only check if not already triggered */
+	<<if $wifeMedicalEmergencyTriggered>><<return>><</if>>
+
+	<<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>>
+
+	<<if $familyHealth <= 60 or ($day >= _daysThreshold and $hasHousing and $housingType === "Unaffordable")>>
+		<<if (!$overworkSicknessTriggered) or ($overworkSicknessTriggered and !$workingExcessiveHours)>>
+			<<set $wifeMedicalEmergencyTriggered = true>>
+			<<set $ffBreakReason = "wifeEmergency">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+
+<<widget "ProcessEndOfDayCore">>
+	/* Ensure last rent day has a value */
+	<<if $lastRentPaidDay is undefined>><<set $lastRentPaidDay = 0>><</if>>
+	<<set _rentPaidToday = false>>
+	/* Rent payment check */
+	<<if $hasHousing and $housingCost>>
+		<<if ($day - $lastRentPaidDay) >= 30>>
+			<<set $money -= $housingCost>>
+			<<set $lastRentPaidDay = $day>>
+			<<set _rentPaidToday = true>>
+		<</if>>
+	<</if>>
+	/* Worry ticking + expiry */
+	<<if $worries.length>>
+		<<set _expiredWorries = []>>
+		<<for _i = 0; _i < $worries.length; _i++>>
+			<<set $worries[_i].daysActive += 1>>
+			<<if $worries[_i].daysActive >= $worries[_i].expiresIn>>
+				<<set _expiredWorries.push($worries[_i])>>
+			<</if>>
+		<</for>>
+		<<if _expiredWorries.length>>
+			<<for _j = 0; _j < _expiredWorries.length; _j++>>
+				<<set _exp = _expiredWorries[_j]>>
+				<<set $familyHealth -= _exp.healthImpact>>
+				<<set $worriesIgnored += 1>>
+			<</for>>
+			<<set $worries = $worries.filter(function(w){ return w.daysActive < w.expiresIn })>>
+		<</if>>
+	<</if>>
+	/* Chance to spawn a new worry */
+	<<set _worryChance = Math.min(30 + ($day * .5), 60)>>
+	<<set _worryRoll = random(1,100)>>
+	<<if _worryRoll <= _worryChance and $worries.length < 3>>
+		<<set _availableWorries = $possibleWorries.filter(function(w){
+			if (w.type === "maintenance" && !$hasCar) return false;
+			return true;
+		})>>
+		<<set _pick = _availableWorries[random(0,_availableWorries.length-1)]>>
+		<<set _newWorry = {
+			type:_pick.type,
+			severity:_pick.severity,
+			description:_pick.description,
+			expiresIn:_pick.expiresIn,
+			healthImpact:_pick.healthImpact,
+			cost:_pick.cost,
+			daysActive:0
+		}>>
+		<<set $worries.push(_newWorry)>>
+	<</if>>
+
+	/* Housing application result */
+	<<if $housingApplicationPending and $housingApplicationDaysRemaining <= 0>>
+		<<if $simulatingFastForward>>
+			<<set $ffBreakReason = "housingResult">>
+		<<else>>
+			<<goto "HousingApplicationResult">>
+		<</if>>
+	<</if>>
+	/* Wife medical emergency trigger */
+	<<set _daysThreshold = ($hasHousing and $housingType === "Unaffordable") ? 15 : 999>>
+	<<if !$wifeMedicalEmergencyTriggered>>
+		<<if $familyHealth <= 60 or ($day >= _daysThreshold and $hasHousing and $housingType === "Unaffordable")>>
+			<<if !$overworkSicknessTriggered or ($overworkSicknessTriggered and !$workingExcessiveHours)>>
+				<<if $simulatingFastForward>>
+					<<set $wifeMedicalEmergencyTriggered = true>>
+					<<set $ffBreakReason = "wifeEmergency">>
+				<<else>>
+					<<set $wifeMedicalEmergencyTriggered = true>>
+					<<goto "WifeMedicalEmergency">>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+	/* Run the usual end-of-day logic, but without navigation */
+
+
+	/* Turn off simulation flag (not strictly required, but clean) */
+	<<set $simulatingFastForward = false>>

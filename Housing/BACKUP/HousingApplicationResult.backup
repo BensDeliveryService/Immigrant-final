@@ -1,0 +1,147 @@
+:: HousingApplicationResult
+/*Application has been processed - determine approval or rejection based on actual income*/
+<<set $step = 0>>
+<<ShowInfo>>
+/* Calculate player's financial qualifications */
+<<set _requiredMonthlyIncome = $pendingHousingCost * 3>>
+<<set _estimatedMonthlyIncome = 0>>
+
+/* Estimate monthly income based on income history */
+<<if $incomeHistory.length > 0>>
+    <<set _totalEarned = 0>>
+    <<for _i = 0; _i < $incomeHistory.length; _i++>>
+        <<set _totalEarned += $incomeHistory[_i].amount>>
+    <</for>>
+    /* Rough monthly estimate based on days worked */
+    <<if $day > 0>>
+        <<set _estimatedMonthlyIncome = (_totalEarned / $day) * 30>>
+    <</if>>
+<</if>>
+
+/* Set approval chance based on apartment type and qualifications */
+<<set _baseApprovalChance = 0>>
+<<set _denialReason = "">>
+<<set _autoReject = false>>
+/* AFFORDABLE APARTMENT - Most lenient */
+<<if $pendingHousingType === "Affordable">>
+    <<if $totalIncomeEarned >= 500>>
+        <<set _baseApprovalChance = 65>>
+    <<elseif $totalIncomeEarned >= 300>>
+        <<set _baseApprovalChance = 45>>
+    <<elseif $jobsCompleted >= 1>>
+        <<set _baseApprovalChance = 35>>
+    <<else>>
+        <<set _baseApprovalChance = 15>>
+        <<set _autoReject = true>>
+        <<set _denialReason = "Insufficient employment history. You need to show proof of at least one completed job to qualify for housing.">>
+    <</if>>
+    /* Bonus for having money in bank */
+    <<if $money >= 1500>>
+        <<set _baseApprovalChance += 20>>
+    <<elseif $money >= 1000>>
+        <<set _baseApprovalChance += 10>>
+    <</if>>
+/* STANDARD APARTMENT - Moderate requirements */
+<<elseif $pendingHousingType === "Standard">>
+    <<if _estimatedMonthlyIncome >= _requiredMonthlyIncome>>
+        <<set _baseApprovalChance = 55>>
+    <<elseif $totalIncomeEarned >= 1500>>
+        <<set _baseApprovalChance = 40>>
+    <<elseif $jobsCompleted >= 2>>
+        <<set _baseApprovalChance = 25>>
+    <<else>>
+        <<set _baseApprovalChance = 10>>
+        <<set _autoReject = (random(1, 100) <= 40)>> /* 40% chance of auto-rejection */
+        <<if _autoReject>>
+            <<set _denialReason = "Insufficient proof of income. The landlord requires documented income of $" + _requiredMonthlyIncome + " per month. Your estimated monthly income is only $" + Math.floor(_estimatedMonthlyIncome) + ".">>
+        <</if>>
+    <</if>>
+
+    /* Penalty for low bank balance */
+    <<if $money < 800>>
+        <<set _baseApprovalChance -= 15>>
+    <</if>>
+
+/* Unaffordable APARTMENT - Very strict */
+<<elseif $pendingHousingType === "Unaffordable">>
+    <<if _estimatedMonthlyIncome >= _requiredMonthlyIncome and $jobsCompleted >= 3>>
+        <<set _baseApprovalChance = 45>>
+    <<elseif $totalIncomeEarned >= 2500 and $money >= 2000>>
+        <<set _baseApprovalChance = 30>>
+    <<elseif $jobsCompleted >= 2>>
+        <<set _baseApprovalChance = 15>>
+    <<else>>
+        <<set _baseApprovalChance = 5>>
+        <<set _autoReject = (random(1, 100) <= 70)>> /* 70% chance of auto-rejection */
+        <<if _autoReject>>
+            <<set _denialReason = "Income verification failed. This property requires verifiable income of $" + _requiredMonthlyIncome + " per month, employment verification, and credit history. As a recent immigrant, you do not meet these requirements.">>
+        <</if>>
+    <</if>>
+
+    /* Strong penalty for insufficient funds */
+    <<if $money < 2500>>
+        <<set _baseApprovalChance -= 20>>
+    <</if>>
+<</if>>
+
+/* Rent Support Bonus - $1500 assistance makes you more qualified */
+<<if $hasRentSupport>>
+    <<set _baseApprovalChance += 25>> /* Significant boost from having rent support */
+    /* Cancel auto-rejection if rent support is available (shows financial backing) */
+    <<if _autoReject and (random(1, 100) <= 50)>>
+        <<set _autoReject = false>>
+        <<set _denialReason = "">>
+    <</if>>
+<</if>>
+
+/* Random migration-specific challenges (always a chance of rejection) */
+<<set _migrantDiscriminationRoll = random(1, 100)>>
+<<if _migrantDiscriminationRoll <= 15>>
+    /* 15% chance of rejection due to discrimination/documentation issues */
+    <<set _baseApprovalChance = Math.max(0, _baseApprovalChance - 30)>>
+<</if>>
+
+/* Final roll */
+<<set _approvalRoll = random(1, 100)>>
+<<set _approved = (_approvalRoll <= _baseApprovalChance) and !_autoReject>>
+
+<<if _approved>>
+    /* APPROVED */
+    <h3>Housing Application Approved!</h3>
+    <p style="color: green;"><strong>Congratulations!</strong></p>
+    Your application for the <strong><<= $pendingHousingType>> Apartment</strong> has been <strong>APPROVED</strong>!
+    <hr>
+    <p><strong>Your New Housing Details:</strong></p>
+    <ul>
+      <li>Apartment Type: <<= $pendingHousingType>></li>
+      <li>Monthly Rent: $<<= $pendingHousingCost>></li>
+    </ul>
+    <p><em>Welcome to your new home! As a migrant, finding housing is a significant milestone in building your new life.</em></p>
+    <hr>
+    <<link "Move into your new apartment">>
+        <<set $hasHousing = true>>
+        <<set $housingType = $pendingHousingType>>
+        <<set $housingCost = $pendingHousingCost>>
+        <<set $lastRentPaidDay = $day>> /* Track when rent was last paid */
+        <<set $housingApplicationPending = false>>
+        <<set $housingApplicationDaysRemaining = 0>>
+        <<set $pendingHousingType = "">>
+        <<set $pendingHousingCost = 0>>
+        <<if $housingType === "Unaffordable">>
+            <<goto "UnaffordableHousingConsequences">>
+        <<elseif $housingType === "Affordable" or $housingType === "Standard">>
+            <<goto "AffordableStandardConsequences">>
+        <<else>>
+            <<goto "DayChoice">><</if>>
+    <</link>>
+<<else>>
+    /* REJECTED */
+    <<if _denialReason !== "">>
+        <<set $lastRejectionReason = _denialReason>>
+    <<else>>
+        /* Use random generic reason */
+        <<set _rejectionIndex = random(0, $housingRejectionReasons.length - 1)>>
+        <<set $lastRejectionReason = $housingRejectionReasons[_rejectionIndex]>>
+    <</if>>
+    <<set $housingRejectionCount += 1>>
+    <<goto "HousingApplicationRejected">><</if>>

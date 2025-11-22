@@ -1,0 +1,123 @@
+::Workday
+<<set $step = 0>>
+
+/* Check if timeline expired */
+<<if $day >= $gameTimelineMax>>
+	<<goto "GameEnd">>
+<</if>>
+
+/* RANDOM WORK CHAT (1/2 chance) */
+<<set $workChat = "">>
+	<<set _chats = [
+		"You talked about rising rent prices around the shelters.",
+		"You and the others complained about how early the shift started.",
+		"The crew joked about whose boots are the most worn-out.",
+		"You chatted about how bad the CTA has been lately.",
+		"A coworker told you he barely slept because someone snored all night in the shelter.",
+		"You talked about missing your hometown food.",
+		"You listened to a debate about which Chicago neighborhood has the best tacos.",
+		"Everyone laughed about how yesterday’s foreman yelled for no reason.",
+		"You compared the small cut you got on your hand to someone else’s.",
+		"One worker spent ten minutes showing off photos of his kids.",
+		"You talked about how crowded the red line was this morning.",
+		"The group complained about the frost making everyone's fingers numb.",
+		"You and the crew joked about how Chicago wind feels like tiny knives.",
+		"Someone warned everyone that the Addison station was rerouted again.",
+		"You talked about how the bus never shows up when you actually need it.",
+		"You all laughed about slipping on black ice last week.",
+		"You talked about how hard it is to get uninterrupted sleep in the shelter.",
+		"Someone shared how long it took them to get their documents checked.",
+		"You all traded stories about dealing with strict curfews.",
+		"Workers shared rumors about a new family arriving last night.",
+		"You listened to someone talk about missing their partner back home.",
+		"You talked about how the concrete mix was too watery yesterday.",
+		"Someone complained their gloves are falling apart.",
+		"The crew argued over who does the fastest drywall work.",
+		"You watched two workers debate whether the foreman knows what he's doing.",
+		"You talked about how everyone is hoping for more hours next week.",
+		"One guy bragged he can finish a whole wall by himself.",
+		"You talked about how everyone’s families back home are coping.",
+		"One worker opened up about how scared he was when he first arrived.",
+		"You and another worker joked about who snores louder in the shelter.",
+		"A coworker shared advice about staying warm without good winter clothes.",
+		"You talked with another worker about how exhausting it is to feel behind every day."
+	]>>
+	<<set $workChat = _chats.random()>>
+
+
+/* JOB REFERENCE (1/4 chance, only once) */
+<<if not $jobRef and random(1,6) == 1>>
+	<<set $jobRef = true>>
+	<<set $jobRefMessage =
+		"One of the workers mentions a construction site that pays great. " +
+		"He says he can recommend you — a rare chance for steady work."
+	>>
+<</if>>
+
+<<goto "Workday_Display">>
+
+:: Workday_Display
+You worked really hard today. You talked a lot with your fellow workers.
+
+<<if $workChat>>
+	<p><<=$workChat>></p>
+<</if>>
+
+<<if $jobRefMessage>>
+	<p><strong><<=$jobRefMessage>></strong></p>
+<</if>>
+
+<<link "Next">><<goto "Workday_Resolve">><</link>>
+:: Workday_Resolve
+<<if $workdays <= 0>>
+	Congrats! You have completed all for this job! You will receive $<<= $jobPay>> for this job!
+	<<link "Head home to collect payment">>
+		<<AdvanceDay>>
+		<<set $pendingPayment = $jobPay>>
+		<<set $job = false>>
+		<<set $daysWorked += 1>>
+		/* Track excessive hours if applicable */
+		<<if $workingExcessiveHours>>
+			<<set $excessiveHoursDaysWorked += 1>>
+		<</if>>
+		/* Only process housing applications on business days (Mon-Fri) */
+		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
+			<<set _isBusinessDay = ($currentDayOfWeek >= 0 and $currentDayOfWeek <= 4)>>
+			<<if _isBusinessDay>>
+				<<set $housingApplicationDaysRemaining -= 1>>
+			<</if>>
+		<</if>>
+		/* Check for overwork sickness trigger */
+		<<if $workingExcessiveHours and $excessiveHoursDaysWorked >= 12 and !$overworkSicknessTriggered>>
+			<<set $overworkSicknessTriggered = true>>
+			<<goto "OverworkSickness">>
+		<<else>>
+			<<goto "EndOfDayHub">>
+		<</if>>
+	<</link>>
+	<hr>
+<<else>>
+	You have <<= $workdays>> days left of your job.
+	<<link "Head home for the day">>
+		<<AdvanceDay>>
+		<<set $daysWorked += 1>>
+		/* Track excessive hours if applicable */
+		<<if $workingExcessiveHours>>
+			<<set $excessiveHoursDaysWorked += 1>>
+		<</if>>
+		/* Only process housing applications on business days (Mon-Fri) */
+		<<if $housingApplicationPending and $housingApplicationDaysRemaining > 0>>
+			<<set _isBusinessDay = ($currentDayOfWeek >= 0 and $currentDayOfWeek <= 4)>>
+			<<if _isBusinessDay>>
+				<<set $housingApplicationDaysRemaining -= 1>>
+			<</if>>
+		<</if>>
+		/* Check for overwork sickness trigger */
+		<<if $workingExcessiveHours and $excessiveHoursDaysWorked >= 12 and !$overworkSicknessTriggered>>
+			<<set $overworkSicknessTriggered = true>>
+			<<goto "OverworkSickness">>
+		<<else>>
+			<<goto "EndOfDayHub">>
+		<</if>>
+	<</link>>
+<</if>>

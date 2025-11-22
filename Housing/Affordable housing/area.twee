@@ -1,0 +1,197 @@
+:: AreaFocusedStrategy
+<<set $step = 0>><<ShowInfo>><<set $day += 45>><<GenerateTimeSkipWorries 45>>
+<<set _areaOutcome = random(1, 100)>>
+
+<h3>The Area-Focused Approach</h3>
+<div class="consequence-text">
+	<p>You develop a routine: each morning, you take a single rideshare ($18-22) to a neighborhood where you know there are job opportunities. Once there, you plan your day around jobs within walking distance.</p>
+	<p>It works well at first. You're saving money on transportation - only one rideshare each direction per day, around $40 total, instead of $60-80 if you were going to individual locations. Your tools are with you, you look professional, and you're not worried about police.</p>
+	<p>You take painting jobs, repair work, small construction gigs - whatever's available within your chosen area each day. The work is steady enough.</p>
+	<p>But after six weeks, you start noticing a problem.</p>
+	<p>A client calls and asks if you can come paint their house across town. Good pay - $200 for a day's work. But it's too far from your usual area. You'd need a separate rideshare just for that job, eating into profits. You turn it down.</p>
+	<p>A week later, another opportunity: emergency repair job, needs to be done today, client will pay well. But it's in a different neighborhood. You turn it down again.</p>
+	<p>Then another. And another.</p>
+	<p>You're saying "no" to jobs because they don't fit your transportation constraints. And in the informal economy, word gets around.</p>
+</div>
+<hr>
+<<if _areaOutcome <= 50>>
+	<<goto "AreaFocusedFail">>
+<<else>>
+	<<goto "AreaFocusedSuccess">>
+<</if>>
+
+:: AreaFocusedFail
+<<set $step = 0>><<ShowInfo>><<set $day += 30>><<GenerateTimeSkipWorries 30>>
+
+<h3>Diminishing Returns</h3>
+<div class="consequence-text">
+	<p>Two more months pass, and the problems compound.</p>
+	<p>The job coordinators you work with start calling you less often. When you ask why, one of them is blunt: "You turn down too many jobs. I need people who are flexible, who can go where the work is. You're too limited."</p>
+	<p>Another tells you: "I had clients asking for you specifically, but you kept saying no because of location. Now they're using other workers. Those other workers are getting the referrals you could have had."</p>
+	<p>Your reputation as a reliable worker is being replaced by a reputation as someone who's inflexible. Too picky. Can't be counted on when a job is outside your preferred area.</p>
+	<p>The irony stings: you limited yourself to save money on transportation, but now you're losing jobs - and income - because of those limitations.</p>
+	<p>Job offers become less frequent. Some weeks you're only working three or four days instead of six. Your income drops. The money you saved on rideshares is offset by the money you're not earning from lost opportunities.</p>
+	<p>You still make rent each month, but barely. There's no savings, no progress toward a better situation. You're stuck in the same position, and your business prospects are declining.</p>
+</div>
+<hr>
+<div class="warning-box">
+	<p style="margin:4px 0;color: orange;"><strong>Outcome:</strong> Your attempt to save money on transportation has cost you reputation and job opportunities. You're earning less now than when you started, and your prospects are getting worse.</p>
+</div>
+
+<<set _daysWorked = 44>>
+<<set _dailyGross = 140>>
+<<set _dailyTransport = 40>>
+<<set _totalEarned = _daysWorked * _dailyGross>>
+<<set _totalTransport = _daysWorked * _dailyTransport>>
+<<set _monthsPassed = 2.5>>
+<<set _totalRent = $housingCost * _monthsPassed>>
+<<set _livingExpenses = 300 * _monthsPassed>>
+<<set _netChange = _totalEarned - _totalTransport - _totalRent - _livingExpenses>>
+<<set $money += _netChange>>
+<<set $familyHealth -= 12>>
+<<set $lastRentPaidDay = $day>>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Earnings (2.5 months):</strong> $<<= _totalEarned>><br>
+		<strong>Transport Costs:</strong> -$<<= _totalTransport>><br>
+		<strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+		<strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+		<strong>Net Change:</strong> $<<= Math.floor(_netChange)>><br>
+		<strong>Current Balance:</strong> $<<= $money>> (barely above rent)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (stress from financial insecurity)<br>
+		<strong>Business Reputation:</strong> Declining (seen as inflexible)<br>
+		<strong>Monthly Transport Cost:</strong> ~$880
+	</p>
+</div>
+<div class="consequence-text">
+	<p>In trying to minimize costs, you've minimized opportunities. Your business is contracting instead of growing. You need to find a different approach or accept that you're stuck in this position indefinitely.</p>
+</div>
+<<link "Continue to day choice">><<goto "DayChoice">><</link>>
+
+:: AreaFocusedSuccess
+<<set $step = 0>><<ShowInfo>><<set $day += 60>>
+
+<h3>Frugality Pays Off</h3>
+<div class="consequence-text">
+	<p>Four months of disciplined, area-focused work. Four months of saying no to jobs outside your zone, but saying yes to every opportunity within it.</p>
+	<p>It's been tight. Some weeks you wondered if you'd made a mistake. You watched other workers take jobs all over the city, seemingly making more money. You heard about opportunities you had to turn down.</p>
+	<p>But you stuck to your strategy. Every rideshare dollar saved went into a jar at home. Every week, you and your wife counted it together: $50, $100, $200, $400, $800.</p>
+	<p>And something unexpected happened: by becoming the reliable worker in your specific area, you became known. The job coordinators in that neighborhood started calling you first. "I know you're always around here," one says. "I can count on you to show up."</p>
+	<p>Local homeowners started asking for you by name. Small business owners recommended you to each other. You lost the city-wide opportunities, but you gained a neighborhood reputation.</p>
+	<p>The income was steady. Not spectacular, but consistent. And with your disciplined approach to transportation costs, you've been saving.</p>
+	<p>One evening, you count the savings and realize you have enough for a car - but cars are expensive. A decent used vehicle costs around $1,600.</p>
+</div>
+<hr>
+
+<<set _daysWorked = 77>>
+<<set _dailyGross = 140>>
+<<set _dailyTransport = 40>>
+<<set _totalEarned = _daysWorked * _dailyGross>>
+<<set _totalTransport = _daysWorked * _dailyTransport>>
+<<set _monthsPassed = 3.5>>
+<<set _totalRent = $housingCost * _monthsPassed>>
+<<set _livingExpenses = 300 * _monthsPassed>>
+<<set _savings = _totalEarned - _totalTransport - _totalRent - _livingExpenses>>
+<<set $money += _savings>>
+<<set $lastRentPaidDay = $day>>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Total Earned (3.5 months):</strong> $<<= _totalEarned>><br>
+		<strong>Transport Costs:</strong> -$<<= _totalTransport>><br>
+		<strong>Rent Paid:</strong> -$<<= _totalRent>><br>
+		<strong>Living Expenses:</strong> -$<<= _livingExpenses>><br>
+		<strong>Net Savings:</strong> +$<<= Math.floor(_savings)>><br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Car Cost:</strong> $1,600 (or $800 if shared)<br>
+		<strong>Family Health:</strong> <<= $familyHealth>>%
+	</p>
+</div>
+
+<h4>How will you get a car?</h4>
+<div class="housing-choice">
+	<<link "Buy a car on your own">><<goto "AreaFocusedBuyAlone">><</link>>
+	<p><em>Purchase a used car for $1,600. It's expensive and will take most of your savings, plus you'll need insurance and registration. But it's yours alone - you can use it whenever you need, make all decisions about it, and don't have to coordinate with anyone else.</em></p>
+</div>
+<hr>
+<div class="housing-choice">
+	<<link "Find another family to share the cost">><<goto "AreaFocusedCarShare">><</link>>
+	<p><em>Reach out to your network at the shelter and find another immigrant family that also needs a car. Split the $1,600 cost - you each pay $800. You'll have to coordinate schedules and share usage, but it makes car ownership much more affordable. Plus you'll build community ties.</em></p>
+</div>
+
+:: AreaFocusedBuyAlone
+<<set $step = 0>><<ShowInfo>>
+<h3>Solo Purchase</h3>
+<div class="consequence-text">
+	<p>You decide to buy the car on your own. It's a 2008 Honda Civic with 165,000 miles. The engine runs rough and the paint is faded, but mechanically it's sound. The seller wants $1,600 cash.</p>
+	<p>You negotiate down slightly but not much - everyone knows cars are expensive right now. You pay $1,600 for the car, another $150 for insurance, and $100 for registration and title transfer.</p>
+	<p>It takes almost all your savings, but when you drive it home for the first time, you feel something you haven't felt in months: freedom.</p>
+	<p>No more waiting for rideshares. No more expensive trips adding up. No more being limited to one neighborhood. The city is yours to work in now.</p>
+	<p>Your wife smiles when she sees it. "Now you can go anywhere," she says.</p>
+	<p>And she's right. Your business is about to change completely.</p>
+</div>
+<hr>
+<div class="success-box">
+	<p style="color: green;"><strong>Success:</strong> You own a car outright. Your transportation costs will drop dramatically, and you can take jobs anywhere in the city without restrictions.</p>
+</div>
+<<link "Continue to day choice">><<goto "AFBA1">><</link>>
+
+:: AFBA1
+
+<<set $money -= 1600>><<set $money -= 150>><<set $money -= 100>>
+<<set $familyHealth += 15>><<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>><<set $carOwnership = "sole">>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Car Purchase:</strong> -$1,600<br>
+		<strong>Insurance & Registration:</strong> -$250<br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (major achievement)<br>
+		<strong>Asset Acquired:</strong> 2008 Honda Civic (165k miles)<br>
+		<strong>Ownership:</strong> Sole owner<br>
+		<strong>Future Monthly Transport:</strong> ~$120 (gas + insurance vs $880 rideshare)
+	</p>
+</div>
+<<goto "DayChoice">>
+
+
+:: AreaFocusedCarShare
+<<set $step = 0>><<ShowInfo>>
+
+<h3>Shared Ownership</h3>
+<div class="consequence-text">
+	<p>You reach out to your network from the shelter. Word spreads quickly - there's another family in almost exactly the same situation. They've been saving too, doing rideshare work, dreaming of a car.</p>
+	<p>You meet them at a coffee shop. They're from El Salvador - a husband and wife with two young children. They're cautious at first, but as you talk, you realize you have a lot in common. Same struggles, same dreams, same determination.</p>
+	<p>"We have $800 saved," the husband says. "If you have $800, we could buy a car together."</p>
+	<p>You discuss the details: who drives when, how to split gas costs, what happens if someone damages it, how to handle insurance. It's complicated, but it's doable.</p>
+	<p>Together, you find a 2008 Honda Civic for $1,600. It's old but reliable. You each pay $800. You split the insurance ($150) and registration ($100) evenly.</p>
+	<p>When you drive it home for the first time - your day to use it - you feel not just freedom, but community. You're not doing this alone anymore.</p>
+	<p>Your wife is nervous at first. "What if there are problems? What if we disagree?"</p>
+	<p>"Then we'll work it out," you tell her. "That's what community is."</p>
+</div>
+<hr>
+<div class="success-box">
+	<p style="color: green;"><strong>Success:</strong> You co-own a car with another family. Your costs are cut in half, and you've built a strong community connection. You'll need to coordinate usage, but you have reliable transportation now.</p>
+</div>
+
+<<set $money -= 800>><<set $money -= 75>><<set $money -= 50>>
+<<set $familyHealth += 20>><<set $familyHealth = Math.min(100, $familyHealth)>>
+<<set $hasCar = true>><<set $carOwnership = "shared">>
+
+<div class="stats-box">
+	<p style="margin:4px 0;font-size:0.9em;">
+		<strong>Your Share (Car):</strong> -$800<br>
+		<strong>Your Share (Insurance & Registration):</strong> -$125<br>
+		<strong>Current Balance:</strong> $<<= $money>><br>
+		<strong>Family Health:</strong> <<= $familyHealth>>% (major achievement + community)<br>
+		<strong>Asset Acquired:</strong> 2008 Honda Civic (165k miles) - Shared<br>
+		<strong>Ownership:</strong> Co-owned with Salvadoran family<br>
+		<strong>Future Monthly Transport:</strong> ~$60 (gas + insurance split vs $880 rideshare)
+	</p>
+</div>
+<div class="consequence-text">
+	<p>The other family becomes part of your support network. When one family has an emergency, the other helps. When schedules conflict, you work it out. It's not always easy, but it's better than being alone.</p>
+</div>
+<<link "Continue">><<goto "CarSharingDoubleUpOffer">><</link>>

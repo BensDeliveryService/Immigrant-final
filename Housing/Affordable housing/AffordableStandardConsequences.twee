@@ -1,0 +1,23 @@
+:: AffordableStandardConsequences
+/* Post-approval reality check for Affordable and Standard housing */
+<<set $step = 0>>
+<<ShowInfo>>
+<h3>Welcome to Your New Neighborhood!</h3>
+<idv class="consequence-text">
+	<p>You've secured housing, and rent is $<<= $housingCost>> per month. It's a relief to have a place to call home.</p>
+	<p>This neighborhood is predominantly Guatemalan – you hear Spanish and K'iche' on the streets, and there are familiar faces from your community.</p>
+	<p>However, the informal employment opportunities you rely on are scarce in this area. The construction sites, landscaping jobs, day labor pickup spots are all in other parts of the city, sometimes 45 minutes to an hour away.</p>
+	<p>You have your tools, a toolbox with that carries basic carpentry equipment, painting supplies, and landscaping tools. They're essential for getting hired for the better-paying jobs. But transporting them across the city? That's going to be a daily challenge.</p>
+</div>
+<<link "▶">><<goto "ASC2">><</link>>
+
+:: ASC2
+<div class="warning-box">
+	<strong>Reality of your situation:</strong>
+	<ul>
+		<li>Your rent is $<<= $housingCost>> per month – you need to earn at least that much, plus money for food, transportation, and emergencies.</li>
+		<li>Most informal work opportunities are far from your neighborhood.</li>
+		<li>You'll need to bring your tools with you to get hired for better-paying jobs.</li>
+		<li>You'll be working 10–12 hour days once you factor in travel time.</li>
+	</ul></div> <div class="consequence-text"> <p>The question now is: how do you get yourself and your tools to where the work is?</p></div>
+<<link "Figure out transportation">><<goto "TransportationChallenge">><</link>>

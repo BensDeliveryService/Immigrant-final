@@ -1,0 +1,32 @@
+:: Hub
+<<set $step = 0>><<ShowInfo>>
+<<if $familyLines.length == 0>>
+	<<set $familyLines = $familyUsed.clone()>>
+	<<set $familyUsed = []>> <</if>>
+	
+<<set $idx = random(0, $familyLines.length - 1)>>
+<<set $line = $familyLines[$idx]>>
+<<set $familyUsed.push($line)>>
+<<set $familyLines.splice($idx, 1)>><h2>Home</h2>
+<<goto "Hub2">>
+
+:: Hub2
+<p>You unlock the door and step inside. The noise of the city fades behind you. Home is not perfect, but it is where Juana and Marco are, and that makes it feel steady.</p>
+<<= $line>>
+<p>After a little time together, you start thinking about what tomorrow needs to look like.</p>
+<div style="margin-top:8px;">
+	<<link "Plan for tomorrow">><<goto "DayChoice">><</link>>
+</div>
+
+
+:: DayChoice
+<<set $step = 0>><<ShowInfo>>
+
+<h2>Planning Tomorrow</h2>
+
+<p>You sit at the small table once Marco has settled and Juana is resting. What do you want to focus on?</p>
+<ul>
+	<li><<link "Look for housing options">><<goto "HousingStart">><</link>></li>
+	<li><<link "Go out and look for work">><<goto "WorkStart">><</link>></li>
+	<li><<link "Go back Home">><<goto "Hub">><</link>></li>
+</ul>

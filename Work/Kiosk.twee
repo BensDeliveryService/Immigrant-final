@@ -1,0 +1,35 @@
+:: Kiosk
+<<set $step = 0>><<ShowInfo>>
+<<if $transitDays > 0>> Auto-use transit pass and go to work */ <<set $transitDays -= 1>>
+<<set $workdays -= 2>><<goto "TransitToWork">><<else>>
+<p style="margin:0;font-size:0.9em;"><strong> do not have a transit pass. This will let you take the train or bus to work. With a transit pass, you will be able to get your job done faster:</strong></p>
+<<if $money >= 15>>
+	<<link "3-Day Transit Pass– $15">><<set $money -= 15>><<set $transit=true>><<set $transitDays=3>><<set $workdays -=2>><<goto "Workday">><</link>>
+<<else>><span style="color:gray;font-size:0.85em;">3-Day – Not enough</span><br><</if>>
+<<if $money >= 20>>
+	<<link "7-Day Transit Pass – $20">><<set $money -= 20>><<set $transit=true>><<set $transitDays=7>><<set $workdays -=2>><<goto "Workday">><</link>>
+<<else>><span style="color:gray;font-size:0.85em;">7-Day – Not enough</span><br><</if>>
+<<if $money >= 75>>
+	<<link "30-Day Transit Pass – $75">><<set $money -= 75>><<set $transit=true>><<set $transitDays=30>><<set $workdays -=2>><<goto "Workday">><</link>>
+<<else>><span style="color:gray;font-size:0.85em;">30-Day – Not enough</span><br><</if>>
+<<link "Walk instead">><<set $workdays -= 1>><<goto "Workday">><</link>><</if>>
+:: TransitToWork
+/*Handle transit delay mechanic - 25% chance of delay*/<<set $step = 0>><<ShowInfo>><<set _delayChance = random(1, 100)>>
+<<if _delayChance <= 25>>
+	/* DELAY - Transit issue */
+	<<set $workdays += 2>> /* Restore the workdays that were deducted */
+	<h2 style="margin:0;color:#f0ad4e;">Transit Delay</h2>
+	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(240,173,78,.08);border-left:3px solid rgba(240,173,78,.5);">
+	<p style="margin:2px 0;">You arrive at the transit station, but there's a problem. The train is delayed indefinitely due to mechanical issues. After waiting for over an hour, you realize you won't make it to work on time today.</p>
+	<p style="margin:4px 0;">You have to return home. You've lost a day, though your transit pass day was already deducted.</p>
+	</div>
+	<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(99,179,237,.08);border-left:3px solid rgba(99,179,237,.3);">
+	<p style="margin:2px 0;font-size:0.9em;"><strong>Impact:</strong></p>
+	<ul style="margin:4px 0;padding-left:20px;font-size:0.85em;">
+		<li>No work completed today</li>
+		<li>Transit pass day used (<<= $transitDays>> days remaining)</li>
+		<li>Work remaining: <<= $workdays>> days</li></ul></div>
+	<<link "Return home">><<goto "Hub">><</link>>
+<<else>>
+	<<goto "Workday">>
+<</if>>

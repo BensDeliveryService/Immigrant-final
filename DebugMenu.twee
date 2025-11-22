@@ -1,0 +1,220 @@
+:: DebugMenu
+/*Debug menu for testing all implemented features*/
+<<set $step = 0>>
+<<ShowInfo>>
+
+<h2 style="margin:0;color:#5cb85c;">🛠️ Debug Menu</h2>
+
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(92,184,92,.08);border-left:3px solid rgba(92,184,92,.5);">
+<p style="margin:2px 0;">Use this menu to quickly test implemented features. Changes are immediate.</p>
+</div>
+
+<hr>
+
+<h3 style="margin:8px 0 4px 0;">💰 Money & Resources</h3>
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(99,179,237,.05);border-left:3px solid rgba(99,179,237,.3);">
+	<p style="margin:2px 0;font-size:0.9em;"><strong>Current Balance:</strong> $<<= $money>></p>
+	<<link "Add $500">><<set $money += 500>><<goto "DebugMenu">><</link>> ·
+	<<link "Add $1500">><<set $money += 1500>><<goto "DebugMenu">><</link>> ·
+	<<link "Add $5000">><<set $money += 5000>><<goto "DebugMenu">><</link>> ·
+	<<link "Set to $0">><<set $money = 0>><<goto "DebugMenu">><</link>>
+</div>
+
+<h3 style="margin:8px 0 4px 0;">👨‍👩‍👧 Family Health</h3>
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(236,201,75,.05);border-left:3px solid rgba(236,201,75,.3);">
+	<p style="margin:2px 0;font-size:0.9em;"><strong>Current Health:</strong> <<= $familyHealth>>%</p>
+	<<link "Set to 100%">><<set $familyHealth = 100>><<goto "DebugMenu">><</link>> ·
+	<<link "Set to 75%">><<set $familyHealth = 75>><<goto "DebugMenu">><</link>> ·
+	<<link "Set to 50%">><<set $familyHealth = 50>><<goto "DebugMenu">><</link>> ·
+	<<link "Set to 25%">><<set $familyHealth = 25>><<goto "DebugMenu">><</link>>
+</div>
+
+<h3 style="margin:8px 0 4px 0;">📅 Time Controls</h3>
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(99,179,237,.05);border-left:3px solid rgba(99,179,237,.3);">
+	<p style="margin:2px 0;font-size:0.9em;"><strong>Current Day:</strong> <<= $day>> / <<= $gameTimelineMax>></p>
+	<<link "Jump +5 days">><<set $day += 5>><<goto "DebugMenu">><</link>> ·
+	<<link "Jump +10 days">><<set $day += 10>><<goto "DebugMenu">><</link>> ·
+	<<link "Jump +20 days">><<set $day += 20>><<goto "DebugMenu">><</link>> ·
+	<<link "Reset to Day 1">><<set $day = 1>><<goto "DebugMenu">><</link>>
+</div>
+
+<h3 style="margin:8px 0 4px 0;">🏠 Housing Controls</h3>
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(208,213,224,.05);border-left:3px solid rgba(208,213,224,.3);">
+	<p style="margin:2px 0;font-size:0.9em;">
+		<strong>Status:</strong> <<if $hasHousing>>Has <<= $housingType>> ($<<= $housingCost>>/mo)<<else>>No housing<</if>>
+	</p>
+	<<if !$hasHousing>>
+		<<link "Grant Affordable Housing ($900/mo)">>
+			<<set $hasHousing = true>>
+			<<set $housingType = "Affordable">>
+			<<set $housingCost = 900>>
+			<<set $lastRentPaidDay = $day>>
+			<<goto "DebugMenu">>
+		<</link>><br>
+		<<link "Grant Standard Housing ($1100/mo)">>
+			<<set $hasHousing = true>>
+			<<set $housingType = "Standard">>
+			<<set $housingCost = 1100>>
+			<<set $lastRentPaidDay = $day>>
+			<<goto "DebugMenu">>
+		<</link>><br>
+		<<link "Grant Unaffordable Housing ($1450/mo)">>
+			<<set $hasHousing = true>>
+			<<set $housingType = "Unaffordable">>
+			<<set $housingCost = 1450>>
+			<<set $lastRentPaidDay = $day>>
+			<<goto "DebugMenu">>
+		<</link>>
+	<<else>>
+		<<link "Remove housing">>
+			<<set $hasHousing = false>>
+			<<set $housingType = "">>
+			<<set $housingCost = 0>>
+			<<set $lastRentPaidDay = 0>>
+			<<goto "DebugMenu">>
+		<</link>>
+	<</if>>
+</div>
+
+<h3 style="margin:8px 0 4px 0;">⚠️ Worries System</h3>
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(240,173,78,.05);border-left:3px solid rgba(240,173,78,.3);">
+	<p style="margin:2px 0;font-size:0.9em;"><strong>Active Worries:</strong> <<= $worries.length>></p>
+	<<link "Add random worry">>
+		<<set _randomWorry = $possibleWorries[random(0, $possibleWorries.length - 1)]>>
+		<<set _newWorry = {
+			type: _randomWorry.type,
+			severity: _randomWorry.severity,
+			description: _randomWorry.description,
+			expiresIn: _randomWorry.expiresIn,
+			healthImpact: _randomWorry.healthImpact,
+			cost: _randomWorry.cost,
+			daysActive: 0
+		}>>
+		<<set $worries.push(_newWorry)>>
+		<<goto "DebugMenu">>
+	<</link>> ·
+	<<link "Clear all worries">><<set $worries = []>><<goto "DebugMenu">><</link>> ·
+	<<link "Add 3 urgent worries">>
+		<<for _d = 0; _d < 3; _d++>>
+			<<set _randomWorry = $possibleWorries[random(0, $possibleWorries.length - 1)]>>
+			<<set _urgentWorry = {
+				type: _randomWorry.type,
+				severity: _randomWorry.severity,
+				description: _randomWorry.description,
+				expiresIn: _randomWorry.expiresIn,
+				healthImpact: _randomWorry.healthImpact,
+				cost: _randomWorry.cost,
+				daysActive: _randomWorry.expiresIn - 2
+			}>>
+			<<set $worries.push(_urgentWorry)>>
+		<</for>>
+		<<goto "DebugMenu">>
+	<</link>>
+</div>
+
+<h3 style="margin:8px 0 4px 0;">🚨 Test Event Triggers</h3>
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(217,83,79,.05);border-left:3px solid rgba(217,83,79,.3);">
+	<p style="margin:2px 0;font-size:0.9em;">Jump directly to major story events:</p>
+
+	<strong>Overwork Event:</strong><br>
+	<<if !$overworkSicknessTriggered>>
+		<<link "Trigger Overwork Sickness">>
+			<<set $hasHousing = true>>
+			<<set $housingType = "Unaffordable">>
+			<<set $housingCost = 1450>>
+			<<set $lastRentPaidDay = $day>>
+			<<set $workingExcessiveHours = true>>
+			<<set $excessiveHoursDaysWorked = 12>>
+			<<goto "OverworkSickness">>
+		<</link>>
+	<<else>>
+		<span style="color:#5cb85c;">✓ Already triggered</span> ·
+		<<link "Reset">>
+			<<set $overworkSicknessTriggered = false>>
+			<<set $workingExcessiveHours = false>>
+			<<set $excessiveHoursDaysWorked = 0>>
+			<<goto "DebugMenu">>
+		<</link>>
+	<</if>><br>
+
+	<strong>Wife Medical Emergency:</strong><br>
+	<<if !$wifeMedicalEmergencyTriggered>>
+		<<link "Trigger Wife Emergency">>
+			<<set $hasHousing = true>>
+			<<set $housingType = "Unaffordable">>
+			<<set $housingCost = 1450>>
+			<<set $lastRentPaidDay = $day>>
+			<<set $familyHealth = 55>>
+			<<goto "WifeMedicalEmergency">>
+		<</link>>
+	<<else>>
+		<span style="color:#5cb85c;">✓ Already triggered</span> ·
+		<<link "Reset">>
+			<<set $wifeMedicalEmergencyTriggered = false>>
+			<<set $wifeMedicalEmergencyResolved = false>>
+			<<set $iceDetained = false>>
+			<<goto "DebugMenu">>
+		<</link>>
+	<</if>><br>
+
+	<strong>Unaffordable Housing Consequence:</strong><br>
+	<<link "Go to Unaffordable Housing Choice">>
+		<<set $hasHousing = true>>
+		<<set $housingType = "Unaffordable">>
+		<<set $housingCost = 1450>>
+		<<set $lastRentPaidDay = $day>>
+		<<goto "UnaffordableHousingConsequences">>
+	<</link>><br>
+
+	<strong>Affordable/Standard Transportation:</strong><br>
+	<<link "Go to Affordable Housing Transport Challenge">>
+		<<set $hasHousing = true>>
+		<<set $housingType = "Affordable">>
+		<<set $housingCost = 900>>
+		<<set $lastRentPaidDay = $day>>
+		<<set $money = 900>>
+		<<goto "AffordableStandardConsequences">>
+	<</link>> ·
+	<<link "Go to Standard Housing Transport Challenge">>
+		<<set $hasHousing = true>>
+		<<set $housingType = "Standard">>
+		<<set $housingCost = 1100>>
+		<<set $lastRentPaidDay = $day>>
+		<<set $money = 1100>>
+		<<goto "AffordableStandardConsequences">>
+	<</link>>
+</div>
+
+<h3 style="margin:8px 0 4px 0;">🔧 System Controls</h3>
+<div style="margin:8px 0;padding:8px 12px;border-radius:6px;background:rgba(51,51,51,.05);border-left:3px solid rgba(51,51,51,.3);">
+	<<link "Clear all event flags">>
+		<<set $overworkSicknessTriggered = false>>
+		<<set $wifeMedicalEmergencyTriggered = false>>
+		<<set $wifeMedicalEmergencyResolved = false>>
+		<<set $iceDetained = false>>
+		<<set $workingExcessiveHours = false>>
+		<<set $excessiveHoursDaysWorked = 0>>
+		<<set $transportMethod = "">>
+		<<set $usingPublicTransit = false>>
+		<<set $usingRideshare = false>>
+		<<set $workStructure = "">>
+		<<set $rideshareStrategy = "">>
+		<<set $freelanceDaysWorked = 0>>
+		<<set $hasCar = false>>
+		<<set $carOwnership = "">>
+		<<goto "DebugMenu">>
+	<</link>><br>
+	<<link "Unlock game options">>
+		<<set $optionsLocked = false>>
+		<<set $gameStarted = false>>
+		<<goto "DebugMenu">>
+	<</link>>
+</div>
+
+<hr>
+
+<div style="margin-top:8px;font-size:0.9em;">
+	<<link "Return to Hub">><<goto "Hub">><</link>> ·
+	<<link "Return to End of Day">><<goto "EndOfDayHub">><</link>> ·
+	<<link "Game Options">><<goto "GameOptions">><</link>>
+</div>

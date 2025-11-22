@@ -1,0 +1,29 @@
+:: JobBoard
+<<set $step = 0>><<ShowInfo>>
+
+<<silently>>
+	/* If there are no jobs at all */
+	<<if !$jobs or $jobs.length == 0>>
+		<<set _noJobs = true>><<set $jobTypeOrder = []>><<set _totalJobsToday = 0>><<else>>
+		<<set _noJobs = false>><<set _pool = clone($jobs)>>
+		<<run
+			if (Array.isArray(State.variables._pool)) {State.variables._pool.sort(function () { return Math.random() - 0.5; });}>>		<<set $jobTypeOrder = _pool.slice(0, 3)>>		<<set _totalJobsToday = $jobTypeOrder.length>>
+		<<if $jobIndex is undefined>><<set $jobIndex = 0>><</if>>
+		<<if $jobIndex >= _totalJobsToday>><<set $jobIndex = 0>><</if>><</if>><</silently>>
+<<if _noJobs or _totalJobsToday == 0>>
+	<p style="margin:0;font-size:0.9em;">There are no jobs posted right now. Check back tomorrow.</p>
+<<else>>
+	<<set _idx = $jobIndex>> <<set _job = $jobTypeOrder[_idx]>>
+	<p style="margin:0 0 2px 0;font-size:0.9em;">Jobs you can take:</p>
+	<<JobListing _job "Kiosk">>
+	<div style="display:flex;justify-content:space-between;font-size:0.75em;margin-top:2px;">
+		<<link "◀">>
+			<<set $jobIndex = ($jobIndex - 1 + _totalJobsToday) % _totalJobsToday>>
+			<<goto "JobBoard">>
+		<</link>>
+		<span>Job <<= _idx + 1>> of <<= _totalJobsToday>></span>
+		<<link "▶">>
+			<<set $jobIndex = ($jobIndex + 1) % _totalJobsToday>>
+			<<goto "JobBoard">>
+		<</link>>
+	</div><</if>>

@@ -1,0 +1,16 @@
+:: Landing
+/* Compact landing page */
+<div style="text-align:center;padding:20px;">
+	<h1 style="font-size:1.8em;margin:0;">Decisions, Decisions</h1>
+	<p style="font-size:0.95em;color:var(--muted);margin:2px 0 10px 0;">
+		A Simulation of Housing Insecurity in Chicago
+	</p>
+	<p style="font-size:0.9em;margin:4px 0 6px 0;">
+		<strong>Decisions, Decisions</strong> is a narrative-driven game that challenges the assumptions many have about what migrants face on their journey to ‘sustainable independence’. In the game, players will have to secure housing in a limited timeframe, while navigating employment and familial obligations, in a system where decisions are made for them.
+	</p>
+	<p style="font-size:0.85em;color:var(--muted);margin:6px 0 8px 0;">
+		This simulation captures stories from real-life experiences of migrants in Chicago.
+		Content notice: xyz
+	</p>
+	<<link "Begin →">> <<goto "Start">> <</link>>
+</div>

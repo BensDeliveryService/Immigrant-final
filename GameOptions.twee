@@ -1,0 +1,104 @@
+:: GameOptions
+/* Redirect to first options page */
+<<set $step = 0>>
+<<goto "GameOptions_Support">>
+
+
+
+:: GameOptions_Support
+/* Page 1: Rent support */
+<<set $step = 0>>
+
+<<if $optionsLocked>>
+	<p style="margin:0;font-size:0.9em;">
+		Experience settings are locked for this run. Rent support is currently 
+		<<if $hasRentSupport>>ON (you have $1,500)<<<else>>OFF (full realism)<</if>>. 
+		Start a new game to change this.
+	</p>
+<<else>>
+	<p style="margin:0;font-size:0.9em;">
+		Rental support provides you a better chance in the housing application process. Right now it is 
+		<<if $hasRentSupport>>ON (you have $1,500 of rental support.)<<else>>OFF (you rely soley ony your own income.)<</if>>. 
+		<<if $hasRentSupport>>
+			<<link "Turn it OFF (harder, realistic)">><<set $hasRentSupport = false>><<goto "GameOptions_Support">><</link>>
+		<<else>>
+			<<link "Turn it ON (easier)">><<set $hasRentSupport = true>><<goto "GameOptions_Support">><</link>>
+		<</if>>
+	</p>
+<</if>>
+
+<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;">
+	<span><<link "Intro" "Landing">><</link>> · <<link "🛠️ Debug" "DebugMenu">><</link>></span>
+	<span><<link "Next: Time" "GameOptions_Timeline">><</link>></span>
+</div>
+
+
+
+:: GameOptions_Timeline
+/* Page 2: Time pressure */
+<<set $step = 0>>
+
+<<if $optionsLocked>>
+	<p style="margin:0;font-size:0.9em;">
+		Your time limit is <<= $gameTimelineMax>> days. Settings are locked for this run; 
+		start a new game to change the timeline.
+	</p>
+<<else>>
+	<p style="margin:0;font-size:0.9em;">
+		This is how long you have to find and secure housing for you and your family. Currently: <<= $gameTimelineMax>> days. 
+		Choose: 
+		<<link "30 days">><<set $gameTimelineMax = 30>><<goto "GameOptions_Timeline">><</link>>
+		<<link "60 days">><<set $gameTimelineMax = 60>><<goto "GameOptions_Timeline">><</link>>
+		<<link "90 days">><<set $gameTimelineMax = 90>><<goto "GameOptions_Timeline">><</link>>
+	</p>
+<</if>>
+
+<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;">
+	<span><<link "Back: Support" "GameOptions_Support">><</link>></span>
+	<span><<link "Next: Summary" "GameOptions_Summary">><</link>></span>
+</div>
+
+
+
+:: GameOptions_Summary
+/* Page 3: Summary + start */
+<<set $step = 0>>
+
+<<set _realism = "Moderate realism">>
+<<if $hasRentSupport and $gameTimelineMax >= 90>>
+	<<set _realism = "Lower realism (more forgiving)">>
+<<elseif !$hasRentSupport and $gameTimelineMax <= 30>>
+	<<set _realism = "Highest realism (urgent and difficult)">>
+<<elseif !$hasRentSupport and $gameTimelineMax == 60>>
+	<<set _realism = "High realism (challenging)">>
+<</if>>
+
+<<if !$optionsLocked>>
+	<p style="margin:0;font-size:0.9em;">
+		You will start with $900, rent support is <<if $hasRentSupport>>ON<<else>>OFF<</if>>.
+		You have<<= $gameTimelineMax>> days to secure housing for your family.
+		This setup is: <<= _realism>>. 
+		These options will be locked once you click <strong>BEGIN</strong>.
+
+	<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;align-items:center;">
+		<span><<link "Back: Time" "GameOptions_Timeline">><</link>></span>
+		<span>
+			<<link "BEGIN" "Start">>
+				<<set $optionsLocked = true>>
+				<<set $gameStarted = true>>
+			<</link>>
+		</span>
+	</div>
+	</p>
+<<else>>
+	<p style="margin:0;font-size:0.9em;">
+		Current run: rent support 
+		<<if $hasRentSupport>>ON<<else>>OFF<</if>>, <<= $gameTimelineMax>> days, 
+		<<= _realism>>. You can return to the hub or start a new game to reconfigure.
+	</p>
+
+	<div style="margin-top:4px;font-size:0.9em;display:flex;justify-content:space-between;">
+		<span><<link "Hub" "Hub">><</link>></span>
+		<span><<link "New Game" "Landing">><</link>></span>
+	</div>
+<</if>>

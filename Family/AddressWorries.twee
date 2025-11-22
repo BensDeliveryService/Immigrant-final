@@ -1,0 +1,76 @@
+:: CheckWorry
+/* Increase day by one */
+<<set $day += 1>>
+/* Already have a worry? Then do nothing. */
+<<if $activeWorry is not null>>
+	<<goto "Hub">>
+<</if>>
+/* Time for a new random worry? */
+<<if $day >= $nextWorryDay>>
+	/* pick random worry */
+	<<set _idx = random(0, $worryPool.length - 1)>>
+	<<set $activeWorry = clone($worryPool[_idx])>>
+	/* schedule the NEXT worry day */
+	<<set $nextWorryDay = $day + random($minGap, $maxGap)>>
+	<<goto "AddressWorry">>
+<<else>>
+	/* No new worry today */
+	<<goto "Hub">>
+<</if>>
+
+
+
+:: AddressWorry
+<<if $activeWorry is null>>
+	<<goto "Hub">>
+<</if>>
+
+<<set _w = $activeWorry>>
+
+''Family Concern''
+
+<<= _w.description>>
+
+Type: <<= _w.type.replace(/_/g," ")>>
+Severity: <<= _w.severity>>
+Cost to address: $<<= _w.cost>>
+Ignore penalty: <<= _w.healthImpact>>% health
+
+---
+
+<<if $money >= _w.cost>>
+	<<link "Resolve">>
+		<<set $money -= _w.cost>>
+		<<set $familyHealth = Math.min(100, $familyHealth + Math.floor(_w.severity * 2))>>
+		<<set $activeWorry = null>>
+		<<goto "WorryResolved">>
+	<</link>>
+<<else>>
+	You cannot afford to resolve this right now.  
+	You need $<<= _w.cost - $money>> more.
+<</if>>
+
+<br><br>
+
+<<link "Skip for now">>
+	<<set $familyHealth = Math.max(0, $familyHealth - _w.healthImpact)>>
+	<<set $lastSkipText = _w.skipText>>
+	<<set $activeWorry = null>>
+	<<goto "WorrySkipped">>
+<</link>>
+
+
+:: WorryResolved
+You resolved the family concern.
+
+Balance: $<<= $money>>  
+Health: <<= $familyHealth>>%
+
+<<link "Continue">><<goto "Hub">><</link>>
+:: WorrySkipped
+<<= $lastSkipText>>
+
+Balance: $<<= $money>>  
+Health: <<= $familyHealth>>%
+
+<<link "Continue">><<goto "Hub">><</link>>

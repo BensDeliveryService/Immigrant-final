@@ -1,0 +1,32 @@
+/* 
+===============================================================================
+  40_passage_start.twee — Passage Name: Start
+===============================================================================
+
+This is where the project will start from when running.
+
+===============================================================================
+:: Start
+<<set $gameStarted=true>>
+<<set $step = 0>>
+<<ShowInfo>>
+<<set _scene = [
+  { 
+    "side": "left",
+    "text": "You're an undocumented Guatemalan man in your early 20s.<br>You and your wife, Juana, have a 5-year-old child, Marco, together with another on the way.<br> For the past few months, a local church has been providing temporary shelter, food, and support as you look for housing and work. <br> However after nearly a year, they can no longer accommodate you, as another family needs the space.<br> It's time to find a more permanent solution for your family.",
+  },
+
+  {
+    "side": "right",
+    "text": "You have $900 in your bank account and need to find housing accommodations.<br>Painting and other odd jobs are your source of income to provide for you and your family.",
+  },
+  {
+    "side": "right",
+    "text": "You can take public transit to the job site by buying a transit pass.<br>You could also walk, but you won't get as much work done that week.",
+  }
+]>>
+<section id="dialogue-area"><<RenderScene _scene $step>></section>
+<section id="controls"><<NavControls _scene $step>></section>
+
+<<link "Star Game">> <<goto"Hub">><</link>>
+

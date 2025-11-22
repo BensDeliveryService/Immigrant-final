@@ -1,0 +1,9 @@
+:: Summary
+<<if $workDays>0>> 
+	Here are the current details of your job...
+	<<JobSummary>>
+<<else>>
+You do not have a job right now.
+<</if>>
+<br>
+<<link "Go back to Hub">><<goto "Hub">><</link>>
